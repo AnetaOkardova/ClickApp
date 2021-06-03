@@ -1,0 +1,117 @@
+﻿@model ClickApp.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Overview";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Profile.css" />
+}
+<div class="Container">
+    <div class="row justify-content-center">
+        <h1>@Model.Name @Model.LastName</h1>
+    </div>
+</div>
+<div class="container d-block" id="profilePicSmall">
+    <div class="row justify-content-center">
+        <img class="roundImage profilePic"  src="@Model.ProfilePhotoURL" onclick="showProfileImage()" />
+    </div>
+</div>
+
+<hr />
+<div class="Container tabsContainer">
+    <div class="row justify-content-center">
+        <div class="profileTabs" onclick="showAboutInfo()">About</div>
+        <div class="profileTabs" onclick="showGroupsInfo()">Groups</div>
+        <div class="profileTabs" onclick="showConnectionsInfo()">Connections</div>
+        <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
+        <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
+        <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
+
+
+
+
+    </div>
+</div>
+<div class="container d-block" id="personalInfo">
+    <div>
+        
+        <dl class="row">
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+
+<div class="container-fluid d-none" id="profilePicLarge" onclick="hideProfileImage()">
+    <div class="row justify-content-center">
+        <img id="profilePicLargeSize" src="@Model.ProfilePhotoURL"  />
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function showProfileImage() {
+            var smallPic = document.getElementById("profilePicSmall");
+            smallPic.classList.remove("d-block");
+            smallPic.classList.add("d-none");
+
+            var personalInfo = document.getElementById("personalInfo");
+            personalInfo.classList.remove("d-block");
+            personalInfo.classList.add("d-none");
+
+            var largePic = document.getElementById("profilePicLarge");
+            largePic.classList.remove("d-none");
+            largePic.classList.add("d-block");
+
+        }
+        function hideProfileImage() {
+            var smallPic = document.getElementById("profilePicSmall");
+            smallPic.classList.remove("d-none");
+            smallPic.classList.add("d-block");
+
+            var personalInfo = document.getElementById("personalInfo");
+            personalInfo.classList.remove("d-none");
+            personalInfo.classList.add("d-block");
+
+            var largePic = document.getElementById("profilePicLarge");
+            largePic.classList.remove("d-block");
+            largePic.classList.add("d-none");
+        }
+    </script>
+}

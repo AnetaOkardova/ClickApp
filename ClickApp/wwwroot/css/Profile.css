@@ -1,0 +1,25 @@
+﻿.roundImage {
+    border-radius: 50px;
+}
+
+.profilePic {
+    width: 200px;
+    height: 200px;
+}
+
+#profilePicLargeSize {
+    width: 500px;
+    height: 500px;
+}
+.profileTabs {
+    border-radius: 10px;
+    border-bottom: solid 1px gray;
+    border-left: solid 1px gray;
+    border-right: solid 1px gray;
+    padding: 5px;
+    color: grey;
+    margin: 2px;
+}
+/*.tabsContainer{
+    width: 50%;
+}*/
