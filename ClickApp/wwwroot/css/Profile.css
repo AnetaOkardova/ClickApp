@@ -20,6 +20,6 @@
     color: grey;
     margin: 2px;
 }
-/*.tabsContainer{
-    width: 50%;
-}*/
+.profileTabs:hover {
+    cursor: pointer;
+}

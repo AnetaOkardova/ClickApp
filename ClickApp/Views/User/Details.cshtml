@@ -1,7 +1,7 @@
 ﻿@model ClickApp.ViewModels.UserViewModel
 
 @{
-    ViewData["Title"] = "Overview";
+    ViewData["Title"] = "Profile";
 }
 
 @section Styles{
@@ -93,6 +93,7 @@
 @section Scripts{
     <script>
         function showProfileImage() {
+            
             hideAllInfo();
             hideContainer("tabsContainer");
             hideContainer("profilePicSmall")

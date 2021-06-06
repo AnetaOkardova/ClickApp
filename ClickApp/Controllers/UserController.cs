@@ -20,7 +20,7 @@ namespace ClickApp.Controllers
             _userManager = userManager;
         }
         [Authorize]
-        public async Task<IActionResult> Overview()
+        public async Task<IActionResult> Details()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -132,7 +132,7 @@ namespace ClickApp.Controllers
 
                 await _userManager.UpdateAsync(userFromDb);
 
-                return RedirectToAction("Overview");
+                return RedirectToAction("Details");
             }
             else
             {

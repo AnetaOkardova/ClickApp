@@ -1,0 +1,30 @@
+﻿.offerOptionImg {
+    width: 350px;
+    height: 350px;
+    border-radius: 10px;
+}
+
+/*.offerDescription {
+    overflow: hidden;
+    width: 16rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}*/
+
+.offerCard {
+    width: 300px;
+    transition: ease-out width 1s, ease-out background-color 1s;
+}
+
+    .offerCard:hover {
+        width: 350px;
+        background-color: gray;
+        padding: 0px;
+    }
+
+.offerImg {
+    height: 150px;
+    width: 150px;
+}
+

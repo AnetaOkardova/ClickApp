@@ -26,7 +26,7 @@ namespace ClickApp.ViewModels
         public string Country { get; set; }
         [Required]
         public string ProfilePhotoURL { get; set; }
-
+        //Offers if any???
         public List<UserSkillViewModel> Skills { get; set; } 
         public List<UserInterestViewModel> Interests { get; set; }
 

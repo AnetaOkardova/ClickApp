@@ -19,6 +19,8 @@ namespace ClickApp.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<UserInterest> UserInterests { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+
 
 
     }

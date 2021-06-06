@@ -26,6 +26,8 @@ namespace ClickApp.Models
 
         public List<UserSkill> Skills { get; set; }
         public List<UserInterest> Interests { get; set; }
+        public List<Offer> Offers { get; set; }
+
 
 
     }

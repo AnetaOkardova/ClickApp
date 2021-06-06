@@ -48,5 +48,23 @@ namespace ClickApp.Mappings
                 ExperienceDescription = entity.ExperienceDescription
             };
         }
+
+        public static Offer ToModel(this OfferViewModel entity)
+        {
+            return new Offer()
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                DateCreated = entity.DateCreated,
+                DateModified = entity.DateModified,
+                Description = entity.Description,
+                ImageUrl = entity.ImageUrl,
+                ImportantNote = entity.ImportantNote,
+                IsProfessional = entity.IsProfessional,
+                IsPublic = entity.IsPublic,
+                ValidUntil = entity.ValidUntil,
+                UserId = entity.UserId
+            };
+        }
     }
 }

@@ -1,5 +1,9 @@
 using ClickApp.Data;
 using ClickApp.Models;
+using ClickApp.Repositories;
+using ClickApp.Repositories.Interfaces;
+using ClickApp.Serivices;
+using ClickApp.Serivices.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -44,8 +48,8 @@ namespace ClickApp
                 //options.LoginPath = "/admin/login";
             });
 
-            //services.AddTransient<IImagesRepository, ImagesRepository>();
-            //services.AddTransient<IImagesServices, ImagesServices>();
+            services.AddTransient<IOffersService, OffersService>();
+            services.AddTransient<IOffersRepository, OffersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
