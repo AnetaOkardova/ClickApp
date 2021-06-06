@@ -7,6 +7,6 @@ namespace ClickApp.Serivices.Interfaces
 {
     public interface IOffersService
     {
-        List<Offer> GetAllPublicWithFilter(string title);
+        List<Offer> GetAllPublicWithFilter(string title, bool isProffesional);
     }
 }

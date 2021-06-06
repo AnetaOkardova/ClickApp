@@ -1,7 +1,12 @@
 ﻿@model ClickApp.ViewModels.UserViewModel
 
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<ApplicationUser> _userManager;
+
 @{
     ViewData["Title"] = "Profile";
+    var user = await _userManager.FindByNameAsync(User.Identity.Name);
 }
 
 @section Styles{
@@ -9,19 +14,14 @@
 }
 <div class="Container">
     <div class="row justify-content-center">
-        <h1>@Model.Name @Model.LastName</h1>
-    </div>
-</div>
-
-<div class="container d-block" id="profilePicSmall">
-    <div class="row justify-content-center">
-        <img class="roundImage profilePic" src="@Model.ProfilePhotoURL" onclick="showProfileImage()" />
+        <img class="roundImage profilePic" id="profilePicSmall" src="@Model.ProfilePhotoURL" onclick="showProfileImage()" />
+        <h1 class="d-inline-block pl-5 align-self-center">@Model.Name @Model.LastName</h1>
     </div>
 </div>
 
 <div class="container-fluid d-none" id="profilePicLarge" onclick="hideProfileImage()">
     <div class="row justify-content-center">
-        <img id="profilePicLargeSize" src="@Model.ProfilePhotoURL" />
+        <img class="roundImage" id="profilePicLargeSize" src="@Model.ProfilePhotoURL" />
     </div>
 </div>
 
@@ -32,8 +32,11 @@
         <div class="profileTabs" onclick="showGroupsInfo()">Groups</div>
         <div class="profileTabs" onclick="showConnectionsInfo()">Connections</div>
         <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
-        <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
-        <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
+        @if (user.Id == @Model.Id)
+        {
+            <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
+            <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
+        }
     </div>
 </div>
 <div class="container d-none m-5 p-2" id="aboutInfo">
@@ -81,7 +84,10 @@
     </div>
     <div>
         <div class="row">
-            <div class="profileTabs">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
+            @if (user.Id == @Model.Id)
+            {
+                <div class="profileTabs">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
+            }
             <div class="profileTabs" onclick="hideAboutInfo()">Close about tab</div>
         </div>
     </div>
@@ -93,7 +99,6 @@
 @section Scripts{
     <script>
         function showProfileImage() {
-            
             hideAllInfo();
             hideContainer("tabsContainer");
             hideContainer("profilePicSmall")

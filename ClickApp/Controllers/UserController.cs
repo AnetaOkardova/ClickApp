@@ -20,9 +20,16 @@ namespace ClickApp.Controllers
             _userManager = userManager;
         }
         [Authorize]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Details(string userId)
         {
             var user = await _userManager.GetUserAsync(User);
+
+            if (userId!=null && userId != "")
+            {
+                user = await _userManager.FindByIdAsync(userId);
+            }
+            
+            
             if (user == null)
             {
                 return RedirectToAction("Error", "Home");

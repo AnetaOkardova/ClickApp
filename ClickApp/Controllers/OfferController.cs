@@ -16,10 +16,14 @@ namespace ClickApp.Controllers
         {
             _offersService = offersService;
         }
-        public IActionResult Overview(string title)
+        public IActionResult Overview(string offerTitle)
         {
-            var offers = _offersService.GetAllPublicWithFilter(title);
-            if(offers.Count == 0)
+            return View();
+        }
+        public IActionResult GetAllWithFilter(string offerTitle, bool isProffesional)
+        {
+            var offers = _offersService.GetAllPublicWithFilter(offerTitle, isProffesional);
+            if (offers.Count == 0)
             {
                 ViewBag.EmptyListMessage = "Currently there are no offers. Try again later.";
             }
@@ -27,5 +31,6 @@ namespace ClickApp.Controllers
 
             return View(viewOffers);
         }
+
     }
 }

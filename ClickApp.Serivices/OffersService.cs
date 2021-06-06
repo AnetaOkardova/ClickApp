@@ -16,9 +16,9 @@ namespace ClickApp.Serivices
             _offersRepository = offersRepository;
         }
 
-        public List<Offer> GetAllPublicWithFilter(string title)
+        public List<Offer> GetAllPublicWithFilter(string title, bool isProffesional)
         {
-            return _offersRepository.GetAllPublicWithFilter(title);
+            return _offersRepository.GetAllPublicWithFilter(title, isProffesional);
         }
     }
 }

@@ -4,13 +4,6 @@
     border-radius: 10px;
 }
 
-/*.offerDescription {
-    overflow: hidden;
-    width: 16rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-}*/
 
 .offerCard {
     width: 300px;

@@ -17,12 +17,16 @@ namespace ClickApp.Repositories
             _context = context;
         }
 
-        public List<Offer> GetAllPublicWithFilter(string title)
+        public List<Offer> GetAllPublicWithFilter(string title, bool isProffesional)
         {
             var query = _context.Offers.Include(x => x.User).Where(x => x.IsPublic == true).AsQueryable();
             if (title != null)
             {
                 query = query.Where(x => x.Title.Contains(title));
+            }
+            if (isProffesional != null)
+            {
+                query = query.Where(x => x.IsProfessional == isProffesional);
             }
 
             var offers = query.ToList();

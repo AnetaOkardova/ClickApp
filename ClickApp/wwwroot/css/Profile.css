@@ -2,24 +2,53 @@
     border-radius: 50px;
 }
 
-.profilePic {
-    width: 200px;
-    height: 200px;
-}
-
 #profilePicLargeSize {
     width: 500px;
     height: 500px;
+    border-radius: 5px;
+    box-shadow: gray 5px 5px inset;
 }
 .profileTabs {
     border-radius: 10px;
-    border-bottom: solid 1px gray;
-    border-left: solid 1px gray;
-    border-right: solid 1px gray;
+    border-bottom: solid 1px #006A4E;
+    border-left: solid 1px #006A4E;
+    border-right: solid 1px #006A4E;
     padding: 5px;
-    color: grey;
+    color: #006A4E;
     margin: 2px;
 }
 .profileTabs:hover {
     cursor: pointer;
 }
+
+.profilePic {
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background: none;
+    transition: width 2s, height 2s;
+}
+
+    .profilePic:hover {
+        width: 500px;
+        height: 500px;
+    }
+
+/*.profilePicSmallSize {
+    width: 200px;
+    height: 200px;
+    transition: width 2s;
+    -moz-transition: width 2s;*/ /* Firefox 4 */
+    /*-webkit-transition: width 2s;*/ /* Safari and Chrome */
+    /*-o-transition: width 2s;*/ /* Opera */
+/*}*/
+/*.profilePicSmallSize: hover {
+    width: 500px;
+    height: 500px;
+}
+*/
+/*.profilePicLargeSize {
+    width: 500px;
+    height: 500px;
+    
+}*/

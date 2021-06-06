@@ -1,4 +1,6 @@
-﻿using ClickApp.Models;
+﻿using ClickApp.Mappings;
+using ClickApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,15 +13,24 @@ namespace ClickApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<ApplicationUser> userManager)
         {
-            _logger = logger;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+       
+
+        public IActionResult Index(string userNameSearch)
         {
+            if(userNameSearch !=null || userNameSearch != "")
+            {
+                var users = _userManager.Users.Where(x => x.UserName.Contains(userNameSearch)).ToList();
+                var usersForView = users.Select(x => x.ToUserViewModel()).ToList();
+                return View(usersForView);
+            }
+
             return View();
         }
 

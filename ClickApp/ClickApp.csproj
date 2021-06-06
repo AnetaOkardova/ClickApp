@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ClickApp.Serivices\ClickApp.Serivices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>
