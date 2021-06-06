@@ -8,5 +8,6 @@ namespace ClickApp.Repositories.Interfaces
     public interface IOffersRepository
     {
         List<Offer> GetAllPublicWithFilter(string title, bool isProffesional);
+        void Create(Offer offer);
     }
 }

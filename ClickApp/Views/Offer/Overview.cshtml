@@ -1,8 +1,4 @@
 ﻿@model IEnumerable<ClickApp.ViewModels.OfferViewModel>
-@*@using Microsoft.AspNetCore.Identity;*@
-
-@*@inject UserManager<ApplicationUser> _userManager;*@
-
 
 @{
     ViewData["Title"] = "Offers";
@@ -13,6 +9,20 @@
     <link rel="stylesheet" href="~/css/OffersOverview.css" />
 }
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success m-3" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger m-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
 <div class="container" id="offerOptionsContainer">
     <div class="row justify-content-center ">

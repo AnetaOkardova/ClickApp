@@ -32,5 +32,11 @@ namespace ClickApp.Repositories
             var offers = query.ToList();
             return offers;
         }
+
+        public void Create(Offer offer)
+        {
+            _context.Offers.Add(offer);
+            _context.SaveChanges();
+        }
     }
 }
