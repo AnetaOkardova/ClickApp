@@ -38,11 +38,16 @@ namespace ClickApp.Controllers
 
             if (skills.Count == 0 || skills == null)
             {
-                return RedirectToAction("Index", "Home", new { ErrorMessage = "There are no General fields in the DB at this point" });
+                ViewBag.ErrorMessage =  "There are no skills in the DB at this point";
+                return View();
+            }
+            else
+            {
+                var skillsForView = skills.Select(x => x.ToSkillViewModel()).ToList();
+                return View(skillsForView);
             }
 
-            var skillsForView = skills.Select(x => x.ToSkillViewModel()).ToList();
-            return View(skillsForView);
+            
         }
         [HttpGet]
         [Authorize]
@@ -76,54 +81,54 @@ namespace ClickApp.Controllers
                 return View(createSkillViewModel);
             }
         }
-        //[Authorize]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    var response = _generalFieldsService.Delete(id);
-        //    if (response.IsSuccessful)
-        //    {
-        //        return RedirectToAction("Overview", new { SuccessMessage = response.Message });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Overview", new { ErrorMessage = response.Message });
-        //    }
-        //}
-        //[HttpGet]
-        //[Authorize]
-        //public IActionResult Edit(int id)
-        //{
-        //    var generalField = _generalFieldsService.GetById(id);
-        //    if (generalField == null)
-        //    {
-        //        return RedirectToAction("Overview", new { ErrorMessage = $"There are no general fields with ID {id}." });
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = _skillsService.Delete(id);
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("Overview", new { SuccessMessage = response.Message });
+            }
+            else
+            {
+                return RedirectToAction("Overview", new { ErrorMessage = response.Message });
+            }
+        }
+        [HttpGet]
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var skill = _skillsService.GetById(id);
+            if (skill == null)
+            {
+                return RedirectToAction("Overview", new { ErrorMessage = $"There are no skills with ID {id}." });
 
-        //    }
-        //    var generalFieldForView = generalField.ToGeneralFieldViewModel();
+            }
+            var skillForView = skill.ToSkillViewModel();
 
-        //    return View(generalFieldForView);
-        //}
-        //[HttpPost]
-        //[Authorize]
-        //public async Task<IActionResult> Edit(GeneralFieldViewModel generalFieldViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var generalField = generalFieldViewModel.ToModel();
-        //        var response = _generalFieldsService.Update(generalField);
-        //        if (response.IsSuccessful)
-        //        {
-        //            return RedirectToAction("Overview", new { SuccessMessage = $"The general field {generalFieldViewModel.Name} has been successfully created." });
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("Overview", new { ErrorMessage = response.Message });
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return View(generalFieldViewModel);
-        //    }
-        //}
+            return View(skillForView);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(SkillViewModel skillViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var skill = skillViewModel.ToModel();
+                var response = _skillsService.Update(skill);
+                if (response.IsSuccessful)
+                {
+                    return RedirectToAction("Overview", new { SuccessMessage = $"The skill {skillViewModel.Name} has been successfully created." });
+                }
+                else
+                {
+                    return RedirectToAction("Overview", new { ErrorMessage = response.Message });
+                }
+            }
+            else
+            {
+                return View(skillViewModel);
+            }
+        }
     }
 }

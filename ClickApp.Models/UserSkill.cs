@@ -9,13 +9,12 @@ namespace ClickApp.Models
     {
         public int Id { get; set; }
 
-        [Required]
         [Display(Name = "Year when skill developed")]
-        public DateTime YearSkillStarted { get; set; }
+        public DateTime? YearSkillStarted { get; set; }
 
-        [Required]
-        [Display(Name = "Experience")]
-        public string ExperienceDescription { get; set; }
+        
+        [Display(Name = "Experience description")]
+        public string? ExperienceDescription { get; set; }
         [Required]
         [Display(Name = "Experience level")]
         public int ExperienceLevel { get; set; }

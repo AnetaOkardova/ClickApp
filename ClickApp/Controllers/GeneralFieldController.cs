@@ -36,7 +36,8 @@ namespace ClickApp.Controllers
 
             if(generalFields.Count == 0 || generalFields == null)
             {
-                return View(new { ErrorMessage = "There are no General fields in the DB at this point" });
+                ViewBag.ErrorMessage = "There are no General fields in the DB at this point";
+                return View();
             }
 
             var generalFieldsForView = generalFields.Select(x => x.ToGeneralFieldViewModel()).ToList();

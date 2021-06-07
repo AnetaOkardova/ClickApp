@@ -74,9 +74,18 @@
                     @Html.DisplayFor(model => model.Country)
                 </dd>
             </div>
-            <div class="col">
-                <h4>Skills</h4>
-            </div>
+
+            @if (Model.Skills.Count != 0)
+            {
+                <div class="col">
+                    <h4>Skills</h4>
+                    @foreach (var skill in Model.Skills)
+                    {
+                        <p>@skill.Name</p>
+                    }
+                </div>
+            }
+
             <div class="col">
                 <h4>Interests</h4>
             </div>
