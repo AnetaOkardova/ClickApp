@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickApp", "ClickApp\ClickApp.csproj", "{F05818DB-5362-4504-922D-31FC5081A450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickApp", "ClickApp\ClickApp.csproj", "{F05818DB-5362-4504-922D-31FC5081A450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickApp.Models", "ClickApp.Models\ClickApp.Models.csproj", "{10278BE1-BDFD-4524-A5C3-087FE373AAC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickApp.Models", "ClickApp.Models\ClickApp.Models.csproj", "{10278BE1-BDFD-4524-A5C3-087FE373AAC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickApp.Repositories", "ClickApp.Repositories\ClickApp.Repositories.csproj", "{84E41A36-1473-4E84-976B-37F788C9D4DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickApp.Repositories", "ClickApp.Repositories\ClickApp.Repositories.csproj", "{84E41A36-1473-4E84-976B-37F788C9D4DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickApp.Serivices", "ClickApp.Serivices\ClickApp.Serivices.csproj", "{8DED1712-B73E-408F-A20C-0A4A60614319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickApp.Services", "ClickApp.Serivices\ClickApp.Services.csproj", "{8DED1712-B73E-408F-A20C-0A4A60614319}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

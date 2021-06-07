@@ -22,9 +22,13 @@ namespace ClickApp.Controllers
 
        
 
-        public IActionResult Index(string userNameSearch)
+        public IActionResult Index(string userNameSearch, string errorMessage)
         {
-            if(userNameSearch !=null || userNameSearch != "")
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
+            if (userNameSearch !=null || userNameSearch != "")
             {
                 var users = _userManager.Users.Where(x => x.UserName.Contains(userNameSearch)).ToList();
                 var usersForView = users.Select(x => x.ToUserViewModel()).ToList();

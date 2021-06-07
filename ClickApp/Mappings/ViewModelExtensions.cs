@@ -80,5 +80,39 @@ namespace ClickApp.Mappings
                 ValidUntil = entity.ValidUntil,
             };
         }
+        public static GeneralField ToModel(this GeneralFieldViewModel entity)
+        {
+            return new GeneralField()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+            };
+        }
+
+        public static GeneralField ToModel(this CreateGeneralFieldViewModel entity)
+        {
+            return new GeneralField()
+            {
+                Name = entity.Name,
+            };
+        }
+        public static Skill ToModel(this SkillViewModel entity)
+        {
+            return new Skill()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
+
+        public static Skill ToModel(this CreateSkillViewModel entity)
+        {
+            return new Skill()
+            {
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
     }
 }

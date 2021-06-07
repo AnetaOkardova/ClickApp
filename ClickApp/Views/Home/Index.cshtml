@@ -2,6 +2,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger m-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -16,7 +23,7 @@
                 foreach (var user in Model)
                 {
                     <a asp-action="Details" asp-controller="User" asp-route-userId="@user.Id">@user.Name @user.LastName</a>
-                    <hr/>
+                    <hr />
                 }
             }
         </div>

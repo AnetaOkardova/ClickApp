@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClickApp.Serivices\ClickApp.Serivices.csproj" />
+    <ProjectReference Include="..\ClickApp.Serivices\ClickApp.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using ClickApp.Mappings;
 using ClickApp.Models;
-using ClickApp.Serivices.Interfaces;
+using ClickApp.Services.Interfaces;
 using ClickApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +45,10 @@ namespace ClickApp.Controllers
         public IActionResult Create()
         {
             //retutn URL
-            return View();
+            //correct Valid until
+            var offer = new CreateOfferViewModel();
+            offer.ValidUntil = DateTime.Now.AddYears(5).Date;
+            return View(offer);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateOfferViewModel createOfferViewModel)

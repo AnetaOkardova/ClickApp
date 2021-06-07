@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ClickApp.Models
+namespace ClickApp.ViewModels
 {
-    public class GeneralField
+    public class GeneralFieldViewModel
     {
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<Skill>? Skills { get; set; }
-        public List<Interest>? Interests { get; set; }
-
     }
 }

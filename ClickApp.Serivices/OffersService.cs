@@ -1,13 +1,13 @@
 ﻿using ClickApp.Models;
 using ClickApp.Repositories.Interfaces;
-using ClickApp.Serivices.DtoModels;
-using ClickApp.Serivices.Interfaces;
+using ClickApp.Services.DtoModels;
+using ClickApp.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClickApp.Serivices
+namespace ClickApp.Services
 {
     public class OffersService : IOffersService
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClickApp.Serivices.DtoModels
+namespace ClickApp.Services.DtoModels
 {
     public class StatusModel
     {

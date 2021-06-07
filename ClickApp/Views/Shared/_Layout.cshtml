@@ -18,14 +18,11 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class=" navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
                
                 @if (User.Identity.IsAuthenticated)
                 {
-                    @*var profilePhotUrl = _userManager.FindByEmailAsync(User.FindFirst("Name").Value).Result;
-
-                    <img src="@profilePhotUrl" style="border-radius: 50px" />*@
                     <a class="navbar-brand" asp-area="" asp-controller="User" asp-action="Details">My profile</a>
                 }
                 else
@@ -59,6 +56,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Success Stories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Skill" asp-action="Overview">Manage Skills</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="GeneralField" asp-action="Overview">Manage General fields</a>
                         </li>
                     </ul>
                 </div>

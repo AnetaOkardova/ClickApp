@@ -66,5 +66,24 @@ namespace ClickApp.Mappings
                 UserId = entity.UserId
             };
         }
+
+        public static GeneralFieldViewModel ToGeneralFieldViewModel(this GeneralField entity)
+        {
+            return new GeneralFieldViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+            };
+        }
+
+        public static SkillViewModel ToSkillViewModel(this Skill entity)
+        {
+            return new SkillViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
     }
 }
