@@ -114,5 +114,22 @@ namespace ClickApp.Mappings
                 GeneralFieldId = entity.GeneralFieldId
             };
         }
+        public static Interest ToModel(this InterestViewModel entity)
+        {
+            return new Interest()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
+        public static Interest ToModel(this CreateInterestViewModel entity)
+        {
+            return new Interest()
+            {
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
     }
 }

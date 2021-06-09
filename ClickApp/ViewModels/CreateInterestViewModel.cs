@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ClickApp.ViewModels
 {
-    public class SkillViewModel
+    public class CreateInterestViewModel
     {
-        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-
+        [Required]
         public int GeneralFieldId { get; set; }
+        public List<GeneralFieldViewModel> GeneralFields { get; set; }
     }
 }

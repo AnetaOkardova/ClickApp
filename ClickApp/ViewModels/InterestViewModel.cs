@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClickApp.ViewModels
 {
-    public class SkillViewModel
+    public class InterestViewModel
     {
         public int Id { get; set; }
         [Required]

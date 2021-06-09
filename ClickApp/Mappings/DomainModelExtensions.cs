@@ -85,5 +85,15 @@ namespace ClickApp.Mappings
                 GeneralFieldId = entity.GeneralFieldId
             };
         }
+
+        public static InterestViewModel ToInterestViewModel(this Interest entity)
+        {
+            return new InterestViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                GeneralFieldId = entity.GeneralFieldId
+            };
+        }
     }
 }

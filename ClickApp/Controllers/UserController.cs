@@ -17,12 +17,16 @@ namespace ClickApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserSkillsService _userSkillsService;
         private readonly ISkillsService _skillsService;
+        private readonly IInterestsService _interestsService;
+        private readonly IUserInterestsService _userInterestsService;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService)
+        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService)
         {
             _userManager = userManager;
             _userSkillsService = userSkillsService;
             _skillsService = skillsService;
+            _interestsService = interestsService;
+            _userInterestsService = userInterestsService;
         }
         [Authorize]
         public async Task<IActionResult> Details(string userId)
@@ -39,6 +43,7 @@ namespace ClickApp.Controllers
                 return RedirectToAction("Error", "Home");
             }
             user.Skills = _userSkillsService.GetAllSkillsForUser(user.Id);
+            user.Interests = _userInterestsService.GetAllSkillsForUser(user.Id);
 
             var userDetails = user.ToUserViewModel();
 
@@ -63,12 +68,20 @@ namespace ClickApp.Controllers
 
             if (user.Interests != null)
             {
-                var userInterests = user.Interests.Select(x => x.ToUserInterestViewModel()).ToList();
-                userDetails.Interests = userInterests;
+                var userInterestIds = user.Interests.Select(x => x.InterestId).ToList();
+                var interests = new List<Interest>();
+                foreach (var id in userInterestIds)
+                {
+                    var interest = _interestsService.GetById(id);
+                    interests.Add(interest);
+                }
+
+                var userInterestsForView = interests.Select(x => x.ToInterestViewModel()).ToList();
+                userDetails.Interests = userInterestsForView;
             }
             else
             {
-                userDetails.Interests = new List<UserInterestViewModel>();
+                userDetails.Interests = new List<InterestViewModel>();
             }
 
             return View(userDetails);
@@ -97,12 +110,12 @@ namespace ClickApp.Controllers
 
             if (user.Interests != null)
             {
-                var userInterests = user.Interests.Select(x => x.ToUserInterestViewModel()).ToList();
-                userDetails.Interests = userInterests;
+                //var userInterests = user.Interests.Select(x => x.ToUserInterestViewModel()).ToList();
+                //userDetails.Interests = userInterests;
             }
             else
             {
-                userDetails.Interests = new List<UserInterestViewModel>();
+                userDetails.Interests = new List<InterestViewModel>();
             }
 
             return View(userDetails);
@@ -133,8 +146,8 @@ namespace ClickApp.Controllers
 
                 if (user.Interests != null)
                 {
-                    var interestsToUpdate = user.Interests.Select(x => x.ToModel()).ToList();
-                    updatedUser.Interests = interestsToUpdate;
+                    //var interestsToUpdate = user.Interests.Select(x => x.ToModel()).ToList();
+                    //updatedUser.Interests = interestsToUpdate;
                 }
                 else
                 {

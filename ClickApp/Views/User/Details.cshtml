@@ -86,9 +86,17 @@
                 </div>
             }
 
-            <div class="col">
-                <h4>Interests</h4>
-            </div>
+            @if (Model.Interests.Count != 0)
+            {
+                <div class="col">
+                    <h4>Interests</h4>
+                    @foreach (var interest in Model.Interests)
+                    {
+                        <p>@interest.Name</p>
+                    }
+                </div>
+            }
+
         </dl>
     </div>
     <div>

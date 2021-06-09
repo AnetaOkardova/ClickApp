@@ -1,0 +1,41 @@
+﻿@model ClickApp.ViewModels.EditInterestViewModel
+
+@{
+    ViewData["Title"] = "Edit interest";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="@Model.Interest.Id" class="form-control" hidden/>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Interest.Name" class="control-label"></label>
+                <input asp-for="@Model.Interest.Name" class="form-control" />
+                <span asp-validation-for="@Model.Interest.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="@Model.Interest.GeneralFieldId">General field</label>
+                <select asp-for="@Model.Interest.GeneralFieldId" class="form-control" required>
+                    @foreach (var generalField in Model.GeneralFields)
+                    {
+                        <option value="@generalField.Id">@generalField.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Overview">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -28,7 +28,7 @@ namespace ClickApp.ViewModels
         public string ProfilePhotoURL { get; set; }
         //Offers if any???
         public List<SkillViewModel> Skills { get; set; } 
-        public List<UserInterestViewModel> Interests { get; set; }
+        public List<InterestViewModel> Interests { get; set; }
 
     }
 }

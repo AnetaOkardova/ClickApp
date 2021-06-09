@@ -14,7 +14,7 @@ namespace ClickApp.Models
         [Display(Name = "Year when interest developed")]
         public DateTime? YearSkillStarted { get; set; }
 
-        [Display(Name = "Experience")]
+        [Display(Name = "Experience description")]
         public string? ExperienceDescription { get; set; }
 
         [Display(Name = "Image")]
