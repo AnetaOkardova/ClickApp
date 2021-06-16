@@ -63,6 +63,11 @@ namespace ClickApp.Services
             return _generalFieldsRepository.GetById(id);
         }
 
+        public List<GeneralField> GetAllWithFilter(string name, GeneralFieldCode codeSearch)
+        {
+            return _generalFieldsRepository.GetAllWithFilter(name, codeSearch);
+        }
+
         public StatusModel Update(GeneralField generalField)
         {
             var response = new StatusModel();

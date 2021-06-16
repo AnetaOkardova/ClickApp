@@ -48,5 +48,23 @@ namespace ClickApp.Repositories
             _context.GeneralFields.Update(generalField);
             _context.SaveChanges();
         }
+
+        public List<GeneralField> GetAllWithFilter(string name, GeneralFieldCode codeSearch)
+        {
+            var query = _context.GeneralFields.AsQueryable();
+            if (name != null)
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+
+            if (codeSearch != GeneralFieldCode.NONE)
+            {
+                query = query.Where(x => x.Code == codeSearch);
+            }
+
+            var generalFields = query.ToList();
+            return generalFields;
+
+        }
     }
 }

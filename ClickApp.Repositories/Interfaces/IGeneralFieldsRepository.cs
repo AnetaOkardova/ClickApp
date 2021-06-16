@@ -13,5 +13,6 @@ namespace ClickApp.Repositories.Interfaces
         GeneralField GetById(int id);
         void Delete(GeneralField generalField);
         void Update(GeneralField generalField);
+        List<GeneralField> GetAllWithFilter(string name, GeneralFieldCode codeSearch);
     }
 }

@@ -13,5 +13,6 @@ namespace ClickApp.Services.Interfaces
         StatusModel Delete(int id);
         StatusModel Update(GeneralField generalField);
         GeneralField GetById(int id);
+        List<GeneralField> GetAllWithFilter(string name, GeneralFieldCode codeSearch);
     }
 }

@@ -22,7 +22,7 @@ namespace ClickApp.Controllers
             _generalFieldsService = generalFieldsService;
             _userManager = userManager;
         }
-        public IActionResult Overview(string successMessage, string errorMessage)
+        public IActionResult Overview(string successMessage, string errorMessage, string nameSearch, GeneralFieldCode codeSearch)
         {
             if (successMessage != null)
             {
@@ -32,7 +32,18 @@ namespace ClickApp.Controllers
             {
                 ViewBag.ErrorMessage = errorMessage;
             }
-            var generalFields = _generalFieldsService.GetAll();
+            var generalFields = new List<GeneralField>();
+            if (nameSearch != null && nameSearch != "")
+            {
+                generalFields = _generalFieldsService.GetAllWithFilter(nameSearch, codeSearch);
+            }else if (codeSearch != null && codeSearch != GeneralFieldCode.NONE)
+            {
+                generalFields = _generalFieldsService.GetAllWithFilter(null, codeSearch);
+            }
+            else
+            {
+            generalFields = _generalFieldsService.GetAll();
+            }
 
             if(generalFields.Count == 0 || generalFields == null)
             {

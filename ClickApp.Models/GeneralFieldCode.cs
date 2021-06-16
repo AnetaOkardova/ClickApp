@@ -6,6 +6,7 @@ namespace ClickApp.Models
 {
     public enum GeneralFieldCode
     {
+        NONE,
         SKL,
         INT
     }
