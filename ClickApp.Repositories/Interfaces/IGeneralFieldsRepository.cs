@@ -8,7 +8,7 @@ namespace ClickApp.Repositories.Interfaces
     public interface IGeneralFieldsRepository
     {
         List<GeneralField> GetAll();
-        bool CheckIfExists(string name);
+        bool CheckIfExists(string name, GeneralFieldCode code);
         void Create(GeneralField generalField);
         GeneralField GetById(int id);
         void Delete(GeneralField generalField);

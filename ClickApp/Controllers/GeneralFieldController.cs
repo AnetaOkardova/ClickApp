@@ -56,6 +56,7 @@ namespace ClickApp.Controllers
             if (ModelState.IsValid)
             {
                 var generalField = createGeneralFieldViewModel.ToModel();
+      
                var response = _generalFieldsService.Create(generalField);
                 if (response.IsSuccessful)
                 {

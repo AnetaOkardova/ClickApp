@@ -73,6 +73,7 @@ namespace ClickApp.Mappings
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                Code = entity.Code
             };
         }
 

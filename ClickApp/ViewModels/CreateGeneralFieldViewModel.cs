@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace ClickApp.ViewModels
     {
         [Required]
         public string Name { get; set; }
+        public GeneralFieldCode Code { get; set; }
+
     }
 }

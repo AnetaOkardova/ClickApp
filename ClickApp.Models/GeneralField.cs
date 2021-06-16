@@ -12,6 +12,7 @@ namespace ClickApp.Models
         public string Name { get; set; }
         public List<Skill>? Skills { get; set; }
         public List<Interest>? Interests { get; set; }
+        public GeneralFieldCode Code { get; set; }
 
     }
 }

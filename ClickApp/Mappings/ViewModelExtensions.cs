@@ -86,6 +86,7 @@ namespace ClickApp.Mappings
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                Code = entity.Code
             };
         }
 
@@ -94,6 +95,7 @@ namespace ClickApp.Mappings
             return new GeneralField()
             {
                 Name = entity.Name,
+                Code = entity.Code
             };
         }
         public static Skill ToModel(this SkillViewModel entity)

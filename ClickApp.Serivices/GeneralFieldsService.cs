@@ -22,7 +22,7 @@ namespace ClickApp.Services
         {
             var response = new StatusModel();
 
-            var checkIfExists = _generalFieldsRepository.CheckIfExists(generalField.Name);
+            var checkIfExists = _generalFieldsRepository.CheckIfExists(generalField.Name, generalField.Code);
             if (checkIfExists)
             {
                 response.IsSuccessful = false;

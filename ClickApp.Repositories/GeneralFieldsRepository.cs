@@ -21,9 +21,9 @@ namespace ClickApp.Repositories
            return _context.GeneralFields.ToList();
         }
 
-        public bool CheckIfExists(string name)
+        public bool CheckIfExists(string name, GeneralFieldCode code)
         {
-            return _context.GeneralFields.Any(x=>x.Name.ToLower() == name.ToLower());
+            return _context.GeneralFields.Any(x=>x.Name.ToLower() == name.ToLower() && x.Code == code);
         }
 
         public void Create(GeneralField generalField)

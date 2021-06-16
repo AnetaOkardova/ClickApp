@@ -29,8 +29,13 @@
 <div class="container" id="tabsContainer">
     <div class="row justify-content-center">
         <div class="profileTabs" onclick="showAboutInfo()">About</div>
-        <div class="profileTabs" onclick="showGroupsInfo()">Groups</div>
-        <div class="profileTabs" onclick="showConnectionsInfo()">Connections</div>
+        <div class="profileTabs" onclick="showFriendsInfo()">Friends</div>
+        @if (user.Id == @Model.Id)
+        {
+            <div class="profileTabs" onclick="showGroupsInfo()">Groups</div>
+            <div class="profileTabs" onclick="showMessagesInfo()">Messages</div>
+            <div class="profileTabs" onclick="showConnectionsInfo()">Connections</div>
+        }
         <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
         @if (user.Id == @Model.Id)
         {
@@ -138,6 +143,19 @@
             showContainer("tabsContainer");
 
         }
+
+        function showAboutInfo() {
+            hideAllInfo();
+            showContainer("aboutInfo");
+
+        }
+        function hideAboutInfo() {
+            hideAllInfo();
+            hideContainer("aboutInfo");
+            showContainer("tabsContainer");
+
+        }
+
         function showContainer(containerId) {
             var container = document.getElementById(containerId);
             container.classList.remove("d-none");
