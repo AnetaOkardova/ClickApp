@@ -5,14 +5,8 @@ using System.Text;
 
 namespace ClickApp.Repositories.Interfaces
 {
-    public interface IInterestsRepository
+    public interface IInterestsRepository: IBaseRepository<Interest>
     {
-        List<Interest> GetAll();
-        bool CheckIfExists(string name);
-        void Create(Interest interest);
-        Interest GetById(int id);
-        void Delete(Interest interest);
-        void Update(Interest interest);
     }
 
 }

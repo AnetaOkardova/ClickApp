@@ -4,6 +4,7 @@ using ClickApp.Services.DtoModels;
 using ClickApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ClickApp.Services
@@ -20,7 +21,8 @@ namespace ClickApp.Services
         {
             var response = new StatusModel();
 
-            var checkIfExists = _interestsRepository.CheckIfExists(interest.Name);
+            var checkIfExists = _interestsRepository.GetAll().Any((x => x.Name.ToLower() == interest.Name.ToLower()));
+
             if (checkIfExists)
             {
                 response.IsSuccessful = false;

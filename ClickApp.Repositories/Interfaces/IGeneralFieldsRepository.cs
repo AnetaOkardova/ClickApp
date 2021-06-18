@@ -5,14 +5,8 @@ using System.Text;
 
 namespace ClickApp.Repositories.Interfaces
 {
-    public interface IGeneralFieldsRepository
+    public interface IGeneralFieldsRepository : IBaseRepository<GeneralField>
     {
-        List<GeneralField> GetAll();
-        bool CheckIfExists(string name, GeneralFieldCode code);
-        void Create(GeneralField generalField);
-        GeneralField GetById(int id);
-        void Delete(GeneralField generalField);
-        void Update(GeneralField generalField);
         List<GeneralField> GetAllWithFilter(string name, GeneralFieldCode codeSearch);
     }
 }

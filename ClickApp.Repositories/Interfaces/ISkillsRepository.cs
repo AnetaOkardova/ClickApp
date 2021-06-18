@@ -5,14 +5,8 @@ using System.Text;
 
 namespace ClickApp.Repositories.Interfaces
 {
-    public interface ISkillsRepository
+    public interface ISkillsRepository : IBaseRepository<Skill>
     {
-        List<Skill> GetAll();
-        bool CheckIfExists(string name);
-        void Create(Skill skill);
-        Skill GetById(int id);
-        void Delete(Skill skill);
-        void Update(Skill skill);
     }
 }
 

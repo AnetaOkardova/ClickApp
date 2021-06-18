@@ -54,6 +54,7 @@ namespace ClickApp
             services.AddTransient<IUserSkillsService, UserSkillsService>();
             services.AddTransient<IInterestsService, InterestsService>();
             services.AddTransient<IUserInterestsService, UserInterestsService>();
+            services.AddTransient<IFriendshipRequestsService, FriendshipRequestsService>();
 
             services.AddTransient<IOffersRepository, OffersRepository>();
             services.AddTransient<IGeneralFieldsRepository, GeneralFieldsRepository>();
@@ -61,6 +62,7 @@ namespace ClickApp
             services.AddTransient<IUserSkillsRepository, UserSkillsRepository>();
             services.AddTransient<IInterestsRepository, InterestsRepository>();
             services.AddTransient<IUserInterestsRepository, UserInterestsRepository>();
+            services.AddTransient<IFriendshipRequestsRepository, FriendshipRequestsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -53,7 +53,7 @@ namespace ClickApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            var generalFields = _generalFieldsService.GetAll();
+            var generalFields = _generalFieldsService.GetAll().Where(x=>x.Code == GeneralFieldCode.INT).ToList();
             var generalFieldsForView = generalFields.Select(x => x.ToGeneralFieldViewModel()).ToList();
             var interestView = new CreateInterestViewModel();
             interestView.GeneralFields = generalFieldsForView;

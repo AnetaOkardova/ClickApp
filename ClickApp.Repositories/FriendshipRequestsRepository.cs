@@ -1,0 +1,41 @@
+﻿using ClickApp.Data;
+using ClickApp.Models;
+using ClickApp.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ClickApp.Repositories
+{
+    public class FriendshipRequestsRepository : BaseRepository<FriendshipRequest>, IFriendshipRequestsRepository
+    {
+        private ApplicationDbContext _context { get; set; }
+        public FriendshipRequestsRepository(ApplicationDbContext context) : base(context)
+        {
+        }
+
+        public List<FriendshipRequest> GetAllWithFilter(string userId, string requestedUserId)
+        {
+            var friendshipRequests = GetAll();
+            friendshipRequests.Where(x => (x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true) || (x.UserId == requestedUserId && x.RequestedUserId == userId && x.ActiveRequest == true))
+                .ToList();
+
+            return friendshipRequests;
+
+        }
+
+        public FriendshipRequest CheckIfRequestSent(string userId, string requestedUserId)
+        {
+            var friendshipRequest = GetAll();
+            return friendshipRequest.FirstOrDefault(x => x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true); 
+        }
+
+        public FriendshipRequest CheckIfRequestReceived(string userId, string requestedUserId)
+        {
+            var friendshipRequest = GetAll();
+
+            return friendshipRequest.FirstOrDefault(x => x.UserId == requestedUserId && x.RequestedUserId == userId && x.ActiveRequest == true);
+        }
+    }
+}

@@ -1,8 +1,12 @@
 ﻿@model ClickApp.ViewModels.UserViewModel
 
 @using Microsoft.AspNetCore.Identity;
+@using ClickApp.Services.Interfaces;
+
 
 @inject UserManager<ApplicationUser> _userManager;
+@inject IFriendshipRequestsService _friendshipRequestsService;
+
 
 @{
     ViewData["Title"] = "Profile";
@@ -16,6 +20,24 @@
     <div class="row justify-content-center">
         <img class="roundImage profilePic" id="profilePicSmall" src="@Model.ProfilePhotoURL" onclick="showProfileImage()" />
         <h1 class="d-inline-block pl-5 align-self-center">@Model.Name @Model.LastName</h1>
+    </div>
+    <div class="row justify-content-center m-2">
+        @if (user.Id != @Model.Id)
+        {
+
+            if (_friendshipRequestsService.CheckIfRequestSent(user.Id, Model.Id))
+            {
+                <a class="btn btn-success" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
+            }
+            else if (_friendshipRequestsService.CheckIfRequestReceived(user.Id, Model.Id))
+            {
+                <a class="btn btn-success" asp-controller="FriendshipRequest" asp-action="Update" asp-route-requestedUserId="@Model.Id">Friendship requested</a>
+            }
+            else
+            {
+                    <a class="btn btn-success" asp-controller="FriendshipRequest" asp-action="Create" asp-route-requestedUserId="@Model.Id">Add friend</a>
+            }
+        }
     </div>
 </div>
 
@@ -120,6 +142,12 @@
 
 @section Scripts{
     <script>
+        function changeInnerText() {
+            var btn = document.getElementById("RequestBtn");
+            btn.innerText = "Request sent";
+        }
+
+
         function showProfileImage() {
             hideAllInfo();
             hideContainer("tabsContainer");

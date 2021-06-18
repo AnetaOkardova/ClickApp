@@ -23,11 +23,6 @@
         <div class="col">
             <form asp-action="Overview" method="get" class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" name="nameSearch" id="nameSearch" placeholder="Search by name" aria-label="Search by name">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-        <div class="col mr-0">
-            <form asp-action="Overview" method="get" class="form-inline my-2 my-lg-0">
                 <label name="codeSearch" class="control-label"></label>
                 </br>
                 <div class="m-2">
@@ -41,8 +36,7 @@
                     <input type="radio" id="Code2" name="codeSearch" value="@GeneralFieldCode.SKL">
                     <label for="Code2">Skill</label>
                 </div>
-
-                <button class="btn btn-outline-success my-2 my-sm-0 m-2" type="submit">Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </div>

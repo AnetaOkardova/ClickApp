@@ -53,7 +53,7 @@ namespace ClickApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            var generalFields = _generalFieldsService.GetAll();
+            var generalFields = _generalFieldsService.GetAll().Where(x => x.Code == GeneralFieldCode.SKL).ToList();
             var generalFieldsForView = generalFields.Select(x => x.ToGeneralFieldViewModel()).ToList();
             var skillView = new CreateSkillViewModel();
             skillView.GeneralFields = generalFieldsForView;

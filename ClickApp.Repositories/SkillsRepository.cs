@@ -8,45 +8,13 @@ using System.Text;
 
 namespace ClickApp.Repositories
 {
-    public class SkillsRepository : ISkillsRepository
+    public class SkillsRepository : BaseRepository<Skill>, ISkillsRepository
     {
         private ApplicationDbContext _context { get; set; }
-        public SkillsRepository(ApplicationDbContext context)
+        public SkillsRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public List<Skill> GetAll()
-        {
-            return _context.Skills.ToList();
-        }
-
-        public bool CheckIfExists(string name)
-        {
-            return _context.Skills.Any(x => x.Name.ToLower() == name.ToLower());
-        }
-
-        public void Create(Skill skill)
-        {
-            _context.Skills.Add(skill);
-            _context.SaveChanges();
-        }
-
-        public Skill GetById(int id)
-        {
-            return _context.Skills.FirstOrDefault(x => x.Id == id);
-        }
-
-        public void Delete(Skill skill)
-        {
-            _context.Skills.Remove(skill);
-            _context.SaveChanges();
-        }
-
-        public void Update(Skill skill)
-        {
-            _context.Skills.Update(skill);
-            _context.SaveChanges();
-        }
+       
     }
 }

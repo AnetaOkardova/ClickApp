@@ -4,6 +4,7 @@ using ClickApp.Services.DtoModels;
 using ClickApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ClickApp.Services
@@ -21,8 +22,10 @@ namespace ClickApp.Services
         public StatusModel Create(GeneralField generalField)
         {
             var response = new StatusModel();
+            var generalFields = _generalFieldsRepository.GetAll();
 
-            var checkIfExists = _generalFieldsRepository.CheckIfExists(generalField.Name, generalField.Code);
+            var checkIfExists = generalFields.Any(x => x.Name.ToLower() == generalField.Name.ToLower() && x.Code == generalField.Code);
+
             if (checkIfExists)
             {
                 response.IsSuccessful = false;
