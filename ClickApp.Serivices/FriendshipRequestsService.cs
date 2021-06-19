@@ -3,31 +3,30 @@ using ClickApp.Repositories.Interfaces;
 using ClickApp.Services.DtoModels;
 using ClickApp.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ClickApp.Services
 {
     public class FriendshipRequestsService : IFriendshipRequestsService
     {
         private readonly IFriendshipRequestsRepository _friendshipRequestsRepository;
+        private readonly IFriendshipService _friendshipService;
 
-        public FriendshipRequestsService(IFriendshipRequestsRepository friendshipRequestsRepository)
+        public FriendshipRequestsService(IFriendshipRequestsRepository friendshipRequestsRepository, IFriendshipService friendshipService)
         {
             _friendshipRequestsRepository = friendshipRequestsRepository;
+            _friendshipService = friendshipService;
         }
         [Authorize]
         public StatusModel Create(FriendshipRequest friendshipRequest)
         {
             var response = new StatusModel();
-            //var friendshipRequests = _friendshipRequestsRepository.GetAll();
-
-            //var checkIfSentRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.UserId && x.RequestedUserId == friendshipRequest.RequestedUserId && x.ActiveRequest == true);
-            //var checkIfReceivedRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.RequestedUserId && x.RequestedUserId == friendshipRequest.UserId && x.ActiveRequest == true);
-
-
+            
             var checkIfSentRequest = CheckIfRequestSent(friendshipRequest.UserId, friendshipRequest.RequestedUserId);
             var checkIfReceivedRequest = CheckIfRequestReceived(friendshipRequest.UserId, friendshipRequest.RequestedUserId);
 
@@ -47,14 +46,14 @@ namespace ClickApp.Services
             return _friendshipRequestsRepository.GetAll();
         }
 
-        public FriendshipRequest GetById(int id)
+        public List<FriendshipRequest> GetByUserId(string userId)
         {
-            return _friendshipRequestsRepository.GetById(id);
+            return _friendshipRequestsRepository.GetByUserId(userId);
         }
 
-        public List<FriendshipRequest> GetAllWithFilter(string userId, string RequestedUserId)
+        public List<FriendshipRequest> GetAllActiveWithFilter(string userId, string RequestedUserId)
         {
-            return _friendshipRequestsRepository.GetAllWithFilter(userId, RequestedUserId);
+            return _friendshipRequestsRepository.GetAllActiveWithFilter(userId, RequestedUserId);
         }
         public bool CheckIfRequestSent(string userId, string requestedUserId)
         {
@@ -86,6 +85,8 @@ namespace ClickApp.Services
             else if(friendshipRequest.ActiveRequest == false)
             {
                 friendshipRequestFromDb.ActiveRequest = false;
+                friendshipRequestFromDb.RequestConfirmed = false;
+                friendshipRequestFromDb.DateRequestConfirmed = DateTime.Now;
                 _friendshipRequestsRepository.Update(friendshipRequestFromDb);
             }
             else
@@ -118,7 +119,7 @@ namespace ClickApp.Services
             return response;
         }
 
-        public StatusModel AcceptRequest(string userId, string requestedUserId)
+        public async Task<StatusModel> AcceptRequestAsync(string userId, string requestedUserId, ApplicationUser user)
         {
             var response = new StatusModel();
             var friendshipRequest = _friendshipRequestsRepository.RequestReceived(userId, requestedUserId);
@@ -128,7 +129,21 @@ namespace ClickApp.Services
                 friendshipRequest.DateRequestConfirmed = DateTime.Now;
                 friendshipRequest.RequestConfirmed = true;
                 _friendshipRequestsRepository.Update(friendshipRequest);
-                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been accepted.";
+                var friendship = new Friendship();
+                friendship.UserId = userId;
+                friendship.User = user;
+                friendship.FriendsId = requestedUserId;
+                var responseForCreatingFriendship = await _friendshipService.CreateAsync(friendship);
+                if (responseForCreatingFriendship.IsSuccessful)
+                {
+                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been accepted. Congrats on your new friend.";
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                    response.Message = responseForCreatingFriendship.Message;
+                }
+
             }
             else
             {

@@ -16,12 +16,12 @@ namespace ClickApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFriendshipRequestsService _friendshipRequestsService;
-
         public FriendshipRequestController(UserManager<ApplicationUser> userManager, IFriendshipRequestsService friendshipRequestsService)
         {
             _userManager = userManager;
             _friendshipRequestsService = friendshipRequestsService;
         }
+
         public async Task<IActionResult> Create(string requestedUserId)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -64,7 +64,7 @@ namespace ClickApp.Controllers
             {
                 if (requestDecision)
                 {
-                    var response = _friendshipRequestsService.AcceptRequest(user.Id, requestedUserId);
+                    var response = await _friendshipRequestsService.AcceptRequestAsync(user.Id, requestedUserId, user);
                     if (!response.IsSuccessful)
                     {
                         return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });

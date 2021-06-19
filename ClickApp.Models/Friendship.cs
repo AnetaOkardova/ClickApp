@@ -7,10 +7,6 @@ namespace ClickApp.Models
 {
     public class Friendship
     {
-        public Friendship()
-        {
-            FriendShipStatus = true;
-        }
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
@@ -22,7 +18,5 @@ namespace ClickApp.Models
         [Required]
         public DateTime FrienshipCreated { get; set; }
         public DateTime FrienshipEnded { get; set; }
-
-
     }
 }

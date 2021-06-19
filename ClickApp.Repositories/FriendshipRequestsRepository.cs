@@ -15,7 +15,7 @@ namespace ClickApp.Repositories
         {
         }
 
-        public List<FriendshipRequest> GetAllWithFilter(string userId, string requestedUserId)
+        public List<FriendshipRequest> GetAllActiveWithFilter(string userId, string requestedUserId)
         {
             var friendshipRequests = GetAll();
             friendshipRequests.Where(x => (x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true) || (x.UserId == requestedUserId && x.RequestedUserId == userId && x.ActiveRequest == true))
@@ -37,6 +37,14 @@ namespace ClickApp.Repositories
 
             return friendshipRequest.FirstOrDefault(x => x.UserId == requestedUserId && x.RequestedUserId == userId && x.ActiveRequest == true);
         }
-        
+
+        public List<FriendshipRequest> GetByUserId(string userId)
+        {
+            var friendshipRequests = GetAll();
+            friendshipRequests.Where(x => (x.UserId == userId) || (x.RequestedUserId == userId))
+                .ToList();
+
+            return friendshipRequests; ;
+        }
     }
 }
