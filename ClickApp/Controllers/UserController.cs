@@ -20,8 +20,9 @@ namespace ClickApp.Controllers
         private readonly IInterestsService _interestsService;
         private readonly IUserInterestsService _userInterestsService;
         private readonly IFriendshipService _friendshipService;
+        private readonly IFriendshipRequestsService _friendshipRequestsService;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService)
+        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService, IFriendshipRequestsService friendshipRequestsService)
         {
             _userManager = userManager;
             _userSkillsService = userSkillsService;
@@ -29,6 +30,7 @@ namespace ClickApp.Controllers
             _interestsService = interestsService;
             _userInterestsService = userInterestsService;
             _friendshipService = friendshipService;
+            _friendshipRequestsService = friendshipRequestsService;
         }
         [Authorize]
         public async Task<IActionResult> Details(string userId)
@@ -98,6 +100,20 @@ namespace ClickApp.Controllers
                 }
             }
             userDetails.Friends = friendsListView;
+
+            var friendRequestsListView = new List<UserCardViewModel>();
+
+            var friendRequests = _friendshipRequestsService.GetAllUserFriendRequests(user);
+            if (friendRequests != null)
+            {
+                foreach (var friendRequest in friendRequests)
+                {
+                    var friend = await _userManager.FindByIdAsync(friendRequest.UserId); ;
+                    var friendCardModel = friend.ToUserCardViewModel();
+                    friendRequestsListView.Add(friendCardModel);
+                }
+            }
+            userDetails.RequestingUsers = friendRequestsListView;
             return View(userDetails);
         }
 

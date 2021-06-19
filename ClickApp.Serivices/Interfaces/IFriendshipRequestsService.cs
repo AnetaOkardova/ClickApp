@@ -18,5 +18,6 @@ namespace ClickApp.Services.Interfaces
         bool CheckIfRequestReceived(string userId, string requestedUserId);
         StatusModel DeclineRequest(string userId, string requestedUserId);
         Task<StatusModel> AcceptRequestAsync(string userId, string requestedUserId, ApplicationUser user);
+        List<FriendshipRequest> GetAllUserFriendRequests(ApplicationUser user);
     }
 }

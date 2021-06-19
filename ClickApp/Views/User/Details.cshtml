@@ -43,7 +43,7 @@
                 </li>
 
             }
-            else if (_friendshipService.GetByFriendId(user.Id, Model.Id) !=null && _friendshipService.GetByFriendId(user.Id, Model.Id).FriendShipStatus==true)
+            else if (_friendshipService.GetByFriendId(user.Id, Model.Id) != null && _friendshipService.GetByFriendId(user.Id, Model.Id).FriendShipStatus == true)
             {
                 <li class="nav-item dropdown m-2 p-2 justify-content-center">
                     <a class="btn btn-primary nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
@@ -83,6 +83,7 @@
         <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
         @if (user.Id == @Model.Id)
         {
+            <div class="profileTabs" onclick="showOffersInfo()">Offers</div>
             <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
             <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
         }
@@ -158,32 +159,48 @@
         </div>
     </div>
 </div>
-<div class="container d-none m-5 p-2" id="friendsInfo">
+<div class="container-fluid d-none m-5 p-2" id="friendsInfo">
     <div>
         <dl class="row justify-content-center">
 
             @if (Model.Friends.Count != 0)
             {
-            <div class="col">
-                <h4>Friends</h4>
-                @foreach (var friend in Model.Friends)
+                <div class="col-8">
+                    <h4>Friends</h4>
+                    @foreach (var friend in Model.Friends)
+                    {
+                        <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
+                            <p class="m-1 font-italic">@friend.City, @friend.Country</p>
+                        </div>
+                    }
+                </div>
+                @if (user.Id == @Model.Id)
                 {
-                    <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
-                    <a class="m-1" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
-                    <p>@friend.City, @friend.Country</p>
-                    <hr />
+                    @if (Model.RequestingUsers.Count != 0)
+                    {
+                        <div class="col-4 border-left pl-2">
+                            <h4>FriendRequests</h4>
+                            @foreach (var friend in Model.RequestingUsers)
+                            {
+                                <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                                    <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
+                                    <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
+                                    <p class="m-1 font-italic">@friend.City, @friend.Country</p>
+                                </div>
+                            }
+                        </div>
+                    }
                 }
-            </div>
             }
         </dl>
     </div>
+    <hr />
     <div>
         <div class="row">
-            @*@if (user.Id == @Model.Id)
-            {
-                <div class="profileTabs">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
-            }*@
-            <div class="profileTabs" onclick="hideFriendsInfo()">Close about tab</div>
+
+            <div class="profileTabs" onclick="hideFriendsInfo()">Close friends tab</div>
         </div>
     </div>
 </div>
@@ -196,7 +213,7 @@
             var btn = document.getElementById("RequestBtn");
             btn.innerText = "Request sent";
         }
-        
+
 
         function showProfileImage() {
             hideAllInfo();
@@ -240,6 +257,7 @@
 
         function hideAllInfo() {
             hideContainer("aboutInfo");
+            hideContainer("friendsInfo");
 
         }
     </script>

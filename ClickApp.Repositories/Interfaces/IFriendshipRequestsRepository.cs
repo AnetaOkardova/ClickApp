@@ -11,5 +11,6 @@ namespace ClickApp.Repositories.Interfaces
         List<FriendshipRequest> GetAllActiveWithFilter(string userId, string requestedUserId);
         FriendshipRequest RequestSent(string userId, string requestedUserId);
         FriendshipRequest RequestReceived(string userId, string requestedUserId);
+        List<FriendshipRequest> GetAllUserFriendRequests(ApplicationUser user);
     }
 }

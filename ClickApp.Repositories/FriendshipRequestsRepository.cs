@@ -28,7 +28,7 @@ namespace ClickApp.Repositories
         public FriendshipRequest RequestSent(string userId, string requestedUserId)
         {
             var friendshipRequest = GetAll();
-            return friendshipRequest.FirstOrDefault(x => x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true); 
+            return friendshipRequest.FirstOrDefault(x => x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true);
         }
 
         public FriendshipRequest RequestReceived(string userId, string requestedUserId)
@@ -45,6 +45,12 @@ namespace ClickApp.Repositories
                 .ToList();
 
             return friendshipRequests; ;
+        }
+
+        public List<FriendshipRequest> GetAllUserFriendRequests(ApplicationUser user)
+        {
+            var friendRequests = GetAll();
+            return friendRequests.Where(x => x.RequestedUserId == user.Id && x.ActiveRequest != false).ToList();
         }
     }
 }

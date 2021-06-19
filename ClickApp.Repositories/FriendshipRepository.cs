@@ -31,20 +31,7 @@ namespace ClickApp.Repositories
                 return friendshipInDB;
             }
         }
-        public override List<Friendship> GetAll()
-        {
-           var allFrienships = _context.Friendships.Include(x => x.User).ToList();
-            if (allFrienships.Count() == 0)
-            {
-                var friendships = new List<Friendship>();
-                friendships = null;
-                return friendships;
-            }
-            else
-            {
-                return allFrienships;
-            }
-        }
+        
         public List<Friendship> GetAllUserFriendships(ApplicationUser user)
         {
             var allFrienships = GetAll();
@@ -56,7 +43,7 @@ namespace ClickApp.Repositories
             }
             else
             {
-                var userFriendships = allFrienships.Where(x => x.User == user).ToList();
+                var userFriendships = allFrienships.Where(x => x.User == user && x.FriendShipStatus == true).ToList();
                 return userFriendships;
             }
         }

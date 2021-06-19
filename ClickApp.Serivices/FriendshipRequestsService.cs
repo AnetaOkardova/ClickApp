@@ -152,5 +152,11 @@ namespace ClickApp.Services
             }
             return response;
         }
+
+        public List<FriendshipRequest> GetAllUserFriendRequests(ApplicationUser user)
+        {
+            var friendRequests = _friendshipRequestsRepository.GetAllUserFriendRequests(user);
+            return friendRequests;
+        }
     }
 }

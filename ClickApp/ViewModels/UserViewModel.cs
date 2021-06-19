@@ -30,6 +30,8 @@ namespace ClickApp.ViewModels
         public List<SkillViewModel> Skills { get; set; } 
         public List<InterestViewModel> Interests { get; set; }
         public List<UserCardViewModel> Friends { get; set; }
+        public List<UserCardViewModel> RequestingUsers { get; set; }
+
 
     }
 }
