@@ -22,10 +22,14 @@ namespace ClickApp.Services
         public StatusModel Create(FriendshipRequest friendshipRequest)
         {
             var response = new StatusModel();
-            var friendshipRequests = _friendshipRequestsRepository.GetAll();
+            //var friendshipRequests = _friendshipRequestsRepository.GetAll();
 
-            var checkIfSentRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.UserId && x.RequestedUserId == friendshipRequest.RequestedUserId && x.ActiveRequest == true);
-            var checkIfReceivedRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.RequestedUserId && x.RequestedUserId == friendshipRequest.UserId && x.ActiveRequest == true);
+            //var checkIfSentRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.UserId && x.RequestedUserId == friendshipRequest.RequestedUserId && x.ActiveRequest == true);
+            //var checkIfReceivedRequest = friendshipRequests.Any(x => x.UserId == friendshipRequest.RequestedUserId && x.RequestedUserId == friendshipRequest.UserId && x.ActiveRequest == true);
+
+
+            var checkIfSentRequest = CheckIfRequestSent(friendshipRequest.UserId, friendshipRequest.RequestedUserId);
+            var checkIfReceivedRequest = CheckIfRequestReceived(friendshipRequest.UserId, friendshipRequest.RequestedUserId);
 
             if (checkIfSentRequest || checkIfReceivedRequest)
             {
@@ -33,25 +37,8 @@ namespace ClickApp.Services
                 response.Message = $"A friend request has already been sent.";
                 return response;
             }
-
+            friendshipRequest.ActiveRequest = true;
             _friendshipRequestsRepository.Create(friendshipRequest);
-            return response;
-        }
-
-        public StatusModel Delete(int id)
-        {
-            var response = new StatusModel();
-            var friendshipRequest = _friendshipRequestsRepository.GetById(id);
-            if (friendshipRequest == null)
-            {
-                response.IsSuccessful = false;
-                response.Message = $"The friendship request with ID {id} is not found.";
-            }
-            else
-            {
-                _friendshipRequestsRepository.Delete(friendshipRequest);
-                response.Message = $"The friendshipRequest has been canceled";
-            }
             return response;
         }
 
@@ -69,18 +56,18 @@ namespace ClickApp.Services
         {
             return _friendshipRequestsRepository.GetAllWithFilter(userId, RequestedUserId);
         }
-        public bool CheckIfRequestSent(string userId, string RequestedUserId)
+        public bool CheckIfRequestSent(string userId, string requestedUserId)
         {
-            var friendshipRequest = _friendshipRequestsRepository.CheckIfRequestSent(userId, RequestedUserId);
+            var friendshipRequest = _friendshipRequestsRepository.RequestSent(userId, requestedUserId);
             if (friendshipRequest == null)
             {
                 return false;
             }
             return true;
         }
-        public bool CheckIfRequestReceived(string userId, string RequestedUserId)
+        public bool CheckIfRequestReceived(string userId, string requestedUserId)
         {
-            var friendshipRequest =  _friendshipRequestsRepository.CheckIfRequestReceived(userId, RequestedUserId);
+            var friendshipRequest =  _friendshipRequestsRepository.RequestReceived(userId, requestedUserId);
             if(friendshipRequest == null)
             {
                 return false;
@@ -96,6 +83,11 @@ namespace ClickApp.Services
                 response.IsSuccessful = false;
                 response.Message = $"The friendship request with ID {friendshipRequest.Id} is not found.";
             }
+            else if(friendshipRequest.ActiveRequest == false)
+            {
+                friendshipRequestFromDb.ActiveRequest = false;
+                _friendshipRequestsRepository.Update(friendshipRequestFromDb);
+            }
             else
             {
                 friendshipRequestFromDb.RequestConfirmed = true;
@@ -104,6 +96,44 @@ namespace ClickApp.Services
 
                 _friendshipRequestsRepository.Update(friendshipRequestFromDb);
                 response.Message = $"The friednship request with ID {friendshipRequest.Id} has been successfully updated.";
+            }
+            return response;
+        }
+
+        public StatusModel DeclineRequest(string userId, string requestedUserId)
+        {
+            var response = new StatusModel();
+            var friendshipRequest = _friendshipRequestsRepository.RequestReceived(userId, requestedUserId);
+            if (friendshipRequest != null)
+            {
+                friendshipRequest.ActiveRequest = false;
+                _friendshipRequestsRepository.Update(friendshipRequest);
+                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been declined.";
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The friendship request is not found.";
+            }
+            return response;
+        }
+
+        public StatusModel AcceptRequest(string userId, string requestedUserId)
+        {
+            var response = new StatusModel();
+            var friendshipRequest = _friendshipRequestsRepository.RequestReceived(userId, requestedUserId);
+            if (friendshipRequest != null)
+            {
+                friendshipRequest.ActiveRequest = false;
+                friendshipRequest.DateRequestConfirmed = DateTime.Now;
+                friendshipRequest.RequestConfirmed = true;
+                _friendshipRequestsRepository.Update(friendshipRequest);
+                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been accepted.";
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The friendship request is not found.";
             }
             return response;
         }

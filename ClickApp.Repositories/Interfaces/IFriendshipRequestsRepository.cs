@@ -8,7 +8,7 @@ namespace ClickApp.Repositories.Interfaces
     public interface IFriendshipRequestsRepository : IBaseRepository<FriendshipRequest>
     {
         List<FriendshipRequest> GetAllWithFilter(string userId, string requestedUserId);
-        FriendshipRequest CheckIfRequestSent(string userId, string requestedUserId);
-        FriendshipRequest CheckIfRequestReceived(string userId, string requestedUserId);
+        FriendshipRequest RequestSent(string userId, string requestedUserId);
+        FriendshipRequest RequestReceived(string userId, string requestedUserId);
     }
 }

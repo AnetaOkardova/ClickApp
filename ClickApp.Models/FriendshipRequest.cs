@@ -7,12 +7,7 @@ namespace ClickApp.Models
 {
     public class FriendshipRequest
     {
-        public FriendshipRequest()
-        {
-            RequestSent = true;
-            RequestConfirmed = false;
-            ActiveRequest = true;
-        }
+       
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
@@ -23,9 +18,9 @@ namespace ClickApp.Models
         public bool RequestSent { get; set; }
         [Required]
         public DateTime RequestCreated { get; set; }
-        public bool RequestConfirmed { get; set; } = false;
+        public bool? RequestConfirmed { get; set; }
         public DateTime? DateRequestConfirmed { get; set; }
-        public bool ActiveRequest { get; set; }
+        public bool? ActiveRequest { get; set; }
 
     }
 }

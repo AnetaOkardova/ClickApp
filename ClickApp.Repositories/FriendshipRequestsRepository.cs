@@ -25,17 +25,18 @@ namespace ClickApp.Repositories
 
         }
 
-        public FriendshipRequest CheckIfRequestSent(string userId, string requestedUserId)
+        public FriendshipRequest RequestSent(string userId, string requestedUserId)
         {
             var friendshipRequest = GetAll();
             return friendshipRequest.FirstOrDefault(x => x.UserId == userId && x.RequestedUserId == requestedUserId && x.ActiveRequest == true); 
         }
 
-        public FriendshipRequest CheckIfRequestReceived(string userId, string requestedUserId)
+        public FriendshipRequest RequestReceived(string userId, string requestedUserId)
         {
             var friendshipRequest = GetAll();
 
             return friendshipRequest.FirstOrDefault(x => x.UserId == requestedUserId && x.RequestedUserId == userId && x.ActiveRequest == true);
         }
+        
     }
 }

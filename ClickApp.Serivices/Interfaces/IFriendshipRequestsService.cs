@@ -9,12 +9,13 @@ namespace ClickApp.Services.Interfaces
     public interface IFriendshipRequestsService
     {
         StatusModel Create(FriendshipRequest friendshipRequest);
-        StatusModel Delete(int id);
         List<FriendshipRequest> GetAll();
         FriendshipRequest GetById(int id);
-        List<FriendshipRequest> GetAllWithFilter(string userId, string RequestedUserId);
-        StatusModel Update(FriendshipRequest friendshipRequest);
-        bool CheckIfRequestSent(string userId, string RequestedUserId);
-        bool CheckIfRequestReceived(string userId, string RequestedUserId);
+        List<FriendshipRequest> GetAllWithFilter(string userId, string requestedUserId);
+        StatusModel Update(FriendshipRequest requestedUserId);
+        bool CheckIfRequestSent(string userId, string requestedUserId);
+        bool CheckIfRequestReceived(string userId, string requestedUserId);
+        StatusModel DeclineRequest(string userId, string requestedUserId);
+        StatusModel AcceptRequest(string userId, string requestedUserId);
     }
 }
