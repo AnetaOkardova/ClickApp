@@ -1,6 +1,7 @@
 ﻿using ClickApp.Data;
 using ClickApp.Models;
 using ClickApp.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,35 @@ namespace ClickApp.Repositories
             {
                 var friendshipInDB = allFrienships.FirstOrDefault(x => x.UserId == userId && x.FriendsId == friendId);
                 return friendshipInDB;
+            }
+        }
+        public override List<Friendship> GetAll()
+        {
+           var allFrienships = _context.Friendships.Include(x => x.User).ToList();
+            if (allFrienships.Count() == 0)
+            {
+                var friendships = new List<Friendship>();
+                friendships = null;
+                return friendships;
+            }
+            else
+            {
+                return allFrienships;
+            }
+        }
+        public List<Friendship> GetAllUserFriendships(ApplicationUser user)
+        {
+            var allFrienships = GetAll();
+            if (allFrienships.Count() == 0)
+            {
+                var friendships = new List<Friendship>();
+                friendships = null;
+                return friendships;
+            }
+            else
+            {
+                var userFriendships = allFrienships.Where(x => x.User == user).ToList();
+                return userFriendships;
             }
         }
     }

@@ -25,6 +25,19 @@ namespace ClickApp.Mappings
             };
         }
 
+        public static UserCardViewModel ToUserCardViewModel(this ApplicationUser entity)
+        {
+            return new UserCardViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                LastName = entity.LastName,
+                City = entity.City,
+                Country = entity.Country,
+                ProfilePhotoURL = entity.ProfilePhotoURL,
+            };
+        }
+
         public static UserSkillViewModel ToUserSkillViewModel(this UserSkill entity)
         {
             return new UserSkillViewModel()

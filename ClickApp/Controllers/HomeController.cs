@@ -2,12 +2,8 @@
 using ClickApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickApp.Controllers
 {
@@ -19,8 +15,6 @@ namespace ClickApp.Controllers
         {
             _userManager = userManager;
         }
-
-       
 
         public IActionResult Index(string userNameSearch, string errorMessage)
         {
@@ -34,7 +28,6 @@ namespace ClickApp.Controllers
                 var usersForView = users.Select(x => x.ToUserViewModel()).ToList();
                 return View(usersForView);
             }
-
             return View();
         }
 

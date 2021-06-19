@@ -95,6 +95,11 @@ namespace ClickApp.Services
             return _friendshipRepository.GetAll();
         }
 
+        public List<Friendship> GetAllUserFriendships(ApplicationUser user)
+        {
+            return _friendshipRepository.GetAllUserFriendships(user);
+        }
+
         public Friendship GetByFriendId(string userId, string friendId)
         {
             return _friendshipRepository.GetByFriendId(userId, friendId);

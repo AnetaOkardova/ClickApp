@@ -158,7 +158,35 @@
         </div>
     </div>
 </div>
+<div class="container d-none m-5 p-2" id="friendsInfo">
+    <div>
+        <dl class="row justify-content-center">
 
+            @if (Model.Friends.Count != 0)
+            {
+            <div class="col">
+                <h4>Friends</h4>
+                @foreach (var friend in Model.Friends)
+                {
+                    <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
+                    <a class="m-1" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
+                    <p>@friend.City, @friend.Country</p>
+                    <hr />
+                }
+            </div>
+            }
+        </dl>
+    </div>
+    <div>
+        <div class="row">
+            @*@if (user.Id == @Model.Id)
+            {
+                <div class="profileTabs">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
+            }*@
+            <div class="profileTabs" onclick="hideFriendsInfo()">Close about tab</div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -168,7 +196,7 @@
             var btn = document.getElementById("RequestBtn");
             btn.innerText = "Request sent";
         }
-
+        
 
         function showProfileImage() {
             hideAllInfo();
@@ -185,25 +213,18 @@
         function showAboutInfo() {
             hideAllInfo();
             showContainer("aboutInfo");
-
         }
         function hideAboutInfo() {
             hideAllInfo();
-            hideContainer("aboutInfo");
             showContainer("tabsContainer");
-
         }
-
-        function showAboutInfo() {
+        function showFriendsInfo() {
             hideAllInfo();
-            showContainer("aboutInfo");
-
+            showContainer("friendsInfo");
         }
-        function hideAboutInfo() {
+        function hideFriendsInfo() {
             hideAllInfo();
-            hideContainer("aboutInfo");
             showContainer("tabsContainer");
-
         }
 
         function showContainer(containerId) {

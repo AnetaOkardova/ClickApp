@@ -8,5 +8,6 @@ namespace ClickApp.Repositories.Interfaces
     public interface IFriendshipRepository : IBaseRepository<Friendship>
     {
         Friendship GetByFriendId(string userId, string friendId);
+        List<Friendship> GetAllUserFriendships(ApplicationUser user);
     }
 }

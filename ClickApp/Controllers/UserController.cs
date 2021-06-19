@@ -19,14 +19,16 @@ namespace ClickApp.Controllers
         private readonly ISkillsService _skillsService;
         private readonly IInterestsService _interestsService;
         private readonly IUserInterestsService _userInterestsService;
+        private readonly IFriendshipService _friendshipService;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService)
+        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService)
         {
             _userManager = userManager;
             _userSkillsService = userSkillsService;
             _skillsService = skillsService;
             _interestsService = interestsService;
             _userInterestsService = userInterestsService;
+            _friendshipService = friendshipService;
         }
         [Authorize]
         public async Task<IActionResult> Details(string userId)
@@ -83,7 +85,19 @@ namespace ClickApp.Controllers
             {
                 userDetails.Interests = new List<InterestViewModel>();
             }
+            var friendsListView = new List<UserCardViewModel>();
 
+            var friends = _friendshipService.GetAllUserFriendships(user);
+            if (friends != null)
+            {
+                foreach (var friendship in friends)
+                {
+                    var friend = await _userManager.FindByIdAsync(friendship.FriendsId);
+                    var friendCardModel = friend.ToUserCardViewModel();
+                    friendsListView.Add(friendCardModel);
+                }
+            }
+            userDetails.Friends = friendsListView;
             return View(userDetails);
         }
 

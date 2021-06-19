@@ -16,5 +16,6 @@ namespace ClickApp.Services.Interfaces
         List<Friendship> GetAll();
 
         Friendship GetByFriendId(string userId, string friendId);
+        List<Friendship> GetAllUserFriendships(ApplicationUser user);
     }
 }
