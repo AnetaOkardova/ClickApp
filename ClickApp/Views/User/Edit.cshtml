@@ -1,4 +1,16 @@
-﻿@model ClickApp.ViewModels.UserViewModel
+﻿@model ClickApp.ViewModels.EditUserViewModel
+
+@using ClickApp.Services.Interfaces;
+@using ClickApp.Mappings;
+@using ClickApp.ViewModels;
+@using System.Collections.Generic;
+
+
+@inject ISkillsService _skillsService;
+@inject IUserSkillsService _userSkillsService;
+
+
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -65,10 +77,14 @@
     </div>
 </div>
 
+
+
 <div>
     <a asp-action="Details">Back to Profile</a>
 </div>
 
 @section Scripts {
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

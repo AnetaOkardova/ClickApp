@@ -23,6 +23,11 @@ namespace ClickApp.Services
             _offersRepository.Create(offer);
         }
 
+        public List<Offer> GetAllOffersForUser(string userId)
+        {
+            return _offersRepository.GetAllOffersForUser(userId); ;
+        }
+
         public List<Offer> GetAllPublicWithFilter(string title, bool isProffesional)
         {
             return _offersRepository.GetAllPublicWithFilter(title, isProffesional);

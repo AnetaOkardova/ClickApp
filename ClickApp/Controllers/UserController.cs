@@ -21,8 +21,9 @@ namespace ClickApp.Controllers
         private readonly IUserInterestsService _userInterestsService;
         private readonly IFriendshipService _friendshipService;
         private readonly IFriendshipRequestsService _friendshipRequestsService;
+        private readonly IOffersService _offersService;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService, IFriendshipRequestsService friendshipRequestsService)
+        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService, IFriendshipRequestsService friendshipRequestsService, IOffersService offersService)
         {
             _userManager = userManager;
             _userSkillsService = userSkillsService;
@@ -31,6 +32,7 @@ namespace ClickApp.Controllers
             _userInterestsService = userInterestsService;
             _friendshipService = friendshipService;
             _friendshipRequestsService = friendshipRequestsService;
+            _offersService = offersService;
         }
         [Authorize]
         public async Task<IActionResult> Details(string userId)
@@ -48,6 +50,7 @@ namespace ClickApp.Controllers
             }
             user.Skills = _userSkillsService.GetAllSkillsForUser(user.Id);
             user.Interests = _userInterestsService.GetAllSkillsForUser(user.Id);
+            user.Offers = _offersService.GetAllOffersForUser(user.Id);
 
             var userDetails = user.ToUserViewModel();
 
@@ -122,16 +125,24 @@ namespace ClickApp.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            user.Skills = _userSkillsService.GetAllSkillsForUser(user.Id);
+            user.Interests = _userInterestsService.GetAllSkillsForUser(user.Id);
             if (user == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            var userDetails = user.ToUserViewModel();
+            var userDetails = user.ToEditUserViewModel();
             if (user.Skills != null)
             {
-                //var userSkills = user.Skills.Select(x => x.ToUserSkillViewModel()).ToList();
-                //userDetails.Skills = userSkills;
+                var listOfUserSkills = new List<SkillViewModel>();
+                foreach (var userSkill in user.Skills)
+                {
+                    var skill = _skillsService.GetById(userSkill.SkillId).ToSkillViewModel();
+                    listOfUserSkills.Add(skill);
+                }
+
+                userDetails.Skills = listOfUserSkills;
             }
             else
             {
@@ -140,19 +151,29 @@ namespace ClickApp.Controllers
 
             if (user.Interests != null)
             {
-                //var userInterests = user.Interests.Select(x => x.ToUserInterestViewModel()).ToList();
-                //userDetails.Interests = userInterests;
+                var listOfUserInterests = new List<InterestViewModel>();
+                foreach (var userIngterest in user.Interests)
+                {
+                    var interest = _interestsService.GetById(userIngterest.InterestId).ToInterestViewModel();
+                    listOfUserInterests.Add(interest);
+                }
+
+                userDetails.Interests = listOfUserInterests;
             }
             else
             {
                 userDetails.Interests = new List<InterestViewModel>();
             }
+            
+            //var interests = _interestsService.GetAll();
+            //var interestsForView = interests.Select(x => x.ToInterestViewModel()).ToList();
+            //userDetails.AllInterests = interestsForView;
 
             return View(userDetails);
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(UserViewModel user)
+        public async Task<IActionResult> Edit(EditUserViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -168,6 +189,15 @@ namespace ClickApp.Controllers
                 {
                     //var skillsToUpdate = user.Skills.Select(x => x.ToModel()).ToList();
                     //updatedUser.Skills = skillsToUpdate;
+
+                    var listOfUserSkills = new List<UserSkill>();
+                    foreach (var userSkill in user.Skills)
+                    {
+                        var skill = _userSkillsService.GetById(userSkill.Id);
+                        listOfUserSkills.Add(skill);
+                    }
+
+                    updatedUser.Skills = listOfUserSkills;
                 }
                 else
                 {
@@ -176,8 +206,14 @@ namespace ClickApp.Controllers
 
                 if (user.Interests != null)
                 {
-                    //var interestsToUpdate = user.Interests.Select(x => x.ToModel()).ToList();
-                    //updatedUser.Interests = interestsToUpdate;
+                    var listOfUserInterests = new List<UserInterest>();
+                    foreach (var userInterest in user.Interests)
+                    {
+                        var interest = _userInterestsService.GetById(userInterest.Id);
+                        listOfUserInterests.Add(interest);
+                    }
+
+                    updatedUser.Interests = listOfUserInterests;
                 }
                 else
                 {

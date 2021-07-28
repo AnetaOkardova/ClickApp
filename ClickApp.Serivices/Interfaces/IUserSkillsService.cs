@@ -8,5 +8,6 @@ namespace ClickApp.Services.Interfaces
     public interface IUserSkillsService
     {
         List<UserSkill> GetAllSkillsForUser(string userId);
+        UserSkill GetById(int id);
     }
 }

@@ -44,7 +44,7 @@ namespace ClickApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            //retutn URL
+            //return URL
             //correct Valid until
             var offer = new CreateOfferViewModel();
             offer.ValidUntil = DateTime.Now.AddYears(5).Date;

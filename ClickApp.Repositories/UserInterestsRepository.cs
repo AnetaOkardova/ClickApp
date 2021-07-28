@@ -19,5 +19,10 @@ namespace ClickApp.Repositories
         {
             return _context.UserInterests.Where(x => x.UserId == userId).ToList();
         }
+
+        public UserInterest GetById(int id)
+        {
+            return _context.UserInterests.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

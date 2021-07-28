@@ -19,7 +19,7 @@ namespace ClickApp.Repositories
 
         public List<Offer> GetAllPublicWithFilter(string title, bool isProffesional)
         {
-            var query = _context.Offers.Include(x => x.User).Where(x => x.IsPublic == true).AsQueryable();
+            var query = _context.Offers.Include(x => x.User).Where(x => x.IsPublic == true).Where(x => x.ValidUntil > DateTime.Now).AsQueryable();
             if (title != null)
             {
                 query = query.Where(x => x.Title.Contains(title));
@@ -37,6 +37,11 @@ namespace ClickApp.Repositories
         {
             _context.Offers.Add(offer);
             _context.SaveChanges();
+        }
+
+        public List<Offer> GetAllOffersForUser(string userId)
+        {
+            return _context.Offers.Where(x => x.UserId == userId).ToList();
         }
     }
 }

@@ -19,5 +19,10 @@ namespace ClickApp.Services
         {
             return _userSkillsRepository.GetAllSkillsForUser(userId);
         }
+
+        public UserSkill GetById(int id)
+        {
+            return _userSkillsRepository.GetById(id);
+        }
     }
 }

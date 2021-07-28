@@ -22,9 +22,25 @@ namespace ClickApp.Mappings
                 City = entity.City,
                 Country = entity.Country,
                 ProfilePhotoURL = entity.ProfilePhotoURL,
+                Offers = entity.Offers.Select(x => x.ToOfferViewModel()).ToList()
             };
         }
 
+        public static EditUserViewModel ToEditUserViewModel(this ApplicationUser entity)
+        {
+            return new EditUserViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                LastName = entity.LastName,
+                DateOfBirth = entity.DateOfBirth,
+                Description = entity.Description,
+                Address = entity.Address,
+                City = entity.City,
+                Country = entity.Country,
+                ProfilePhotoURL = entity.ProfilePhotoURL,
+            };
+        }
         public static UserCardViewModel ToUserCardViewModel(this ApplicationUser entity)
         {
             return new UserCardViewModel()
@@ -75,7 +91,7 @@ namespace ClickApp.Mappings
                 ImportantNote = entity.ImportantNote,
                 IsProfessional = entity.IsProfessional,
                 IsPublic = entity.IsPublic,
-                ValidUntil = entity.ValidUntil,
+                ValidUntil = entity.ValidUntil.ToString("dd-MM-yyyy"),
                 UserId = entity.UserId
             };
         }

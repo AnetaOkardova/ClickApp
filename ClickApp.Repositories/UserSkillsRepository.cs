@@ -19,5 +19,10 @@ namespace ClickApp.Repositories
         {
             return _context.UserSkills.Where(x=>x.UserId == userId).ToList();
         }
+
+        public UserSkill GetById(int id)
+        {
+            return _context.UserSkills.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

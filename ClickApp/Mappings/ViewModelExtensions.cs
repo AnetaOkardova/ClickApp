@@ -22,6 +22,22 @@ namespace ClickApp.Mappings
                 City = entity.City,
                 Country = entity.Country,
                 ProfilePhotoURL = entity.ProfilePhotoURL,
+                //Offers = entity.Offers
+            };
+        }
+        public static ApplicationUser ToModel(this EditUserViewModel entity)
+        {
+            return new ApplicationUser()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                LastName = entity.LastName,
+                DateOfBirth = entity.DateOfBirth,
+                Description = entity.Description,
+                Address = entity.Address,
+                City = entity.City,
+                Country = entity.Country,
+                ProfilePhotoURL = entity.ProfilePhotoURL,
             };
         }
         public static UserSkill ToModel(this UserSkillViewModel entity)
@@ -49,23 +65,23 @@ namespace ClickApp.Mappings
             };
         }
 
-        public static Offer ToModel(this OfferViewModel entity)
-        {
-            return new Offer()
-            {
-                Id = entity.Id,
-                Title = entity.Title,
-                DateCreated = entity.DateCreated,
-                DateModified = entity.DateModified,
-                Description = entity.Description,
-                ImageUrl = entity.ImageUrl,
-                ImportantNote = entity.ImportantNote,
-                IsProfessional = entity.IsProfessional,
-                IsPublic = entity.IsPublic,
-                ValidUntil = entity.ValidUntil,
-                UserId = entity.UserId
-            };
-        }
+        //public static Offer ToModel(this OfferViewModel entity)
+        //{
+        //    return new Offer()
+        //    {
+        //        Id = entity.Id,
+        //        Title = entity.Title,
+        //        DateCreated = entity.DateCreated,
+        //        DateModified = entity.DateModified,
+        //        Description = entity.Description,
+        //        ImageUrl = entity.ImageUrl,
+        //        ImportantNote = entity.ImportantNote,
+        //        IsProfessional = entity.IsProfessional,
+        //        IsPublic = entity.IsPublic,
+        //        ValidUntil = entity.ValidUntil,  ToString("dd-MM-yyyy")???
+        //        UserId = entity.UserId
+        //    };
+        //}
 
         public static Offer ToModel(this CreateOfferViewModel entity)
         {
@@ -107,7 +123,13 @@ namespace ClickApp.Mappings
                 GeneralFieldId = entity.GeneralFieldId
             };
         }
-
+        public static UserSkill ToUserSkillModel(this SkillViewModel entity)
+        {
+            return new UserSkill()
+            {
+                SkillId = entity.Id
+            };
+        }
         public static Skill ToModel(this CreateSkillViewModel entity)
         {
             return new Skill()

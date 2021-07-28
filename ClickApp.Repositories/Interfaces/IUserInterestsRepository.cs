@@ -8,6 +8,6 @@ namespace ClickApp.Repositories.Interfaces
     public interface IUserInterestsRepository
     {
         List<UserInterest> GetAllSkillsForUser(string userId);
-
+        UserInterest GetById(int id);
     }
 }

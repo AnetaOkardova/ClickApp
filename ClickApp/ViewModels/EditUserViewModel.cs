@@ -1,13 +1,10 @@
-﻿using ClickApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickApp.ViewModels
 {
-    public class UserViewModel
+    public class EditUserViewModel
     {
         public string Id { get; set; }
         [Required]
@@ -26,11 +23,11 @@ namespace ClickApp.ViewModels
         public string Country { get; set; }
         [Required]
         public string ProfilePhotoURL { get; set; }
-        public List<OfferViewModel> Offers { get; set; }
-        public List<SkillViewModel> Skills { get; set; } 
+        public List<SkillViewModel> Skills { get; set; }
+        public List<SkillViewModel> AllSkills { get; set; }
+
         public List<InterestViewModel> Interests { get; set; }
-        public List<UserCardViewModel> Friends { get; set; }
-        public List<UserCardViewModel> RequestingUsers { get; set; }
+        public List<InterestViewModel> AllInterests { get; set; }
 
 
     }

@@ -1,0 +1,83 @@
+﻿@model ClickApp.ViewModels.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Edit User Skills";
+}
+@section Styles{
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+}
+<div class="row justify-content-between">
+    <div>
+        <ul id="listOfSkills">
+            <h3>Skills list</h3>
+            @foreach (var skill in Model.Skills)
+            {
+                <li value="@skill.Id" class="row align-items-center">
+                    <div class="col p-1 rounded bg-success text-light" style="width:250px">@skill.Name</div>
+                    <a class="col" asp-controller="UserSkills" asp-action="Delete" asp-route-id="@skill.Id">
+                        <i class="far fa-times-circle"></i>
+                    </a>
+                </li>
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+            }
+        </ul>
+    </div>
+
+    <div class="form-group align-items-center">
+        <div class="row m-1 p-1 align-items-center">
+            <div class="col" style="width:200px">
+                <label class="control-label text-primary" for="skillId">Add skill here =></label>
+            </div>
+            <div class="col">
+                <select name="skillId" Id="skillId" class="form-control" required>
+                    @foreach (var skill in Model.AllSkills)
+                    {
+                        if (!Model.Skills.Exists(x => x.Name == skill.Name))
+                        {
+                            <option value="@skill.Id">@skill.Name</option>
+                        }
+
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary m-1 text-light inline-block" onclick="addSkill(@Model.Id)">Add skill</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function addSkill(userId) {
+            alert("Hi");
+            var skills = _userSkillsService.GetAllSkillsForUser(userId);
+
+            var skillId = document.getElementById("skillId");
+            var skillIdValue = skillId.value;
+
+            var skillFromDb = _skillsService.GetById(skillIdValue);
+            var skillFromDbInViewModel = skillFromDb.ToSkillViewModel();
+
+            var element = null;
+            for (var i = 0; i < userSkills.length; i++) {
+                if (userSkills[i] == skillFromDbInViewModel) {
+                    element = userSkills[i];
+                } else {
+                    continue;
+                }
+            }
+            if (element == null) {
+                var list = document.getElementById("listOfSkills");
+                var listItem = document.createElement("li");
+                listItem.innerText = skillFromDbInViewModel;
+                list.appendChild(listItem);
+            }
+            skillId.value = null;
+        }
+    </script>
+}

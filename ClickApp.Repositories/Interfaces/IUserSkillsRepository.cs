@@ -8,5 +8,6 @@ namespace ClickApp.Repositories.Interfaces
     public interface IUserSkillsRepository
     {
         List<UserSkill> GetAllSkillsForUser(string userId);
+        UserSkill GetById(int id);
     }
 }

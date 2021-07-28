@@ -28,7 +28,7 @@
         {
             if (_friendshipRequestsService.CheckIfRequestSent(user.Id, Model.Id))
             {
-                <a class="btn btn-success text-light" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
+                <a class="btn btn-primary text-light" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
             }
             else if (_friendshipRequestsService.CheckIfRequestReceived(user.Id, Model.Id))
             {
@@ -46,7 +46,7 @@
             else if (_friendshipService.GetByFriendId(user.Id, Model.Id) != null && _friendshipService.GetByFriendId(user.Id, Model.Id).FriendShipStatus == true)
             {
                 <li class="nav-item dropdown m-2 p-2 justify-content-center">
-                    <a class="btn btn-primary nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
+                    <a class="btn btn-success nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
                     <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown2">
                         <li>
                             <a class="btn btn-danger nav-link  m-1 text-light" asp-area="" asp-controller="Friendship" asp-action="Unfriend" asp-route-userId="@user.Id" asp-route-requestedUserId="@Model.Id">Unfriend</a>
@@ -83,7 +83,7 @@
         <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
         @if (user.Id == @Model.Id)
         {
-            <div class="profileTabs" onclick="showOffersInfo()">Offers</div>
+            <div class="profileTabs" onclick="showOffersInfo()">My offers</div>
             <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
             <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
         }
@@ -124,29 +124,38 @@
                     @Html.DisplayFor(model => model.Country)
                 </dd>
             </div>
+            <div class="col">
 
-            @if (Model.Skills.Count != 0)
-            {
-                <div class="col">
-                    <h4>Skills</h4>
-                    @foreach (var skill in Model.Skills)
-                    {
-                        <p>@skill.Name</p>
-                    }
+                @if (Model.Skills.Count != 0)
+                {
+                    <div class="col m-1" style="height:300px">
+                        <h4>Skills</h4>
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <p>@skill.Name</p>
+                        }
+                    </div>
+                }
+                <div class="col-md">
+                    <a class="text-primary m-2" asp-controller="UserSkills" asp-action="EditUserSkills" asp-route-userId="@Model.Id">Edit skills</a>
                 </div>
-            }
+            </div>
 
-            @if (Model.Interests.Count != 0)
-            {
-                <div class="col">
-                    <h4>Interests</h4>
-                    @foreach (var interest in Model.Interests)
-                    {
-                        <p>@interest.Name</p>
-                    }
-                </div>
-            }
-
+            <div class="col">
+                @if (Model.Interests.Count != 0)
+                {
+                    <div class="col m-1" style="height:300px">
+                        <h4>Interests</h4>
+                        @foreach (var interest in Model.Interests)
+                        {
+                            <p>@interest.Name</p>
+                        }
+                    </div>
+                    @*<div class="col-md">
+                            <a class="text-primary m-2" asp-controller="UserInterests" asp-action="AddUserInterests" asp-route-userId="@Model.Id">Add interest</a>
+                        </div>*@
+                }
+            </div>
         </dl>
     </div>
     <div>
@@ -159,6 +168,7 @@
         </div>
     </div>
 </div>
+
 <div class="container-fluid d-none m-5 p-2" id="friendsInfo">
     <div>
         <dl class="row justify-content-center">
@@ -181,7 +191,7 @@
                     @if (Model.RequestingUsers.Count != 0)
                     {
                         <div class="col-4 border-left pl-2">
-                            <h4>FriendRequests</h4>
+                            <h4>Friend Requests</h4>
                             @foreach (var friend in Model.RequestingUsers)
                             {
                                 <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
@@ -205,15 +215,54 @@
     </div>
 </div>
 
+<div class="container-fluid d-none m-5 p-2" id="offersInfo">
+    <div>
+        <dl class="row justify-content-center">
 
+            @if (Model.Offers.Count != 0)
+            {
+                <div class="col-8">
+                    <h4>Offers</h4>
+                    @foreach (var offer in Model.Offers)
+                    {
+                        <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@offer.ImageUrl" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="Offer" asp-route-userId="@offer.Id">@offer.Title</a>
+                            <p class="m-1 font-italic">Valid until: @offer.ValidUntil</p>
+                        </div>
+                    }
+                </div>
+                @*@if (user.Id == @Model.Id)
+                {
+                    @if (Model.RequestingUsers.Count != 0)
+                    {
+                        <div class="col-4 border-left pl-2">
+                            <h4>Friend Requests</h4>
+                            @foreach (var friend in Model.RequestingUsers)
+                            {
+                                <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                                    <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
+                                    <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
+                                    <p class="m-1 font-italic">@friend.City, @friend.Country</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                }*@
+            }
+        </dl>
+    </div>
+    <hr />
+    <div>
+        <div class="row">
+
+            <div class="profileTabs" onclick="hideOffersInfo()">Close offers tab</div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script>
-        function changeInnerText() {
-            var btn = document.getElementById("RequestBtn");
-            btn.innerText = "Request sent";
-        }
-
 
         function showProfileImage() {
             hideAllInfo();
@@ -223,7 +272,7 @@
         }
         function hideProfileImage() {
             showContainer("profilePicSmall");
-            hideContainer("profilePicLarge")
+            hideContainer("profilePicLarge");
             showContainer("tabsContainer");
         }
 
@@ -244,6 +293,15 @@
             showContainer("tabsContainer");
         }
 
+        function showOffersInfo() {
+            hideAllInfo();
+            showContainer("offersInfo");
+        }
+        function hideOffersInfo() {
+            hideAllInfo();
+            showContainer("tabsContainer");
+        }
+
         function showContainer(containerId) {
             var container = document.getElementById(containerId);
             container.classList.remove("d-none");
@@ -258,6 +316,7 @@
         function hideAllInfo() {
             hideContainer("aboutInfo");
             hideContainer("friendsInfo");
+            hideContainer("offersInfo");
 
         }
     </script>

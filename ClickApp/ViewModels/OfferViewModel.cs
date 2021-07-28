@@ -21,7 +21,7 @@ namespace ClickApp.ViewModels
         public string ImageUrl { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
-        public DateTime ValidUntil { get; set; }
+        public string ValidUntil { get; set; }
         [Required]
         public string UserId { get; set; }
         public string ImportantNote { get; set; }
