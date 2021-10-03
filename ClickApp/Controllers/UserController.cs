@@ -51,7 +51,7 @@ namespace ClickApp.Controllers
             user.Skills = _userSkillsService.GetAllSkillsForUser(user.Id);
             user.Interests = _userInterestsService.GetAllSkillsForUser(user.Id);
             user.Offers = _offersService.GetAllOffersForUser(user.Id);
-
+            
             var userDetails = user.ToUserViewModel();
 
             if (user.Skills != null)

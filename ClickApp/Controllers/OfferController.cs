@@ -21,22 +21,14 @@ namespace ClickApp.Controllers
             _offersService = offersService;
             _userManager = userManager;
         }
-        public IActionResult Overview(string successMessage, string errorMessage)
+        public IActionResult Overview()
         {
-            if(successMessage != null)
-            {
-                ViewBag.SuccessMessage = successMessage;
-            }
-            if (errorMessage != null)
-            {
-                ViewBag.ErrorMessage = errorMessage;
-            }
             return View();
         }
         public IActionResult GetAllWithFilter(string offerTitle, bool isProffesional)
         {
             var offers = _offersService.GetAllPublicWithFilter(offerTitle, isProffesional);
-          
+
             var viewOffers = offers.Select(x => x.ToOfferViewModel()).ToList();
 
             return View(viewOffers);
@@ -44,8 +36,6 @@ namespace ClickApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            //return URL
-            //correct Valid until
             var offer = new CreateOfferViewModel();
             offer.ValidUntil = DateTime.Now.AddYears(5).Date;
             return View(offer);
@@ -63,12 +53,13 @@ namespace ClickApp.Controllers
                 offer.UserId = userFromDb.Id;
                 offer.User = userFromDb;
                 _offersService.Create(offer);
-                
-                return RedirectToAction("Overview", new { SuccessMessage = $"Offer with title {createOfferViewModel.Title} has been successfully created." });
+
+                return RedirectToAction("GetAllWithFilter", new { isProffesional = offer.IsProfessional});
+                //return URL
             }
             else
             {
-            return View(createOfferViewModel);
+                return View(createOfferViewModel);
             }
         }
     }

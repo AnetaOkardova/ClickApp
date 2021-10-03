@@ -2,6 +2,7 @@
 using ClickApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -25,6 +26,13 @@ namespace ClickApp.Controllers
             if (userNameSearch !=null || userNameSearch != "")
             {
                 var users = _userManager.Users.Where(x => x.UserName.Contains(userNameSearch)).ToList();
+                foreach (var user in users)
+                {
+                    if(user.Offers == null)
+                    {
+                        user.Offers = new List<Offer>();
+                    }
+                }
                 var usersForView = users.Select(x => x.ToUserViewModel()).ToList();
                 return View(usersForView);
             }
