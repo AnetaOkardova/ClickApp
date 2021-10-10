@@ -1,0 +1,96 @@
+﻿@model ClickApp.Models.CarpoolOffer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CarpoolOffer</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeavingFrom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeavingFrom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ArrivingAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ArrivingAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeavingHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeavingHour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeavingMinutes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeavingMinutes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SeatsAvailable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SeatsAvailable)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeavingNote)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeavingNote)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnFrom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnFrom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnHour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnMinutes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnMinutes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnSeatsAvailable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnSeatsAvailable)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnNote)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnNote)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

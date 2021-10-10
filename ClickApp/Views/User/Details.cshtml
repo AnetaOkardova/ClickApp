@@ -32,7 +32,7 @@
             }
             else if (_friendshipRequestsService.CheckIfRequestReceived(user.Id, Model.Id))
             {
-                <li class="nav-item dropdown m-2 p-2 justify-content-center">
+                <div class="nav-item dropdown m-2 p-2 justify-content-center">
                     <a class="btn btn-primary nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friendship requested</a>
                     <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
                         <li>
@@ -40,19 +40,19 @@
                             <a class="btn btn-danger nav-link  m-1 text-light" asp-area="" asp-controller="FriendshipRequest" asp-action="Update" asp-route-requestDecision="false" asp-route-requestedUserId="@Model.Id">Decline Request</a>
                         </li>
                     </ul>
-                </li>
+                </div>
 
             }
             else if (_friendshipService.GetByFriendId(user.Id, Model.Id) != null && _friendshipService.GetByFriendId(user.Id, Model.Id).FriendShipStatus == true)
             {
-                <li class="nav-item dropdown m-2 p-2 justify-content-center">
+                <div class="nav-item dropdown m-2 p-2 justify-content-center">
                     <a class="btn btn-success nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
                     <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown2">
                         <li>
                             <a class="btn btn-danger nav-link  m-1 text-light" asp-area="" asp-controller="Friendship" asp-action="Unfriend" asp-route-userId="@user.Id" asp-route-requestedUserId="@Model.Id">Unfriend</a>
                         </li>
                     </ul>
-                </li>
+                </div>
 
             }
             else
@@ -173,9 +173,10 @@
     <div>
         <dl class="row justify-content-center">
 
-            @if (Model.Friends.Count != 0)
-            {
-                <div class="col-8">
+
+            <div class="col-8">
+                @if (Model.Friends.Count != 0)
+                {
                     <h4>Friends</h4>
                     @foreach (var friend in Model.Friends)
                     {
@@ -185,25 +186,32 @@
                             <p class="m-1 font-italic">@friend.City, @friend.Country</p>
                         </div>
                     }
-                </div>
-                @if (user.Id == @Model.Id)
+                }
+                else
                 {
-                    @if (Model.RequestingUsers.Count != 0)
-                    {
-                        <div class="col-4 border-left pl-2">
-                            <h4>Friend Requests</h4>
-                            @foreach (var friend in Model.RequestingUsers)
-                            {
-                                <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
-                                    <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
-                                    <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
-                                    <p class="m-1 font-italic">@friend.City, @friend.Country</p>
-                                </div>
-                            }
-                        </div>
-                    }
+                    <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                        <p class="m-1 font-italic">Your list of friends is empty at this moment.</p>
+                    </div>
+                }
+            </div>
+            @if (user.Id == @Model.Id)
+            {
+                @if (Model.RequestingUsers.Count != 0)
+                {
+                    <div class="col-4 border-left pl-2">
+                        <h4>Friend Requests</h4>
+                        @foreach (var friend in Model.RequestingUsers)
+                        {
+                            <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                                <img class="rounded-circle m-1" style="width:50px; height:50px" src="@friend.ProfilePhotoURL" />
+                                <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@friend.Id">@friend.Name @friend.LastName</a>
+                                <p class="m-1 font-italic">@friend.City, @friend.Country</p>
+                            </div>
+                        }
+                    </div>
                 }
             }
+
         </dl>
     </div>
     <hr />

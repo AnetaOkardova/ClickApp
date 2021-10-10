@@ -22,7 +22,9 @@ namespace ClickApp.Data
         public DbSet<Offer> Offers { get; set; }
         public DbSet<FriendshipRequest> FriendshipRequests { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
-
+        public DbSet<CarpoolOffer> CarpoolOffers { get; set; }
+        public DbSet<CarpoolPassengerAcceptance> CarpoolPassengerAcceptances { get; set; }
+        public DbSet<CarpoolPassengerRequest> CarpoolPassengerRequests { get; set; }
 
     }
 }

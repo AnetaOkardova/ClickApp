@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ClickApp.ViewModels.CarpoolOfferViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeavingFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivingAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeavingHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeavingMinutes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeatsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeavingNote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnHour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnMinutes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnSeatsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnNote)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeavingFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivingAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeavingHour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeavingMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeatsAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeavingNote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnHour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnSeatsAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnNote)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -25,6 +25,22 @@ namespace ClickApp.Mappings
                 Offers = entity.Offers.Select(x => x.ToOfferViewModel()).ToList()
             };
         }
+        public static CarpoolUserViewModel ToCarpoolUserViewModel(this ApplicationUser entity)
+        {
+            return new CarpoolUserViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                LastName = entity.LastName,
+                DateOfBirth = entity.DateOfBirth,
+                Description = entity.Description,
+                Address = entity.Address,
+                City = entity.City,
+                Country = entity.Country,
+                ProfilePhotoURL = entity.ProfilePhotoURL,
+            };
+        }
+
 
         public static EditUserViewModel ToEditUserViewModel(this ApplicationUser entity)
         {
@@ -125,5 +141,30 @@ namespace ClickApp.Mappings
                 GeneralFieldId = entity.GeneralFieldId
             };
         }
+
+        public static CarpoolOfferViewModel ToCarpoolOfferViewModel(this CarpoolOffer entity)
+        {
+            return new CarpoolOfferViewModel()
+            {
+                Id = entity.Id,
+                Driver = entity.Driver.ToCarpoolUserViewModel(),
+                LeavingFrom = entity.LeavingFrom,
+                ArrivingAt = entity.ArrivingAt,
+                LeavingHour = entity.LeavingHour,
+                LeavingMinutes = entity.LeavingMinutes,
+                SeatsAvailable = entity.SeatsAvailable,
+                LeavingNote = entity.LeavingNote,
+                DateCreated = entity.DateCreated.ToString("dd-MM-yyyy"),
+                ReturnFrom = entity.ReturnFrom,
+                ReturnAt = entity.ReturnAt,
+                ReturnHour = entity.ReturnHour,
+                ReturnMinutes = entity.ReturnMinutes,
+                ReturnSeatsAvailable = entity.ReturnSeatsAvailable,
+                ReturnNote = entity.ReturnNote,
+                RequestingPassengers = entity.RequestingPassengers,
+                AcceptedPassengers = entity.AcceptedPassengers
+            };
+        }
+
     }
 }
