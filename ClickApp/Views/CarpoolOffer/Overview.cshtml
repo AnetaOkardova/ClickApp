@@ -1,107 +1,138 @@
-﻿@model IEnumerable<ClickApp.ViewModels.CarpoolOfferViewModel>
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<ClickApp.ViewModels.CarpoolOfferViewModel>;
+@using ClickApp.Services.Interfaces;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Carpool Overview";
 }
 
-<h1>Index</h1>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> _userManager;
+@inject ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
 
-<p>
-    <a asp-action="Create">Create New</a>
+@section Styles{
+    <link rel="stylesheet" href="~/css/OffersOverview.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+}
+
+
+
+<h1 class="text-center">Carpool Offers</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger m-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success m-3" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+<p class="btn btn-success">
+    <a asp-action="Create" class="text-light">Create Carpool Offer</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LeavingFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivingAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LeavingHour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LeavingMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SeatsAvailable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LeavingNote)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnHour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnSeatsAvailable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReturnNote)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeavingFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivingAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeavingHour)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeavingMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SeatsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeavingNote)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnHour)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnMinutes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnSeatsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnNote)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+@foreach (var carpoolOffer in Model)
+{
+    <div class="card offerCard m-2" style="width: 500px;">
+        <div class="row no-gutters align-items-center">
+            @{var driverName = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Name + " " + _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.LastName; }
+            @{ var driverEmail = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Email;}
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                @if (user.Email == driverEmail)
+                {
+                    <div class="col-4">
+                        <p class="card-text p-2 rounded bg-light text-center text-success"><a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" style="color: gray; width: 25px">My offer</a></p>
+                    </div>
+                    <div class="col-3">
+                    </div>
+                    <div class="col-5">
+                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
+                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
+                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" class="card-text p-2 rounded bg-light text-center text-success">@driverName</a>
+                }
+            }
+            else
+            {
+                <a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" class="card-text p-2 rounded bg-light text-center text-success">@driverName</a>
+            }
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h4 class="text-center">From @carpoolOffer.LeavingFrom to @carpoolOffer.ArrivingAt at @carpoolOffer.LeavingHour:@carpoolOffer.LeavingMinutes</h4>
+                    <hr />
+                    <div class=" row align-items-center @*justify-content-between*@">
+                        <div class="col-sm-5">
+                            <h6 class="text-success bg-light rounded p-2">Available seats @carpoolOffer.SeatsAvailable</h6>
+                        </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var user2 = await _userManager.FindByNameAsync(User.Identity.Name);
+                            @if (user2.Email != driverEmail)
+                            {
+                                @if (_carpoolPassengerRequestsService.CheckIfRequestExists(user2.Id, carpoolOffer.Id))
+                                {
+                                    <p class="p-2 pt-3 font-italic d-inline align-items-center">Request sent for @_carpoolPassengerRequestsService.GetValidPassengerRequest(user2.Id, carpoolOffer.Id).RequestedSeats seats.</p>
+                                    <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-passengerId="@user2.Id" asp-route-carpoolOfferId="@carpoolOffer.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; @*border: none;*@ background: none">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    //check if acceptance exists
+                                    <div class="col-sm-7">
+                                        <form asp-controller="CarpoolPassengerRequests" asp-action="CreateRequest" method="get">
+                                            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                                            <input type="text" name="passengerId" value="@user2.Id" hidden />
+                                            <input type="number" name="carpoolOfferId" value="@carpoolOffer.Id" hidden />
+
+                                            <div class="form-group p-2 font-italic">
+                                                <select class="rounded border-0" class="form-select" name="requestedSeats" id="requestedSeats" @*aria-label="Default select example"*@>
+                                                    <option name="requestedSeats" selected class="p-2 font-italic">Select seats</option>
+                                                    @for (var i = 0; i < carpoolOffer.SeatsAvailable; i++)
+                                                    {
+                                                        <option name="requestedSeats" value="@(i+1)">@(i+1)</option>
+                                                    }
+
+                                                </select>
+                                                <button type="submit" style="font-size: 20px; color: forestgreen; border: none; background: none">
+                                                    <i class="far fa-check-circle"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                    <hr />
+                    @if (carpoolOffer.LeavingNote != null || carpoolOffer.LeavingNote != "")
+                    {
+                        <span class="text-justify font-italic">* @carpoolOffer.LeavingNote</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+@*<a asp-action="Details" asp-route-id="@carpoolOffer.Id" class="btn btn-success">See more</a>*@
+
+
+@*<td>
+
+    </td>*@
+

@@ -1,96 +1,81 @@
-﻿@model ClickApp.Models.CarpoolOffer
+﻿@model ClickApp.ViewModels.CarpoolDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>CarpoolOffer</h4>
+    <h4>Carpool Offer with Id @Model.CarpoolOffer.Id</h4>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.CarpoolOffer.Id }) |
+        <a asp-action="Overview">Back to Carpool offers</a>
+    </div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LeavingFrom)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LeavingFrom)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArrivingAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArrivingAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LeavingHour)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LeavingHour)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LeavingMinutes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LeavingMinutes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SeatsAvailable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SeatsAvailable)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LeavingNote)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LeavingNote)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnFrom)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnFrom)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnHour)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnHour)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnMinutes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnMinutes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnSeatsAvailable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnSeatsAvailable)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnNote)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnNote)
-        </dd>
-    </dl>
+    <div class="card offerCard m-2" style="width: 80%;">
+        <div class="row no-gutters align-items-center">
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h4 class="text-center">From @Model.CarpoolOffer.LeavingFrom to @Model.CarpoolOffer.ArrivingAt at @Model.CarpoolOffer.LeavingHour:@Model.CarpoolOffer.LeavingMinutes</h4>
+                    <hr />
+                    <div class=" row align-items-center justify-content-between">
+                        <div class="col-sm-5">
+                            <h6 class="text-success bg-light rounded p-2">Available seats @Model.CarpoolOffer.SeatsAvailable</h6>
+                        </div>
+                    </div>
+                    <hr />
+                    @if (@Model.CarpoolOffer.LeavingNote != null || @Model.CarpoolOffer.LeavingNote != "")
+                    {
+                        <span class="text-justify font-italic">* @Model.CarpoolOffer.LeavingNote</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="container-fluid d-none m-5 p-2" id="acceptedPassengersInfo">
+    <div>
+        <dl class="row justify-content-center">
+
+
+            <div class="col-8">
+                @if (Model.AcceptedPassengers.Count != 0)
+                {
+                    <h4>Confirmed passengers</h4>
+                    @foreach (var passenger in Model.AcceptedPassengers)
+                    {
+                        <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@passenger.ProfilePhotoURL" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@passenger.Id">@passenger.Name @passenger.LastName</a>
+                        </div>
+                        <div>
+                            @*@Html.ActionLink("Remove", "DeleteCarpoolPassenger", new { id = passenger.Acceptance }) |*@
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                        <p class="m-1 font-italic">You have no confirmed passengers at this moment.</p>
+                    </div>
+                }
+            </div>
+
+            @if (Model.RequestingPassengers.Count != 0)
+            {
+                <div class="col-4 border-left pl-2">
+                    <h4>Passenger requests</h4>
+                    @foreach (var passenger in Model.RequestingPassengers)
+                    {
+                        <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@passenger.ProfilePhotoURL" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@passenger.Id">@passenger.Name @passenger.LastName</a>
+                        </div>
+                    }
+                </div>
+            }
+
+        </dl>
+    </div>
 </div>
+

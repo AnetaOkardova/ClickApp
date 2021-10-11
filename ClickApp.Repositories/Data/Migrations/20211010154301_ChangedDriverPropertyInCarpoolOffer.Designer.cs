@@ -4,14 +4,16 @@ using ClickApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClickApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211010154301_ChangedDriverPropertyInCarpoolOffer")]
+    partial class ChangedDriverPropertyInCarpoolOffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,9 +185,6 @@ namespace ClickApp.Data.Migrations
                     b.Property<string>("AcceptedPassengerId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("AcceptedStatus")
-                        .HasColumnType("bit");
-
                     b.Property<int>("CarpoolOfferId")
                         .HasColumnType("int");
 
@@ -194,9 +193,6 @@ namespace ClickApp.Data.Migrations
 
                     b.Property<int>("ReservedSeats")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Valid")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -212,9 +208,6 @@ namespace ClickApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AcceptedStatus")
-                        .HasColumnType("bit");
-
                     b.Property<int>("CarpoolOfferId")
                         .HasColumnType("int");
 
@@ -226,9 +219,6 @@ namespace ClickApp.Data.Migrations
 
                     b.Property<string>("RequestingPassengerId")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Valid")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

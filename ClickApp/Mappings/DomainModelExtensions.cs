@@ -32,15 +32,9 @@ namespace ClickApp.Mappings
                 Id = entity.Id,
                 Name = entity.Name,
                 LastName = entity.LastName,
-                DateOfBirth = entity.DateOfBirth,
-                Description = entity.Description,
-                Address = entity.Address,
-                City = entity.City,
-                Country = entity.Country,
                 ProfilePhotoURL = entity.ProfilePhotoURL,
             };
         }
-
 
         public static EditUserViewModel ToEditUserViewModel(this ApplicationUser entity)
         {
@@ -147,7 +141,7 @@ namespace ClickApp.Mappings
             return new CarpoolOfferViewModel()
             {
                 Id = entity.Id,
-                Driver = entity.Driver.ToCarpoolUserViewModel(),
+                DriverId = entity.DriverId,
                 LeavingFrom = entity.LeavingFrom,
                 ArrivingAt = entity.ArrivingAt,
                 LeavingHour = entity.LeavingHour,

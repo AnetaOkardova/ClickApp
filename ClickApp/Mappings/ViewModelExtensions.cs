@@ -155,5 +155,29 @@ namespace ClickApp.Mappings
                 GeneralFieldId = entity.GeneralFieldId
             };
         }
+
+        public static CarpoolOffer ToModel(this CarpoolOfferViewModel entity)
+        {
+            return new CarpoolOffer()
+            {
+                Id = entity.Id,
+                DriverId = entity.DriverId,
+                LeavingFrom = entity.LeavingFrom,
+                ArrivingAt = entity.ArrivingAt,
+                LeavingHour = entity.LeavingHour,
+                LeavingMinutes = entity.LeavingMinutes,
+                SeatsAvailable = entity.SeatsAvailable,
+                LeavingNote = entity.LeavingNote,
+                DateCreated = Convert.ToDateTime(entity.DateCreated),
+                ReturnFrom = entity.ReturnFrom,
+                ReturnAt = entity.ReturnAt,
+                ReturnHour = entity.ReturnHour,
+                ReturnMinutes = entity.ReturnMinutes,
+                ReturnSeatsAvailable = entity.ReturnSeatsAvailable,
+                ReturnNote = entity.ReturnNote,
+                RequestingPassengers = entity.RequestingPassengers,
+                AcceptedPassengers = entity.AcceptedPassengers
+            };
+        }
     }
 }

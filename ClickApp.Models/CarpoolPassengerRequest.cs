@@ -11,6 +11,8 @@ namespace ClickApp.Models
         public string RequestingPassengerId { get; set; }
         public int RequestedSeats { get; set; }
         public DateTime DateRequested { get; set; }
+        public bool AcceptedStatus { get; set; }
+        public bool Valid { get; set; }
     }
 
 }

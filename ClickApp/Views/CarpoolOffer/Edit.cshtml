@@ -1,4 +1,4 @@
-﻿@model ClickApp.Models.CarpoolOffer
+﻿@model ClickApp.ViewModels.CarpoolOfferViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,9 +10,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DateCreated" />
+            <input type="hidden" asp-for="DriverId" />
+
             <div class="form-group">
                 <label asp-for="LeavingFrom" class="control-label"></label>
                 <input asp-for="LeavingFrom" class="form-control" />
@@ -42,11 +45,6 @@
                 <label asp-for="LeavingNote" class="control-label"></label>
                 <input asp-for="LeavingNote" class="form-control" />
                 <span asp-validation-for="LeavingNote" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateCreated" class="control-label"></label>
-                <input asp-for="DateCreated" class="form-control" />
-                <span asp-validation-for="DateCreated" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReturnFrom" class="control-label"></label>
@@ -79,14 +77,14 @@
                 <span asp-validation-for="ReturnNote" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save changes" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Overview">Back to Carpool offers</a>
 </div>
 
 @section Scripts {

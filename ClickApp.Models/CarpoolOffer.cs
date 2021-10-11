@@ -9,7 +9,7 @@ namespace ClickApp.Models
     {
         public int Id { get; set; }
         [Required]
-        public ApplicationUser Driver { get; set; }
+        public string? DriverId { get; set; }
         [Required]
         public string LeavingFrom { get; set; }
         [Required]

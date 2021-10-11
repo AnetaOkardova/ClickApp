@@ -14,21 +14,6 @@ namespace ClickApp.ViewModels
         [Required]
         public string LastName { get; set; }
         [Required]
-        public DateTime DateOfBirth { get; set; }
-        [Required]
-        public string Description { get; set; }
-        [Required]
-        public string Address { get; set; }
-        [Required]
-        public string City { get; set; }
-        [Required]
-        public string Country { get; set; }
-        [Required]
         public string ProfilePhotoURL { get; set; }
-        //public List<OfferViewModel> Offers { get; set; }
-        //public List<SkillViewModel> Skills { get; set; }
-        //public List<InterestViewModel> Interests { get; set; }
-        //public List<UserCardViewModel> Friends { get; set; }
-        //public List<UserCardViewModel> RequestingUsers { get; set; }
     }
 }
