@@ -12,5 +12,7 @@ namespace ClickApp.Services.Interfaces
         bool CheckIfRequestExists(string passengerId, int carpoolOfferId);
         CarpoolPassengerRequest GetValidPassengerRequest(string passengerId, int carpoolOfferId);
         StatusModel CancelRequest(string passengerId, int carpoolOfferId);
+        List<CarpoolPassengerRequest> GetAllValidByOfferId(int id);
+        StatusModel Update(CarpoolPassengerRequest carpoolRequestToApprove);
     }
 }

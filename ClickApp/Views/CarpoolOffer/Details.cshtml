@@ -1,8 +1,16 @@
 ﻿@model ClickApp.ViewModels.CarpoolDetailsViewModel
 
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> _userManager;
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Carpool offer - Details";
 }
+
+@section Styles{
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+}
+
 
 <div>
     <h4>Carpool Offer with Id @Model.CarpoolOffer.Id</h4>
@@ -33,24 +41,25 @@
     </div>
 </div>
 
-<div class="container-fluid d-none m-5 p-2" id="acceptedPassengersInfo">
+<div class="container-fluid m-5 p-2">
     <div>
         <dl class="row justify-content-center">
-
-
-            <div class="col-8">
+            <div class="col-5">
                 @if (Model.AcceptedPassengers.Count != 0)
                 {
+                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
                     <h4>Confirmed passengers</h4>
-                    @foreach (var passenger in Model.AcceptedPassengers)
+                    @foreach (var item in Model.AcceptedPassengers)
                     {
                         <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
-                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@passenger.ProfilePhotoURL" />
-                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@passenger.Id">@passenger.Name @passenger.LastName</a>
+                            <p class="rounded font-weight-bolder border-danger d-inline p-1" style="width:15px; border:double">@item.Seats</p>
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@item.Passenger.ProfilePhotoURL" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@item.Passenger.Id">@item.Passenger.Name @item.Passenger.LastName</a>
                         </div>
-                        <div>
-                            @*@Html.ActionLink("Remove", "DeleteCarpoolPassenger", new { id = passenger.Acceptance }) |*@
-                        </div>
+                        <a asp-controller="CarpoolPassengerAcceptances" asp-action="CancelAcceptance" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
                     }
                 }
                 else
@@ -63,15 +72,29 @@
 
             @if (Model.RequestingPassengers.Count != 0)
             {
-                <div class="col-4 border-left pl-2">
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                <div class="col-5 border-left pl-2">
                     <h4>Passenger requests</h4>
-                    @foreach (var passenger in Model.RequestingPassengers)
+                    @foreach (var item in Model.RequestingPassengers)
                     {
                         <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
-                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@passenger.ProfilePhotoURL" />
-                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@passenger.Id">@passenger.Name @passenger.LastName</a>
+                            <p class="rounded font-weight-bolder border-success d-inline p-1" style="width:15px; border:double">@item.Seats</p>
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@item.Passenger.ProfilePhotoURL" />
+                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@item.Passenger.Id">@item.Passenger.Name @item.Passenger.LastName</a>
                         </div>
+                        <a asp-controller="CarpoolPassengerAcceptances" asp-action="CreatePassengerAcceptance" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: forestgreen; background: none">
+                            <i class="far fa-check-circle"></i>
+                        </a>
+                        <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
+                            <i class="far fa-trash-alt"></i>
+                        </a>
                     }
+                </div>
+            }
+            else
+            {
+                <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                    <p class="m-1 font-italic">You have no requesting passengers at this moment.</p>
                 </div>
             }
 

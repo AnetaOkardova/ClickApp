@@ -8,8 +8,8 @@ namespace ClickApp.ViewModels
     public class CarpoolDetailsViewModel
     {
         public CarpoolOfferViewModel CarpoolOffer { get; set; }
-        public List<CarpoolUserViewModel> RequestingPassengers { get; set; }
-        public List<CarpoolUserViewModel> AcceptedPassengers { get; set; }
+        public List<CarpoolSeatsDetailsModel> RequestingPassengers { get; set; }
+        public List<CarpoolSeatsDetailsModel> AcceptedPassengers { get; set; }
 
     }
 }

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace ClickApp.Repositories.Interfaces
 {
-    public interface ICarpoolPassengerAcceptancesRepository : IBaseRepository<CarpoolPassengerAcceptance>    
+    public interface ICarpoolPassengerAcceptancesRepository : IBaseRepository<CarpoolPassengerAcceptance>
     {
+        List<CarpoolPassengerAcceptance> GetAllValid(int id);
     }
 }

@@ -7,5 +7,6 @@ namespace ClickApp.Repositories.Interfaces
 {
     public interface ICarpoolPassengerRequestsRepository : IBaseRepository<CarpoolPassengerRequest>
     {
+        List<CarpoolPassengerRequest> GetAllValid(int id);
     }
 }

@@ -12,10 +12,13 @@ namespace ClickApp.Services
     public class CarpoolPassengerRequestsService : ICarpoolPassengerRequestsService
     {
         private readonly ICarpoolPassengerRequestsRepository _carpoolPassengerRequestsRepository;
+        private readonly ICarpoolOffersRepository _carpoolOffersRepository;
 
-        public CarpoolPassengerRequestsService(ICarpoolPassengerRequestsRepository carpoolPassengerRequestsRepository)
+
+        public CarpoolPassengerRequestsService(ICarpoolPassengerRequestsRepository carpoolPassengerRequestsRepository, ICarpoolOffersRepository carpoolOffersRepository)
         {
             _carpoolPassengerRequestsRepository = carpoolPassengerRequestsRepository;
+            _carpoolOffersRepository = carpoolOffersRepository;
         }
 
         public StatusModel Create(CarpoolPassengerRequest passengerRequest)
@@ -56,9 +59,42 @@ namespace ClickApp.Services
                 return response;
             }
             passengerRequestFromDB.Valid = false;
-            
+
             _carpoolPassengerRequestsRepository.Update(passengerRequestFromDB);
 
+            return response;
+        }
+
+        public List<CarpoolPassengerRequest> GetAllValidByOfferId(int id)
+        {
+            var offers = _carpoolPassengerRequestsRepository.GetAll();
+            var allRequestsForAnOffer = offers.Where(x => x.CarpoolOfferId == id && x.Valid == true).ToList();
+            if (allRequestsForAnOffer.Count == 0 || allRequestsForAnOffer == null)
+            {
+                return new List<CarpoolPassengerRequest>();
+            }
+            return allRequestsForAnOffer;
+        }
+
+        public StatusModel Update(CarpoolPassengerRequest carpoolRequestToApprove)
+        {
+            var response = new StatusModel();
+            var offer = _carpoolOffersRepository.GetById(carpoolRequestToApprove.CarpoolOfferId);
+
+            if (offer == null)
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The carpool offer with ID {carpoolRequestToApprove.CarpoolOfferId} is not found.";
+            }
+            else
+            {
+                _carpoolPassengerRequestsRepository.Update(carpoolRequestToApprove);
+
+                offer.SeatsAvailable -= carpoolRequestToApprove.RequestedSeats;
+                _carpoolOffersRepository.Update(offer);
+
+                response.Message = $"The carpool passenger request has been accepted.";
+            }
             return response;
         }
     }

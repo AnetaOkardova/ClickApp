@@ -20,11 +20,16 @@ namespace ClickApp.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICarpoolOfferService _carpoolOfferService;
+        private readonly ICarpoolPassengerAcceptancesService _carpoolPassengerAcceptancesService;
+        private readonly ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
 
-        public CarpoolOfferController(UserManager<ApplicationUser> userManager, ICarpoolOfferService carpoolOfferService)
+        public CarpoolOfferController(UserManager<ApplicationUser> userManager, ICarpoolOfferService carpoolOfferService, ICarpoolPassengerAcceptancesService carpoolPassengerAcceptancesService, ICarpoolPassengerRequestsService carpoolPassengerRequestsService)
         {
             _userManager = userManager;
             _carpoolOfferService = carpoolOfferService;
+            _carpoolPassengerAcceptancesService = carpoolPassengerAcceptancesService;
+            _carpoolPassengerRequestsService = carpoolPassengerRequestsService;
+
         }
 
         public IActionResult Overview(string successMessage, string errorMessage)
@@ -60,7 +65,6 @@ namespace ClickApp.Controllers
 
             return View(carpoolOfferForView);
         }
-
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Edit(CarpoolOfferViewModel carpoolOfferViewModel)
@@ -71,7 +75,7 @@ namespace ClickApp.Controllers
                 var response = _carpoolOfferService.Update(carpoolOffer);
                 if (response.IsSuccessful)
                 {
-                    return RedirectToAction("Overview", new { SuccessMessage = $"The carpool offer has been successfully created." });
+                    return RedirectToAction("Overview", new { SuccessMessage = $"The carpool offer has been successfully edited." });
                 }
                 else
                 {
@@ -103,32 +107,47 @@ namespace ClickApp.Controllers
             }
             var carpoolOfferForView = carpoolOffer.ToCarpoolOfferViewModel();
 
-            var requestingPassengers = new List<ApplicationUser>();
-            var requestingPassengersForView = new List<CarpoolUserViewModel>();
+            //var requestingPassengers = new List<ApplicationUser>();
+            var requestingPassengersForView = new List<CarpoolSeatsDetailsModel>();
 
+            var passengerRequestsForOffer = _carpoolPassengerRequestsService.GetAllValidByOfferId(id);
 
-            //if (carpoolOffer.RequestingPassengers.Count != 0 && carpoolOffer.RequestingPassengers != null)
-            //{
-            //    foreach (var passengerRequest in carpoolOffer.RequestingPassengers)
-            //    {
-            //        var passenger = await _userManager.FindByIdAsync(passengerRequest.RequestingPassengerId);
-            //        requestingPassengers.Add(passenger);
-            //    }
-            //    requestingPassengersForView = requestingPassengers.Select(x => x.ToCarpoolUserViewModel()).ToList();
-            //}
+            if (passengerRequestsForOffer.Count != 0 && passengerRequestsForOffer != null)
+            {
+                foreach (var passengerRequest in passengerRequestsForOffer)
+                {
+                    var passenger = await _userManager.FindByIdAsync(passengerRequest.RequestingPassengerId);
+                    var requestedSeats = passengerRequest.RequestedSeats;
 
-            var acceptedPassengers = new List<ApplicationUser>();
-            var acceptedPassengersForView = new List<CarpoolUserViewModel>();
+                    var requestingPassengerWithSeats = new CarpoolSeatsDetailsModel();
+                    requestingPassengerWithSeats.Passenger = passenger.ToCarpoolUserViewModel();
+                    requestingPassengerWithSeats.Seats = requestedSeats;
 
-            //if (carpoolOffer.AcceptedPassengers.Count != 0 && carpoolOffer.AcceptedPassengers != null)
-            //{
-            //    foreach (var acceptedPassenger in carpoolOffer.AcceptedPassengers)
-            //    {
-            //        var passenger = await _userManager.FindByIdAsync(acceptedPassenger.AcceptedPassengerId);
-            //        acceptedPassengers.Add(passenger);
-            //    }
-            //    acceptedPassengersForView = acceptedPassengers.Select(x => x.ToCarpoolUserViewModel()).ToList();
-            //}
+                    requestingPassengersForView.Add(requestingPassengerWithSeats);
+                }
+                //requestingPassengersForView = requestingPassengers.Select(x => x.ToCarpoolUserViewModel()).ToList();
+            }
+
+            //var acceptedPassengers = new Listk<ApplicationUser>();
+            var acceptedPassengersForView = new List<CarpoolSeatsDetailsModel>();
+
+            var acceptedPassengersForOffer = _carpoolPassengerAcceptancesService.GetAllValidByOfferId(id);
+
+            if (acceptedPassengersForOffer.Count != 0 && acceptedPassengersForOffer != null)
+            {
+                foreach (var acceptedPassenger in acceptedPassengersForOffer)
+                {
+                    var passenger = await _userManager.FindByIdAsync(acceptedPassenger.AcceptedPassengerId);
+                    var reservedSeats = acceptedPassenger.ReservedSeats;
+
+                    var acceptedPassengerWithSeats = new CarpoolSeatsDetailsModel();
+                    acceptedPassengerWithSeats.Passenger = passenger.ToCarpoolUserViewModel();
+                    acceptedPassengerWithSeats.Seats = reservedSeats;
+
+                    acceptedPassengersForView.Add(acceptedPassengerWithSeats);
+
+                }
+            }
 
             var carpoolOfferForDetailView = new CarpoolDetailsViewModel();
             carpoolOfferForDetailView.CarpoolOffer = carpoolOfferForView;

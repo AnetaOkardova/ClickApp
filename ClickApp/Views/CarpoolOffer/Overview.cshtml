@@ -86,7 +86,7 @@
                                 @if (_carpoolPassengerRequestsService.CheckIfRequestExists(user2.Id, carpoolOffer.Id))
                                 {
                                     <p class="p-2 pt-3 font-italic d-inline align-items-center">Request sent for @_carpoolPassengerRequestsService.GetValidPassengerRequest(user2.Id, carpoolOffer.Id).RequestedSeats seats.</p>
-                                    <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-passengerId="@user2.Id" asp-route-carpoolOfferId="@carpoolOffer.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; @*border: none;*@ background: none">
+                                    <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-passengerId="@user2.Id" asp-route-carpoolOfferId="@carpoolOffer.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
                                         <i class="far fa-trash-alt"></i>
                                     </a>
                                 }

@@ -46,15 +46,10 @@ namespace ClickApp.Controllers
             passengerRequest.Valid = true;
 
             var response = _carpoolPassengerRequestsService.Create(passengerRequest);
-            //if(response.IsSuccessful == true)
-            //{
-            //    offer.SeatsAvailable -= requestedSeats;
-            //    _carpoolOfferService.Update(offer);
-            //}
             return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
         }
 
-        public IActionResult CancelRequest(string passengerId, int carpoolOfferId)
+        public IActionResult CancelRequest(string passengerId, int carpoolOfferId, string userId)
         {
             if (passengerId == null)
             {
@@ -63,6 +58,10 @@ namespace ClickApp.Controllers
             if (carpoolOfferId == null)
             {
                 return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"There is no carpool offer selected. Please try again later." });
+            }
+            if (userId == null)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no authorization to cancel these requests." });
             }
 
             var response = _carpoolPassengerRequestsService.CancelRequest(passengerId, carpoolOfferId);

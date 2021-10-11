@@ -24,56 +24,91 @@ namespace ClickApp.Controllers
             _carpoolPassengerAcceptancesService = carpoolPassengerAcceptancesService;
             _carpoolPassengerRequestsService = carpoolPassengerRequestsService;
         }
-        public IActionResult CreatePaasengerAcceptance(int requestedSeats, string passengerId, int carpoolOfferId)
+        public IActionResult CreatePassengerAcceptance(string userId, int carpoolOfferId, string passengerId)
         {
-            //var offer = _carpoolOfferService.GetById(carpoolOfferId);
+            var offer = _carpoolOfferService.GetById(carpoolOfferId);
+            if (offer == null)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"There are no active carpool offers with ID {carpoolOfferId}." });
+            }
 
-            //if (offer == null)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"There are no active carpool offers with ID {carpoolOfferId}." });
-            //}
-            //if (requestedSeats == 0)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"To make a request you need to specify how many seats are you requesting. Please try again." });
-            //}
-            //if (passengerId == null)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"Opps. Something went wrong. Please try again later." });
-            //}
-            //var passengerRequest = new CarpoolPassengerRequest();
-            //passengerRequest.CarpoolOfferId = carpoolOfferId;
-            //passengerRequest.RequestingPassengerId = passengerId;
-            //passengerRequest.RequestedSeats = requestedSeats;
-            //passengerRequest.AcceptedStatus = false;
-            //passengerRequest.DateRequested = DateTime.Now;
-            //passengerRequest.Valid = true;
+            if (offer.DriverId != userId)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You are not authorized to accept passengers." });
+            }
 
-            //var response = _carpoolPassengerRequestsService.Create(passengerRequest);
-            //if(response.IsSuccessful == true)
-            //{
-            //    offer.SeatsAvailable -= requestedSeats;
-            //    _carpoolOfferService.Update(offer);
-            //}
-            return RedirectToAction("Overview", "CarpoolOffer"/*,*/ /*new { ErrorMessage = response.Message }*/);
+            var carpoolPassengerRequest = _carpoolPassengerRequestsService.GetAllValidByOfferId(offer.Id);
+            if (carpoolPassengerRequest == null || carpoolPassengerRequest.Count == 0)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no active carpool offers with ID {carpoolOfferId}." });
+            }
+            var carpoolRequestToApprove = carpoolPassengerRequest.FirstOrDefault(x => x.RequestingPassengerId == passengerId && x.Valid == true);
+            if (carpoolRequestToApprove == null)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no request for carpool offer with ID {carpoolOfferId}." });
+            }
+
+            carpoolRequestToApprove.Valid = false;
+            carpoolRequestToApprove.AcceptedStatus = true;
+
+            var response = _carpoolPassengerRequestsService.Update(carpoolRequestToApprove);
+            if (!response.IsSuccessful)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
+            }
+            
+            var passengerAcceptance = new CarpoolPassengerAcceptance();
+            passengerAcceptance.AcceptedPassengerId = carpoolRequestToApprove.RequestingPassengerId;
+            passengerAcceptance.CarpoolOfferId = carpoolRequestToApprove.CarpoolOfferId;
+            passengerAcceptance.DateAccepted = DateTime.Now;
+            passengerAcceptance.ReservedSeats = carpoolRequestToApprove.RequestedSeats;
+            passengerAcceptance.Valid = true;
+            passengerAcceptance.AcceptedStatus = true;
+
+            var responseForCreatingAcceptance = _carpoolPassengerAcceptancesService.CreatePassengerAcceptance(passengerAcceptance);
+            if (responseForCreatingAcceptance.IsSuccessful)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = $"The passanger has been successfully approved." });
+            }
+            else
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
+            }
         }
 
-        public IActionResult CancelRequest(string passengerId, int carpoolOfferId)
+        public IActionResult CancelAcceptance(string userId, int carpoolOfferId, string passengerId)
         {
-            //if (passengerId == null)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no authorization to cancel these requests." });
-            //}
-            //if (carpoolOfferId == null)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"There is no carpool offer selected. Please try again later." });
-            //}
+            var offer = _carpoolOfferService.GetById(carpoolOfferId);
+            if (offer == null)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"There are no active carpool offers with ID {carpoolOfferId}." });
+            }
 
-            //var response = _carpoolPassengerRequestsService.CancelRequest(passengerId, carpoolOfferId);
-            //if (response.IsSuccessful == true)
-            //{
-            //    return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = response.Message });
-            //}
-            return RedirectToAction("Overview", "CarpoolOffer"/*,*/ /*new { ErrorMessage = response.Message }*/);
+            if (offer.DriverId != userId)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You are not authorized to accept passengers." });
+            }
+
+            var carpoolAcceptances = _carpoolPassengerAcceptancesService.GetAllValidByOfferId(offer.Id);
+            if (carpoolAcceptances == null || carpoolAcceptances.Count == 0)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no active passenger with ID {passengerId}." });
+            }
+            var carpoolAcceptanceToCancel = carpoolAcceptances.FirstOrDefault(x => x.AcceptedPassengerId == passengerId && x.Valid == true);
+            if (carpoolAcceptances == null)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = $"You have no acceptance to cancel for carpool offer with ID ${carpoolOfferId}." });
+            }
+
+            carpoolAcceptanceToCancel.Valid = false;
+            carpoolAcceptanceToCancel.AcceptedStatus = false;
+
+            var response = _carpoolPassengerAcceptancesService.Update(carpoolAcceptanceToCancel);
+            if (!response.IsSuccessful)
+            {
+                return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
+            }
+            return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = $"The passanger acceptance has been canceled." });
         }
     }
 }
