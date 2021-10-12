@@ -28,12 +28,14 @@
         {
             if (_friendshipRequestsService.CheckIfRequestSent(user.Id, Model.Id))
             {
-                <a class="btn btn-primary text-light" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
+                <a class="btn btn-primary text-light m-2 d-inline-block" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
+                <a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Create" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>
             }
             else if (_friendshipRequestsService.CheckIfRequestReceived(user.Id, Model.Id))
             {
                 <div class="nav-item dropdown m-2 p-2 justify-content-center">
-                    <a class="btn btn-primary nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friendship requested</a>
+                    <a class="btn btn-primary nav-link dropdown-toggle text-light m-2 d-inline-block" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friendship requested</a>
+                    <a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Create" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>
                     <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
                         <li>
                             <a class="btn btn-success nav-link m-1 text-light" asp-area="" asp-controller="FriendshipRequest" asp-action="Update" asp-route-requestDecision="true" asp-route-requestedUserId="@Model.Id">Accept</a>
@@ -41,12 +43,13 @@
                         </li>
                     </ul>
                 </div>
-
             }
             else if (_friendshipService.GetByFriendId(user.Id, Model.Id) != null && _friendshipService.GetByFriendId(user.Id, Model.Id).FriendShipStatus == true)
             {
                 <div class="nav-item dropdown m-2 p-2 justify-content-center">
-                    <a class="btn btn-success nav-link dropdown-toggle text-light m-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
+                    <a class="btn btn-success nav-link dropdown-toggle text-light m-2 d-inline-block" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Friend</a>
+                    <a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Create" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>
+
                     <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown2">
                         <li>
                             <a class="btn btn-danger nav-link  m-1 text-light" asp-area="" asp-controller="Friendship" asp-action="Unfriend" asp-route-userId="@user.Id" asp-route-requestedUserId="@Model.Id">Unfriend</a>
@@ -57,7 +60,8 @@
             }
             else
             {
-                <a class="btn btn-success text-light" asp-controller="FriendshipRequest" asp-action="Create" asp-route-requestedUserId="@Model.Id">Add friend</a>
+                <a class="btn btn-success text-light m-2 d-inline-block" asp-controller="FriendshipRequest" asp-action="Create" asp-route-requestedUserId="@Model.Id">Add friend</a>
+                <a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Create" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>
             }
         }
     </div>

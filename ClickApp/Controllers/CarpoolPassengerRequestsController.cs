@@ -48,7 +48,6 @@ namespace ClickApp.Controllers
             var response = _carpoolPassengerRequestsService.Create(passengerRequest);
             return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
         }
-
         public IActionResult CancelRequest(string passengerId, int carpoolOfferId, string userId)
         {
             if (passengerId == null)

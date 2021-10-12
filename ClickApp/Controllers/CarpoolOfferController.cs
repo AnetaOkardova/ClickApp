@@ -87,7 +87,6 @@ namespace ClickApp.Controllers
                 return View(carpoolOfferViewModel);
             }
         }
-
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
@@ -106,10 +105,7 @@ namespace ClickApp.Controllers
                 return RedirectToAction("Overview", new { ErrorMessage = $"You are not authorized to see the carpool offers with ID {id}." });
             }
             var carpoolOfferForView = carpoolOffer.ToCarpoolOfferViewModel();
-
-            //var requestingPassengers = new List<ApplicationUser>();
             var requestingPassengersForView = new List<CarpoolSeatsDetailsModel>();
-
             var passengerRequestsForOffer = _carpoolPassengerRequestsService.GetAllValidByOfferId(id);
 
             if (passengerRequestsForOffer.Count != 0 && passengerRequestsForOffer != null)
@@ -125,12 +121,9 @@ namespace ClickApp.Controllers
 
                     requestingPassengersForView.Add(requestingPassengerWithSeats);
                 }
-                //requestingPassengersForView = requestingPassengers.Select(x => x.ToCarpoolUserViewModel()).ToList();
             }
 
-            //var acceptedPassengers = new Listk<ApplicationUser>();
             var acceptedPassengersForView = new List<CarpoolSeatsDetailsModel>();
-
             var acceptedPassengersForOffer = _carpoolPassengerAcceptancesService.GetAllValidByOfferId(id);
 
             if (acceptedPassengersForOffer.Count != 0 && acceptedPassengersForOffer != null)
@@ -145,18 +138,13 @@ namespace ClickApp.Controllers
                     acceptedPassengerWithSeats.Seats = reservedSeats;
 
                     acceptedPassengersForView.Add(acceptedPassengerWithSeats);
-
                 }
             }
-
             var carpoolOfferForDetailView = new CarpoolDetailsViewModel();
             carpoolOfferForDetailView.CarpoolOffer = carpoolOfferForView;
             carpoolOfferForDetailView.RequestingPassengers = requestingPassengersForView;
             carpoolOfferForDetailView.AcceptedPassengers = acceptedPassengersForView;
-
             return View(carpoolOfferForDetailView);
         }
-
-
     }
 }
