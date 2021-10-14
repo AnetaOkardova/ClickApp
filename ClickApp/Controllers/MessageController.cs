@@ -75,7 +75,7 @@ namespace ClickApp.Controllers
                 }
             }
 
-            if (messageFriendId != null || messageFriendId != "")
+            if (messageFriendId != null && messageFriendId != "")
             {
                 newMessage.UserFromId = userId;
                 newMessage.UserToId = messageFriendId;

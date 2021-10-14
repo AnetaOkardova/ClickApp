@@ -14,12 +14,15 @@ namespace ClickApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICarpoolOfferService _carpoolOfferService;
         private readonly ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
+        private readonly IMessagesService _messagesService;
 
-        public CarpoolPassengerRequestsController(UserManager<ApplicationUser> userManager, ICarpoolPassengerRequestsService carpoolPassengerRequestsService, ICarpoolOfferService carpoolOfferService)
+
+        public CarpoolPassengerRequestsController(UserManager<ApplicationUser> userManager, ICarpoolPassengerRequestsService carpoolPassengerRequestsService, ICarpoolOfferService carpoolOfferService, IMessagesService messagesService)
         {
             _userManager = userManager;
             _carpoolOfferService = carpoolOfferService;
             _carpoolPassengerRequestsService = carpoolPassengerRequestsService;
+            _messagesService = messagesService;
         }
         public IActionResult CreateRequest(int requestedSeats, string passengerId, int carpoolOfferId)
         {
@@ -46,6 +49,8 @@ namespace ClickApp.Controllers
             passengerRequest.Valid = true;
 
             var response = _carpoolPassengerRequestsService.Create(passengerRequest);
+
+            _messagesService.CreateMessage(passengerId, offer.DriverId, "I write to inform you that I requested to carpool with you. Please advise if you accept this request. Thank you.");
             return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
         }
         public IActionResult CancelRequest(string passengerId, int carpoolOfferId, string userId)
