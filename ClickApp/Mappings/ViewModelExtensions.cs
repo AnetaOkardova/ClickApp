@@ -179,5 +179,16 @@ namespace ClickApp.Mappings
                 AcceptedPassengers = entity.AcceptedPassengers
             };
         }
+        public static Message ToModel(this CreateMessageViewModel entity)
+        {
+            return new Message()
+            {
+                UserFromId = entity.UserFromId,
+                UserToId = entity.UserToId,
+                Content = entity.Content
+            };
+        }
+
+        
     }
 }

@@ -1,0 +1,185 @@
+﻿@model ClickApp.ViewModels.MessagesViewModel
+@using ClickApp.Models;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<ApplicationUser> _userManager;
+
+@{
+    ViewData["Title"] = "Messages";
+    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+}
+
+@section Styles{
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+}
+
+
+<div class="container">
+    <div class="row m-2 align-items-center">
+        @if (Model.MessageFriends.Count != 0)
+        {
+            if (Model.Messages.Count != 0)
+            {
+                if (user.Id == Model.Messages[0].UserFromId)
+                {
+                    var friend = await _userManager.FindByIdAsync(Model.Messages[0].UserToId);
+                    <div class="col-3"></div>
+                    <div class="col-8 d-inline-block ">
+                        <img class="rounded-circle d-inline-block" style="width:70px; height:70px" src="@friend.ProfilePhotoURL" />
+                        <p class="d-inline-block pt-2" style="font-size: 40px">@friend.Name @friend.LastName</p>
+                    </div>
+                    <div class="col-1 pl-2" style="font-size: 30px">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                }
+                else if (Model.Messages[0].Content == null || user.Id != Model.Messages[0].UserFromId)
+                {
+                    var friend = await _userManager.FindByIdAsync(Model.Messages[0].UserFromId);
+                    <div class="col-3"></div>
+                    <div class="col-8 d-inline-block ">
+                        <img class="rounded-circle d-inline-block" style="width:70px; height:70px" src="@friend.ProfilePhotoURL" />
+                        <p class="d-inline-block pt-2" style="font-size: 40px">@friend.Name @friend.LastName</p>
+                    </div>
+                    <div class="col-1 pl-2" style="font-size: 30px">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row align-content-center">
+        <div class="col-3" style="height:490px">
+            @if (Model.MessageFriends.Count != 0)
+            {
+                @foreach (var friend in Model.MessageFriends)
+                {
+                    <div class="p-1 d-inline-block" style="width: 200px">
+                        <img class="rounded-circle" style="width:50px; height:50px" src="@friend.MessagesFriend.ProfilePhotoURL" />
+                        <a class="font-weight-bold" asp-action="Overview" asp-controller="Message" asp-route-userId="@user.Id" asp-route-messageFriendId="@friend.MessagesFriend.Id">@friend.MessagesFriend.Name @friend.MessagesFriend.LastName</a>
+                        <hr />
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="p-1 d-inline-block">
+                    <p class="font-italic">You have no messages at this moment.</p>
+                </div>
+            }
+        </div>
+        <div class="col-8 flex-sm-column-reverse border rounded shadow m-0 p-0">
+            <div style="height:440px; overflow-y: auto; overflow-x: hidden;">
+                @if (Model.Messages.Count != 0)
+                {
+                    var year = DateTime.Now.Year;
+                    var date = DateTime.Now;
+                    var time = new DateTime();
+
+                    @foreach (var message in Model.Messages.OrderBy(x => x.DateCreated))
+                    {
+                        var messageYear = message.DateCreated.Year;
+                        var messageYearToShow = DateTime.Now.Year;
+
+
+                        if (messageYear == year)
+                        {
+                            <div class="row align-content-center">
+                                <div class="col p-0 m-0">
+                                    @if ((date - message.DateCreated).TotalDays < 7)
+                                    {
+                                        if ((date - message.DateCreated).TotalHours < 24)
+                                        {
+                                            <p class="font-italic text-center font-weight-light m-0" style="font-size: 10px">@message.DateCreated.ToString(@"hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="font-italic text-center font-weight-light m-0" style="font-size: 10px">@message.DateCreated.ToString(@"ddd, hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="font-italic text-center font-weight-light m-0" style="font-size: 10px">@message.DateCreated.ToString(@"MMM dd, hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row align-content-center">
+                                <div class="col p-0 m-0">
+                                    <p class="font-italic text-center font-weight-light m-0" style="font-size: 10px">@message.DateCreated.ToString(@"dd.MM.yyyy, hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                </div>
+                            </div>
+                        }
+
+                        @if (message.UserFromId == user.Id)
+                        {
+
+                            <div class="row align-content-between pr-3">
+                                <div class="col">
+                                </div>
+                                <div class="col border-dark text-light rounded m-1 p-1 mr-0" style="background-color:lightseagreen">
+                                    <p class="m-1">@message.Content</p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            var friendSelected = user;
+
+                            if (message.UserFromId != user.Id)
+                            {
+                                friendSelected = await _userManager.FindByIdAsync(message.UserFromId);
+                            }
+                            else
+                            {
+                                friendSelected = await _userManager.FindByIdAsync(message.UserToId);
+                            }
+
+                            <div class="row pl-3" style="width: 300px;">
+                                <div class="p-1 mt-1 d-inline-block">
+                                    <img class="rounded-circle" style="width:30px; height:30px" src="@friendSelected.ProfilePhotoURL" />
+                                </div>
+                                <div class="col border-dark rounded m-1 p-1 ml-0 bg-light">
+                                    <p class="m-1">@message.Content</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                <i class="fa fa-stack-overflow" aria-hidden="true"></i>
+            </div>
+            <div class="row border shadow justify-content-end" style="height:50px; margin-left: 1px; margin-right: 1px">
+                @*<div class="col-3">
+
+                    </div>*@
+                <div class="col" style="height:50px;">
+                    <form asp-action="CreateMessage" method="post" asp-route-userId="@Model.NewMessage.UserFromId" asp-route-messageFriendId="@Model.NewMessage.UserToId">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="text" name="@Model.NewMessage.UserFromId" id="@Model.NewMessage.UserFromId" hidden />
+                        <input type="text" name="@Model.NewMessage.UserToId" id="@Model.NewMessage.UserToId" hidden />
+
+                        <div class="form-group d-inline">
+                            <input class="border-0 bg-light rounded" placeholder="Write your message here" style="width: 95%; height:48px" name="Content" id="Content" />
+                            <button type="submit" class="border-0" style="color:lightseagreen; background-color: white"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+        }*@
