@@ -15,7 +15,7 @@ namespace ClickApp.Controllers
         private readonly ICarpoolOfferService _carpoolOfferService;
         private readonly ICarpoolPassengerAcceptancesService _carpoolPassengerAcceptancesService;
         private readonly ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
-                private readonly IMessagesService _messagesService;
+        private readonly IMessagesService _messagesService;
 
 
 
@@ -59,7 +59,7 @@ namespace ClickApp.Controllers
             {
                 return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
             }
-            
+
             var passengerAcceptance = new CarpoolPassengerAcceptance();
             passengerAcceptance.AcceptedPassengerId = carpoolRequestToApprove.RequestingPassengerId;
             passengerAcceptance.CarpoolOfferId = carpoolRequestToApprove.CarpoolOfferId;

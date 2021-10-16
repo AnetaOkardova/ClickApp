@@ -65,23 +65,23 @@ namespace ClickApp.Mappings
             };
         }
 
-        //public static Offer ToModel(this OfferViewModel entity)
-        //{
-        //    return new Offer()
-        //    {
-        //        Id = entity.Id,
-        //        Title = entity.Title,
-        //        DateCreated = entity.DateCreated,
-        //        DateModified = entity.DateModified,
-        //        Description = entity.Description,
-        //        ImageUrl = entity.ImageUrl,
-        //        ImportantNote = entity.ImportantNote,
-        //        IsProfessional = entity.IsProfessional,
-        //        IsPublic = entity.IsPublic,
-        //        ValidUntil = entity.ValidUntil,  ToString("dd-MM-yyyy")???
-        //        UserId = entity.UserId
-        //    };
-        //}
+        public static Offer ToModel(this OfferViewModel entity)
+        {
+            return new Offer()
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                UserId = entity.UserId,
+                DateCreated = entity.DateCreated,
+                DateModified = entity.DateModified,
+                Description = entity.Description,
+                ImageUrl = entity.ImageUrl,
+                ImportantNote = entity.ImportantNote,
+                IsProfessional = entity.IsProfessional,
+                IsPublic = entity.IsPublic,
+                ValidUntil = Convert.ToDateTime(entity.ValidUntil),
+            };
+        }
 
         public static Offer ToModel(this CreateOfferViewModel entity)
         {
@@ -94,6 +94,25 @@ namespace ClickApp.Mappings
                 IsProfessional = entity.IsProfessional,
                 IsPublic = entity.IsPublic,
                 ValidUntil = entity.ValidUntil,
+            };
+        }
+        public static CarpoolOffer ToModel(this CreateCarpoolOfferViewModel entity)
+        {
+            return new CarpoolOffer()
+            {
+                DriverId = entity.DriverId,
+                LeavingFrom = entity.LeavingFrom,
+                ArrivingAt = entity.ArrivingAt,
+                LeavingHour = entity.LeavingHour,
+                LeavingMinutes = entity.LeavingMinutes,
+                LeavingNote = entity.LeavingNote,
+                SeatsAvailable = entity.SeatsAvailable,
+                ReturnFrom = entity.ReturnFrom,
+                ReturnAt = entity.ReturnAt,
+                ReturnHour = entity.ReturnHour,
+                ReturnMinutes = entity.ReturnMinutes,
+                ReturnNote = entity.ReturnNote,
+                ReturnSeatsAvailable = entity.ReturnSeatsAvailable,
             };
         }
         public static GeneralField ToModel(this GeneralFieldViewModel entity)
@@ -189,6 +208,6 @@ namespace ClickApp.Mappings
             };
         }
 
-        
+
     }
 }

@@ -17,6 +17,7 @@ namespace ClickApp.Services
             _messagesRepository = messagesRepository;
         }
 
+
         public void CreateMessage(string userId, string messageFriendId, string content)
         {
             var message = new Message();
@@ -28,17 +29,32 @@ namespace ClickApp.Services
 
             _messagesRepository.Create(message);
         }
-
-        public List<Message> GetAllMessagesWithFilter(string userId, string messageFriendId)
+        public void UpdateMessage(Message message)
         {
-            var allUserMessages = _messagesRepository.GetAll().OrderByDescending(x=>x.DateCreated).Where(x=> x.UserFromId == userId || x.UserToId == userId).ToList();
+            _messagesRepository.Update(message);
+        }
 
-            if(messageFriendId != null && messageFriendId != "")
+        public List<Message> GetAllMessagesWithFriend(string userId, string messageFriendId)
+        {
+            var allUserMessages = _messagesRepository.GetAll().OrderByDescending(x => x.DateCreated).Where(x => x.UserFromId == userId || x.UserToId == userId).ToList();
+
+            if (messageFriendId != null && messageFriendId != "")
             {
                 allUserMessages = _messagesRepository.GetAll().Where(x => x.UserFromId == messageFriendId || x.UserToId == messageFriendId).ToList();
             }
 
             return allUserMessages;
         }
+        public List<Message> GetAllByFriendId(List<Message> friendMessages, string friendId)
+        {
+            return friendMessages.Where(x => x.UserFromId == friendId).ToList();
+        }
+        public bool CheckIfNotSeenMessage(List<Message> friendMessages)
+        {
+            var exists = friendMessages.Any(x => x.SeenStatus == false);
+
+            return exists;
+        }
+
     }
 }

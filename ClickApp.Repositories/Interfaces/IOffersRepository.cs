@@ -10,5 +10,8 @@ namespace ClickApp.Repositories.Interfaces
         List<Offer> GetAllPublicWithFilter(string title, bool isProffesional);
         void Create(Offer offer);
         List<Offer> GetAllOffersForUser(string userId);
+        Offer GetById(int offerId);
+        void Delete(Offer offer);
+        void Update(Offer offer);
     }
 }

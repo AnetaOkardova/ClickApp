@@ -22,7 +22,8 @@ namespace ClickApp.Mappings
                 City = entity.City,
                 Country = entity.Country,
                 ProfilePhotoURL = entity.ProfilePhotoURL,
-                Offers = entity.Offers.Select(x => x.ToOfferViewModel()).ToList()
+                Offers = entity.Offers.Select(x => x.ToOfferViewModel()).ToList(),
+                //CarpoolOffers = entity.CarpoolOffers.Select(x => x.ToCarpoolOfferViewModel()).ToList(),
             };
         }
         public static CarpoolUserViewModel ToCarpoolUserViewModel(this ApplicationUser entity)

@@ -32,7 +32,7 @@ namespace ClickApp.Controllers
 
         }
 
-        public IActionResult Overview(string successMessage, string errorMessage)
+        public IActionResult Overview(string successMessage, string errorMessage, string leavingLocationSearch)
         {
             if (successMessage != null)
             {
@@ -42,7 +42,16 @@ namespace ClickApp.Controllers
             {
                 ViewBag.ErrorMessage = errorMessage;
             }
-            var carpoolOffers = _carpoolOfferService.GetAllCarpoolOffers();
+            var carpoolOffers = new List<CarpoolOffer>();
+
+            if (leavingLocationSearch != null && leavingLocationSearch != "")
+            {
+                carpoolOffers = _carpoolOfferService.GetAllCarpoolOffersByLeavingLocation(leavingLocationSearch);
+            }
+            else
+            {
+                carpoolOffers = _carpoolOfferService.GetAllCarpoolOffers();
+            }
 
             var activeCarpoolOffers = carpoolOffers.Where(x => x.SeatsAvailable > 0).ToList();
 
@@ -50,7 +59,37 @@ namespace ClickApp.Controllers
 
             return View(viewCarpoolOffers);
         }
-        
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Create()
+        {
+            var carpoolOffer = new CreateCarpoolOfferViewModel();
+            return View(carpoolOffer);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateCarpoolOfferViewModel createCarpoolOfferViewModel)
+        {
+            if (createCarpoolOfferViewModel.LeavingFrom != null && createCarpoolOfferViewModel.ArrivingAt != null && createCarpoolOfferViewModel.LeavingHour != null && createCarpoolOfferViewModel.LeavingMinutes != null && createCarpoolOfferViewModel.SeatsAvailable != 0)
+            {
+                var user = User;
+                var userFromDb = await _userManager.FindByNameAsync(user.Identity.Name);
+
+                var carpoolOffer = createCarpoolOfferViewModel.ToModel();
+                carpoolOffer.DateCreated = DateTime.Now;
+                carpoolOffer.DriverId = userFromDb.Id;
+                carpoolOffer.RequestingPassengers = new List<CarpoolPassengerRequest>();
+                carpoolOffer.AcceptedPassengers = new List<CarpoolPassengerAcceptance>();
+                carpoolOffer.Driver = userFromDb;
+                int carpoolOfferId = _carpoolOfferService.Create(carpoolOffer);
+                return RedirectToAction("Details", new { id = carpoolOfferId });
+            }
+            else
+            {
+                return View(createCarpoolOfferViewModel);
+            }
+        }
+
         [HttpGet]
         [Authorize]
         public IActionResult Edit(int id)
@@ -75,11 +114,11 @@ namespace ClickApp.Controllers
                 var response = _carpoolOfferService.Update(carpoolOffer);
                 if (response.IsSuccessful)
                 {
-                    return RedirectToAction("Overview", new { SuccessMessage = $"The carpool offer has been successfully edited." });
+                    return RedirectToAction("Details", new { id = carpoolOffer.Id, successMessage = $"The carpool offer with ID {carpoolOffer.Id} has been successfully updated." });
                 }
                 else
                 {
-                    return RedirectToAction("Overview", new { ErrorMessage = response.Message });
+                    return RedirectToAction("Details", new { id = carpoolOffer.Id, ErrorMessage = response.Message });
                 }
             }
             else
@@ -87,14 +126,34 @@ namespace ClickApp.Controllers
                 return View(carpoolOfferViewModel);
             }
         }
+
         [Authorize]
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Delete(int id)
         {
+            var response = _carpoolOfferService.Delete(id);
+
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("Overview", new { successMessage = response.Message });
+            }
+            return RedirectToAction("Overview", new { errorMessage = response.Message });
+        }
+        [Authorize]
+        public async Task<IActionResult> Details(int id, string successMessage, string errorMessage)
+        {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
             var user = await _userManager.GetUserAsync(User);
 
             var carpoolOffer = _carpoolOfferService.GetById(id);
 
-            
+
             if (carpoolOffer == null)
             {
                 return RedirectToAction("Overview", new { ErrorMessage = $"There are no active carpool offers with ID {id}." });

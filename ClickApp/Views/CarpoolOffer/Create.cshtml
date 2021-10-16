@@ -1,36 +1,72 @@
-﻿@model ClickApp.Models.CarpoolOffer
+﻿@model ClickApp.ViewModels.CreateCarpoolOfferViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create carpool offer";
 }
 
 <h1>Create</h1>
 
-<h4>CarpoolOffer</h4>
+<h4>CreateCarpoolOfferViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="LeavingFrom" class="control-label"></label>
+                <label asp-for="LeavingFrom" class="control-label">Leaving from</label>
                 <input asp-for="LeavingFrom" class="form-control" />
                 <span asp-validation-for="LeavingFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ArrivingAt" class="control-label"></label>
+                <label asp-for="ArrivingAt" class="control-label">Arriving destination</label>
                 <input asp-for="ArrivingAt" class="form-control" />
                 <span asp-validation-for="ArrivingAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LeavingHour" class="control-label"></label>
-                <input asp-for="LeavingHour" class="form-control" />
-                <span asp-validation-for="LeavingHour" class="text-danger"></span>
+                <label class="control-label" asp-for="LeavingHour">Hour</label>
+                <select asp-for="LeavingHour" class="form-control" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="LeavingMinutes" class="control-label"></label>
-                <input asp-for="LeavingMinutes" class="form-control" />
-                <span asp-validation-for="LeavingMinutes" class="text-danger"></span>
+                <label class="control-label" asp-for="LeavingMinutes">Minutes</label>
+                <select asp-for="LeavingMinutes" class="form-control" required>
+                    <option value="0">0</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="30">30</option>
+                    <option value="35">35</option>
+                    <option value="40">40</option>
+                    <option value="45">45</option>
+                    <option value="50">50</option>
+                    <option value="55">55</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="SeatsAvailable" class="control-label"></label>
@@ -43,38 +79,69 @@
                 <span asp-validation-for="LeavingNote" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateCreated" class="control-label"></label>
-                <input asp-for="DateCreated" class="form-control" />
-                <span asp-validation-for="DateCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ReturnFrom" class="control-label"></label>
-                <input asp-for="ReturnFrom" class="form-control" />
+                <input asp-for="ReturnFrom" class="form-control" value="" />
                 <span asp-validation-for="ReturnFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReturnAt" class="control-label"></label>
-                <input asp-for="ReturnAt" class="form-control" />
+                <input asp-for="ReturnAt" class="form-control" value=""/>
                 <span asp-validation-for="ReturnAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReturnHour" class="control-label"></label>
-                <input asp-for="ReturnHour" class="form-control" />
-                <span asp-validation-for="ReturnHour" class="text-danger"></span>
+                <label class="control-label" asp-for="ReturnHour">Hour</label>
+                <select asp-for="ReturnHour" class="form-control" >
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="ReturnMinutes" class="control-label"></label>
-                <input asp-for="ReturnMinutes" class="form-control" />
-                <span asp-validation-for="ReturnMinutes" class="text-danger"></span>
+                <label class="control-label" asp-for="ReturnMinutes">Minutes</label>
+                <select asp-for="ReturnMinutes" class="form-control" >
+                    <option value="0">0</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="30">30</option>
+                    <option value="35">35</option>
+                    <option value="40">40</option>
+                    <option value="45">45</option>
+                    <option value="50">50</option>
+                    <option value="55">55</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="ReturnSeatsAvailable" class="control-label"></label>
-                <input asp-for="ReturnSeatsAvailable" class="form-control" />
+                <input asp-for="ReturnSeatsAvailable" class="form-control" value="0"/>
                 <span asp-validation-for="ReturnSeatsAvailable" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReturnNote" class="control-label"></label>
-                <input asp-for="ReturnNote" class="form-control" />
+                <input asp-for="ReturnNote" class="form-control" value=""/>
                 <span asp-validation-for="ReturnNote" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -85,7 +152,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Overview">Back to List</a>
 </div>
 
 @section Scripts {

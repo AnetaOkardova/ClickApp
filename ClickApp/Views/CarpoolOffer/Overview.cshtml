@@ -1,32 +1,23 @@
 ﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<ClickApp.ViewModels.CarpoolOfferViewModel>;
+@model List<ClickApp.ViewModels.CarpoolOfferViewModel>;
+
 @using ClickApp.Services.Interfaces;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<ApplicationUser> _userManager;
+@inject ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
+@inject ICarpoolOfferService _carpoolOfferService
 
 @{
     ViewData["Title"] = "Carpool Overview";
 }
 
-@using Microsoft.AspNetCore.Identity;
-@inject UserManager<ApplicationUser> _userManager;
-@inject ICarpoolPassengerRequestsService _carpoolPassengerRequestsService;
-@inject ICarpoolOfferService _carpoolOfferService
-
 @section Styles{
     <link rel="stylesheet" href="~/css/OffersOverview.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
 }
-
-
 
 <h1 class="text-center">Carpool Offers</h1>
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger m-3" role="alert">
-        @ViewBag.ErrorMessage
-    </div>
-}
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -35,107 +26,137 @@
     </div>
 }
 
-<p class="btn btn-success">
-    <a asp-action="Create" class="text-light">Create Carpool Offer</a>
-</p>
 
-@foreach (var carpoolOffer in Model)
-{
-    <div class="card offerCard m-2" style="width: 500px;">
-        <div class="row no-gutters align-items-center">
-            @{var driverName = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Name + " " + _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.LastName; }
-            @{ var driverEmail = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Email;}
-
+<div class="container-fluid p-2">
+    <div class="row">
+        <div class="col-4 border-right border-left border-bottom">
+            <form asp-action="Overview" method="get" class="form-inline my-2 my-lg-0">
+                <input class="form-control m-auto d-inline-block" style="width:250px" type="search" name="leavingLocationSearch" id="leavingLocationSearch" placeholder="Search by leaving location" aria-label="Search by leaving location">
+                <button class="btn btn-outline-success m-auto d-inline-block" type="submit">Search</button>
+            </form>
+            <hr />
+        </div>
+        <div class="col-8 ">
             @if (User.Identity.IsAuthenticated)
             {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                @if (user.Email == driverEmail)
+                <div class="row justify-content-end">
+                    <div class="col">
+                        <a class="btn btn-success align-content-end" asp-action="Create">Create Carpool Offer</a>
+                        <hr />
+                    </div>
+                </div>
+                
+            }
+        </div>
+
+    </div>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger m-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+
+@if (Model.Count != 0)
+{
+    @foreach (var carpoolOffer in Model)
+    {
+        <div class="card offerCard m-2 d-inline-block" style="width: 500px;">
+            <div class="row no-gutters align-items-center">
+                @{var driverName = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Name + " " + _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.LastName; }
+                @{ var driverEmail = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Email;}
+
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="col-4">
-                        <p class="card-text p-2 rounded bg-light text-center text-success"><a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" style="color: gray; width: 25px">My offer</a></p>
-                    </div>
-                    <div class="col-3">
-                    </div>
-                    <div class="col-5">
-                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
-                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
-                        <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
-                    </div>
+                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                    @if (user.Email == driverEmail)
+                    {
+                        <div class="col-4">
+                            <p class="card-text p-2 rounded bg-light text-center text-success"><a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" style="color: gray; width: 25px">My offer</a></p>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                        <div class="col-5">
+                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
+                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
+                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" class="card-text p-2 rounded bg-light text-center text-success">@driverName</a>
+                    }
                 }
                 else
                 {
                     <a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" class="card-text p-2 rounded bg-light text-center text-success">@driverName</a>
                 }
-            }
-            else
-            {
-                <a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" class="card-text p-2 rounded bg-light text-center text-success">@driverName</a>
-            }
-            <div class="col-sm-12">
-                <div class="card-body">
-                    <h4 class="text-center">From @carpoolOffer.LeavingFrom to @carpoolOffer.ArrivingAt at @carpoolOffer.LeavingHour:@carpoolOffer.LeavingMinutes</h4>
-                    <hr />
-                    <div class=" row align-items-center @*justify-content-between*@">
-                        <div class="col-sm-5">
-                            <h6 class="text-success bg-light rounded p-2">Available seats @carpoolOffer.SeatsAvailable</h6>
-                        </div>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            var user2 = await _userManager.FindByNameAsync(User.Identity.Name);
-                            @if (user2.Email != driverEmail)
+                <div class="col-sm-12">
+                    <div class="card-body">
+                        <h4 class="text-center">From @carpoolOffer.LeavingFrom to @carpoolOffer.ArrivingAt at @carpoolOffer.LeavingHour:@carpoolOffer.LeavingMinutes</h4>
+                        <hr />
+                        <div class=" row align-items-center @*justify-content-between*@">
+                            <div class="col-sm-5">
+                                <h6 class="text-success bg-light rounded p-2">Available seats @carpoolOffer.SeatsAvailable</h6>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
                             {
-                                @if (_carpoolPassengerRequestsService.CheckIfRequestExists(user2.Id, carpoolOffer.Id))
+                                var user2 = await _userManager.FindByNameAsync(User.Identity.Name);
+                                @if (user2.Email != driverEmail)
                                 {
-                                    var offer = _carpoolOfferService.GetById(carpoolOffer.Id);
+                                    @if (_carpoolPassengerRequestsService.CheckIfRequestExists(user2.Id, carpoolOffer.Id))
+                                    {
+                                        var offer = _carpoolOfferService.GetById(carpoolOffer.Id);
 
-                                    <p class="p-2 pt-3 font-italic d-inline align-items-center">Request sent for @_carpoolPassengerRequestsService.GetValidPassengerRequest(user2.Id, carpoolOffer.Id).RequestedSeats seats.</p>
-                                    <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-userId="@offer.DriverId" asp-route-passengerId="@user2.Id" asp-route-carpoolOfferId="@carpoolOffer.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
-                                        <i class="far fa-trash-alt"></i>
-                                    </a>
-                                }
-                                else
-                                {
-                                    //check if acceptance exists
-                                    <div class="col-sm-7">
-                                        <form asp-controller="CarpoolPassengerRequests" asp-action="CreateRequest" method="get">
-                                            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-                                            <input type="text" name="passengerId" value="@user2.Id" hidden />
-                                            <input type="number" name="carpoolOfferId" value="@carpoolOffer.Id" hidden />
+                                        <p class="p-2 pt-3 font-italic d-inline align-items-center">Request sent for @_carpoolPassengerRequestsService.GetValidPassengerRequest(user2.Id, carpoolOffer.Id).RequestedSeats seats.</p>
+                                        <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-userId="@offer.DriverId" asp-route-passengerId="@user2.Id" asp-route-carpoolOfferId="@carpoolOffer.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
+                                            <i class="far fa-trash-alt"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        //check if acceptance exists
+                                        <div class="col-sm-7">
+                                            <form asp-controller="CarpoolPassengerRequests" asp-action="CreateRequest" method="get">
+                                                <input type="text" name="passengerId" value="@user2.Id" hidden />
+                                                <input type="number" name="carpoolOfferId" value="@carpoolOffer.Id" hidden />
 
-                                            <div class="form-group p-2 font-italic">
-                                                <select class="rounded border-0" class="form-select" name="requestedSeats" id="requestedSeats" @*aria-label="Default select example"*@>
-                                                    <option name="requestedSeats" selected class="p-2 font-italic">Select seats</option>
-                                                    @for (var i = 0; i < carpoolOffer.SeatsAvailable; i++)
-                                                    {
-                                                        <option name="requestedSeats" value="@(i+1)">@(i+1)</option>
-                                                    }
+                                                <div class="form-group p-2 font-italic">
+                                                    <select class="rounded border-0" class="form-select" name="requestedSeats" id="requestedSeats">
+                                                        <option name="requestedSeats" selected class="p-2 font-italic">Select seats</option>
+                                                        @for (var i = 0; i < carpoolOffer.SeatsAvailable; i++)
+                                                        {
+                                                            <option name="requestedSeats" value="@(i + 1)">@(i + 1)</option>
+                                                        }
 
-                                                </select>
-                                                <button type="submit" style="font-size: 20px; color: forestgreen; border: none; background: none">
-                                                    <i class="far fa-check-circle"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                    </select>
+                                                    <button type="submit" style="font-size: 20px; color: forestgreen; border: none; background: none">
+                                                        <i class="far fa-check-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    }
                                 }
                             }
+                        </div>
+                        <hr />
+                        @if (carpoolOffer.LeavingNote != null || carpoolOffer.LeavingNote != "")
+                        {
+                            <span class="text-justify font-italic">* @carpoolOffer.LeavingNote</span>
                         }
                     </div>
-                    <hr />
-                    @if (carpoolOffer.LeavingNote != null || carpoolOffer.LeavingNote != "")
-                    {
-                        <span class="text-justify font-italic">* @carpoolOffer.LeavingNote</span>
-                    }
                 </div>
             </div>
         </div>
+    }
+}
+else
+{
+    <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+        <p class="m-1 font-italic">There are no offers to show</p>
     </div>
 }
-
-@*<a asp-action="Details" asp-route-id="@carpoolOffer.Id" class="btn btn-success">See more</a>*@
-
-
-@*<td>
-
-    </td>*@
-

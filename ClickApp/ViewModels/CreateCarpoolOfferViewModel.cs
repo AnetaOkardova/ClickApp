@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ClickApp.Models
+namespace ClickApp.ViewModels
 {
-    public class CarpoolOffer
+    public class CreateCarpoolOfferViewModel
     {
-        public int Id { get; set; }
         [Required]
-        public string? DriverId { get; set; }
-        public ApplicationUser Driver { get; set; }
-
+        public string DriverId { get; set; }
         [Required]
         public string LeavingFrom { get; set; }
         [Required]
@@ -24,18 +22,11 @@ namespace ClickApp.Models
         public int SeatsAvailable { get; set; }
         [Required]
         public string LeavingNote { get; set; }
-        [Required]
-        public DateTime DateCreated { get; set; }
-
         public string? ReturnFrom { get; set; }
         public string? ReturnAt { get; set; }
         public int? ReturnHour { get; set; }
         public int? ReturnMinutes { get; set; }
         public int? ReturnSeatsAvailable { get; set; }
         public string? ReturnNote { get; set; }
-
-        public List<CarpoolPassengerRequest>? RequestingPassengers { get; set; }
-        public List<CarpoolPassengerAcceptance>? AcceptedPassengers { get; set; }
     }
-
 }

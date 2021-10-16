@@ -18,15 +18,48 @@ namespace ClickApp.Services
             _carpoolOffersRepository = carpoolOffersRepository;
         }
 
+        public int Create(CarpoolOffer carpoolOffer)
+        {
+            _carpoolOffersRepository.Create(carpoolOffer);
+            var carpoolOfferId = _carpoolOffersRepository.GetAll().FirstOrDefault(x => x.DateCreated == carpoolOffer.DateCreated && x.DriverId == carpoolOffer.DriverId).Id;
+            return carpoolOfferId;
+        }
+
+        public StatusModel Delete(int carpoolOfferId)
+        {
+           var response = new StatusModel();
+            var carpoolOffer = _carpoolOffersRepository.GetById(carpoolOfferId);
+            if(carpoolOffer == null)
+            {
+                response.IsSuccessful = false;
+                response.Message = $"There is no carpool offer with Id {carpoolOfferId}";
+                return response;
+            }
+            _carpoolOffersRepository.Delete(carpoolOffer);
+            response.Message = $"The carpool offer with id {carpoolOfferId} has been successfully deleted.";
+            return response;
+        }
 
         public List<CarpoolOffer> GetAllCarpoolOffers()
         {
             return _carpoolOffersRepository.GetAll().ToList();
         }
 
-        public CarpoolOffer GetById(int id)
+        public List<CarpoolOffer> GetAllCarpoolOffersByLeavingLocation(string leavingLocation)
         {
-            return _carpoolOffersRepository.GetById(id);
+            var allCarpoolOffers = _carpoolOffersRepository.GetAll().ToList();
+            var allCarpoolOffersForALeavingLocation = allCarpoolOffers.Where(x => x.LeavingFrom.ToLower().Contains(leavingLocation.ToLower())).ToList();
+            return allCarpoolOffersForALeavingLocation;
+        }
+
+        public List<CarpoolOffer> GetAllCarpoolOffersByUserId(string id)
+        {
+            return _carpoolOffersRepository.GetAll().Where(x => x.DriverId == id).ToList();
+        }
+
+        public CarpoolOffer GetById(int carpoolOfferId)
+        {
+            return _carpoolOffersRepository.GetById(carpoolOfferId);
         }
 
         public StatusModel Update(CarpoolOffer carpoolOffer)

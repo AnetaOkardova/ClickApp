@@ -22,8 +22,10 @@ namespace ClickApp.Controllers
         private readonly IFriendshipService _friendshipService;
         private readonly IFriendshipRequestsService _friendshipRequestsService;
         private readonly IOffersService _offersService;
+        private readonly ICarpoolOfferService _carpoolOfferService;
 
-        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService, IFriendshipRequestsService friendshipRequestsService, IOffersService offersService)
+
+        public UserController(UserManager<ApplicationUser> userManager, IUserSkillsService userSkillsService, ISkillsService skillsService, IInterestsService interestsService, IUserInterestsService userInterestsService, IFriendshipService friendshipService, IFriendshipRequestsService friendshipRequestsService, IOffersService offersService, ICarpoolOfferService carpoolOfferService)
         {
             _userManager = userManager;
             _userSkillsService = userSkillsService;
@@ -33,10 +35,21 @@ namespace ClickApp.Controllers
             _friendshipService = friendshipService;
             _friendshipRequestsService = friendshipRequestsService;
             _offersService = offersService;
+            _carpoolOfferService = carpoolOfferService;
         }
+        
         [Authorize]
-        public async Task<IActionResult> Details(string userId)
+        public async Task<IActionResult> Details(string userId, string successMessage, string errorMessage)
         {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
+
             var user = await _userManager.GetUserAsync(User);
 
             if (userId!=null && userId != "")
@@ -53,6 +66,14 @@ namespace ClickApp.Controllers
             user.Offers = _offersService.GetAllOffersForUser(user.Id);
             
             var userDetails = user.ToUserViewModel();
+
+            var userCarpoolOffers = _carpoolOfferService.GetAllCarpoolOffersByUserId(user.Id);
+            var userCarpoolOffersListView = new List<CarpoolOfferViewModel>();
+            if (userCarpoolOffers != null)
+            {
+                userCarpoolOffersListView = userCarpoolOffers.Select(x=>x.ToCarpoolOfferViewModel()).ToList();
+            }
+            userDetails.CarpoolOffers = userCarpoolOffersListView;
 
             if (user.Skills != null)
             {
@@ -90,8 +111,8 @@ namespace ClickApp.Controllers
             {
                 userDetails.Interests = new List<InterestViewModel>();
             }
+            
             var friendsListView = new List<UserCardViewModel>();
-
             var friends = _friendshipService.GetAllUserFriendships(user);
             if (friends != null)
             {
@@ -105,7 +126,6 @@ namespace ClickApp.Controllers
             userDetails.Friends = friendsListView;
 
             var friendRequestsListView = new List<UserCardViewModel>();
-
             var friendRequests = _friendshipRequestsService.GetAllUserFriendRequests(user);
             if (friendRequests != null)
             {
@@ -117,6 +137,7 @@ namespace ClickApp.Controllers
                 }
             }
             userDetails.RequestingUsers = friendRequestsListView;
+
             return View(userDetails);
         }
 

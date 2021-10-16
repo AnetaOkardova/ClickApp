@@ -26,10 +26,10 @@ namespace ClickApp.Controllers
             var response = _friendshipService.Delete(userId, requestedUserId);
             if (!response.IsSuccessful)
             {
-                return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });
+                return RedirectToAction("Details", "User", new { userId = requestedUserId, ErrorMessage = response.Message });
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", "User", new { userId = requestedUserId, SuccessMessage = response.Message });
         }
     }
 }

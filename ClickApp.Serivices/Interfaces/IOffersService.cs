@@ -11,5 +11,8 @@ namespace ClickApp.Services.Interfaces
         List<Offer> GetAllPublicWithFilter(string title, bool isProffesional);
         void Create(Offer offer);
         List<Offer> GetAllOffersForUser(string id);
+        Offer GetById(int offerId);
+        StatusModel Delete(int offerId);
+        StatusModel Update(Offer offer);
     }
 }

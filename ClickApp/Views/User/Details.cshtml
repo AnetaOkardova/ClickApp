@@ -3,11 +3,9 @@
 @using Microsoft.AspNetCore.Identity;
 @using ClickApp.Services.Interfaces;
 
-
 @inject UserManager<ApplicationUser> _userManager;
 @inject IFriendshipRequestsService _friendshipRequestsService;
 @inject IFriendshipService _friendshipService;
-
 
 
 @{
@@ -18,6 +16,21 @@
 @section Styles{
     <link rel="stylesheet" href="~/css/Profile.css" />
 }
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger m-3" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success m-3" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
 <div class="Container">
     <div class="row justify-content-center">
         <img class="roundImage profilePic" id="profilePicSmall" src="@Model.ProfilePhotoURL" onclick="showProfileImage()" />
@@ -28,8 +41,17 @@
         {
             if (_friendshipRequestsService.CheckIfRequestSent(user.Id, Model.Id))
             {
-                <a class="btn btn-primary text-light m-2 d-inline-block" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>
+                @*<a class="btn btn-primary text-light m-2 d-inline-block" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-requestedUserId="@Model.Id">Request sent</a>*@
+                @*<a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Overview" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>*@
+
+                <a class="btn btn-primary nav-link dropdown-toggle text-light m-2 d-inline-block" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Request sent</a>
                 <a class="btn btn-light btn-outline-success text-dark m-2 p-2" asp-controller="Message" asp-action="Overview" asp-route-userId="@user.Id" asp-route-messageFriendId="@Model.Id">Message</a>
+
+                <ul class="dropdown-menu bg-light" aria-labelledby="navbarDropdown2">
+                    <li>
+                        <a class="btn btn-danger nav-link  m-1 text-light" asp-area="" asp-controller="FriendshipRequest" asp-action="Delete" asp-route-userId="@user.Id" asp-route-requestedUserId="@Model.Id">Cancel request</a>
+                    </li>
+                </ul>
             }
             else if (_friendshipRequestsService.CheckIfRequestReceived(user.Id, Model.Id))
             {
@@ -78,18 +100,12 @@
     <div class="row justify-content-center">
         <div class="profileTabs" onclick="showAboutInfo()">About</div>
         <div class="profileTabs" onclick="showFriendsInfo()">Friends</div>
-        @if (user.Id == @Model.Id)
-        {
-            <div class="profileTabs" onclick="showGroupsInfo()">Groups</div>
-            <div class="profileTabs" onclick="showMessagesInfo()">Messages</div>
-            <div class="profileTabs" onclick="showConnectionsInfo()">Connections</div>
-        }
-        <div class="profileTabs" onclick="showPhotosInfo()">Photos</div>
+        @*<div class="profileTabs" onclick="showPhotosInfo()">Photos</div>*@
         @if (user.Id == @Model.Id)
         {
             <div class="profileTabs" onclick="showOffersInfo()">My offers</div>
-            <div class="profileTabs" onclick="showCallendarInfo()">Callendar</div>
-            <div class="profileTabs" onclick="showNotesInfo()">Notes</div>
+            <div class="profileTabs" onclick="showCarpoolOffersInfo()">Carpool offers</div>
+            <div class="profileTabs" onclick="showJournalInfo()">Journal entries</div>
         }
     </div>
 </div>
@@ -240,7 +256,7 @@
 
                         <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
                             <img class="rounded-circle m-1" style="width:50px; height:50px" src="@offer.ImageUrl" />
-                            <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="Offer" asp-route-userId="@offer.Id">@offer.Title</a>
+                            <a class="m-1 font-weight-bold" asp-action="GetAllWithFilter" asp-controller="Offer" asp-route-offerTitle="@offer.Title" asp-route-isProffesional="@offer.IsProfessional">@offer.Title</a>
                             @if (Convert.ToDateTime(offer.ValidUntil) < DateTime.Now)
                             {
                                 <p class="m-1 font-italic text-warning">Offer expired on @offer.ValidUntil</p>
@@ -264,8 +280,54 @@
     </div>
 </div>
 
+<div class="container-fluid d-none m-5 p-2" id="carpoolOffersInfo">
+    <div>
+        <dl class="row justify-content-center">
+
+            @if (Model.CarpoolOffers.Count != 0)
+            {
+                <div class="col-8">
+                    <h4>Carpool Offers</h4>
+                    @foreach (var carpoolOffer in Model.CarpoolOffers.OrderByDescending(x => x.DateCreated))
+                    {
+
+                        <div class="border p-1 m-2 shadow d-inline-block" style="width: 300px">
+                            @*<img class="rounded-circle m-1" style="width:50px; height:50px" src="@offer.ImageUrl" />*@
+                            <a class="m-1 font-weight-bold" asp-controller="CarpoolOffer" asp-action="Details" asp-route-id="@carpoolOffer.Id">From @carpoolOffer.LeavingFrom to @carpoolOffer.ArrivingAt at @carpoolOffer.LeavingHour : @carpoolOffer.LeavingMinutes</a>
+                            <p class="m-1 font-italic text-warning">Seats left: @carpoolOffer.SeatsAvailable</p>
+                            @if (@carpoolOffer.ReturnSeatsAvailable > 0)
+                            {
+                                <hr />
+                                <a class="m-1 font-weight-bold" asp-controller="CarpoolOffer" asp-action="Details" asp-route-id="@carpoolOffer.Id">Returning from @carpoolOffer.ReturnFrom to @carpoolOffer.ReturnAt at @carpoolOffer.ReturnHour : @carpoolOffer.ReturnMinutes</a>
+                                <p class="m-1 font-italic text-warning">Seats left: @carpoolOffer.ReturnSeatsAvailable</p>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </dl>
+    </div>
+    <hr />
+    <div>
+        <div class="row">
+
+            <div class="profileTabs" onclick="hideOffersInfo()">Close carpool offers tab</div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
+        function showContainer(containerId) {
+            var container = document.getElementById(containerId);
+            container.classList.remove("d-none");
+            container.classList.add("d-block");
+        }
+        function hideContainer(containerId) {
+            var container = document.getElementById(containerId);
+            container.classList.remove("d-block");
+            container.classList.add("d-none");
+        }
 
         function showProfileImage() {
             hideAllInfo();
@@ -303,22 +365,22 @@
             hideAllInfo();
             showContainer("tabsContainer");
         }
+        function showCarpoolOffersInfo() {
+            hideAllInfo();
+            showContainer("carpoolOffersInfo");
+        }
+        function hideCarpoolOffersInfo() {
+            hideAllInfo();
+            showContainer("carpoolOffersInfo");
+        }
 
-        function showContainer(containerId) {
-            var container = document.getElementById(containerId);
-            container.classList.remove("d-none");
-            container.classList.add("d-block");
-        }
-        function hideContainer(containerId) {
-            var container = document.getElementById(containerId);
-            container.classList.remove("d-block");
-            container.classList.add("d-none");
-        }
 
         function hideAllInfo() {
             hideContainer("aboutInfo");
             hideContainer("friendsInfo");
             hideContainer("offersInfo");
+            hideContainer("carpoolOffersInfo");
+
 
         }
     </script>

@@ -43,5 +43,22 @@ namespace ClickApp.Repositories
         {
             return _context.Offers.Where(x => x.UserId == userId).ToList();
         }
+
+        public Offer GetById(int offerId)
+        {
+            return _context.Offers.FirstOrDefault(x => x.Id == offerId);
+        }
+
+        public void Delete(Offer offer)
+        {
+            _context.Offers.Remove(offer);
+            _context.SaveChanges();
+        }
+
+        public void Update(Offer offer)
+        {
+            _context.Offers.Update(offer);
+            _context.SaveChanges();
+        }
     }
 }

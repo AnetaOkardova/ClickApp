@@ -109,7 +109,7 @@ namespace ClickApp.Services
             {
                 friendshipRequest.ActiveRequest = false;
                 _friendshipRequestsRepository.Update(friendshipRequest);
-                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been declined.";
+                response.Message = "The friednship request has been declined.";
             }
             else
             {
@@ -136,7 +136,7 @@ namespace ClickApp.Services
                 var responseForCreatingFriendship = await _friendshipService.CreateAsync(friendship);
                 if (responseForCreatingFriendship.IsSuccessful)
                 {
-                response.Message = $"The friednship request with ID {friendshipRequest.Id} has been accepted. Congrats on your new friend.";
+                response.Message = "The friednship request has been accepted. Congrats on your new friend.";
                 }
                 else
                 {
@@ -148,7 +148,7 @@ namespace ClickApp.Services
             else
             {
                 response.IsSuccessful = false;
-                response.Message = $"The friendship request is not found.";
+                response.Message = "The friendship request is not found.";
             }
             return response;
         }
@@ -157,6 +157,24 @@ namespace ClickApp.Services
         {
             var friendRequests = _friendshipRequestsRepository.GetAllUserFriendRequests(user);
             return friendRequests;
+        }
+
+        public StatusModel CancelRequest(string id, string requestedUserId)
+        {
+            var response = new StatusModel();
+            var friendshipRequestSent = _friendshipRequestsRepository.RequestSent(id, requestedUserId);
+            if (friendshipRequestSent != null)
+            {
+                friendshipRequestSent.ActiveRequest = false;
+                _friendshipRequestsRepository.Update(friendshipRequestSent);
+                response.Message = "The friednship request with has been canceled.";
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = "The friendship request is not found.";
+            }
+            return response;
         }
     }
 }

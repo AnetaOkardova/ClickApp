@@ -36,26 +36,25 @@ namespace ClickApp.Controllers
             var response = _friendshipRequestsService.Create(newFriendshipRequest);
             if (response.IsSuccessful)
             {
-                return RedirectToAction("Index", "Home", new { SuccessMessage = $"The friend request has been sent." });
+                return RedirectToAction("Details", "User", new { userId = requestedUserId, SuccessMessage = "The friend request has been sent." }); 
             }
             else
             {
-                return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });
+                return RedirectToAction("Details", "User", new { userId = requestedUserId, ErrorMessage = response.Message });
             }
-            return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> Delete(string requestedUserId)
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var response = _friendshipRequestsService.DeclineRequest(user.Id, requestedUserId);
+            var response = _friendshipRequestsService.CancelRequest(user.Id, requestedUserId);
 
             if (!response.IsSuccessful)
             {
-                return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });
+                return RedirectToAction("Details", "User", new { userId = requestedUserId, ErrorMessage = response.Message });
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", "User", new { userId = requestedUserId, SuccessMessage = response.Message });
         }
         public async Task<IActionResult> Update(string requestedUserId, bool requestDecision)
         {
@@ -67,20 +66,20 @@ namespace ClickApp.Controllers
                     var response = await _friendshipRequestsService.AcceptRequestAsync(user.Id, requestedUserId, user);
                     if (!response.IsSuccessful)
                     {
-                        return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });
+                        return RedirectToAction("Details", "User", new { userId = requestedUserId, ErrorMessage = response.Message });
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Details", "User", new { userId = requestedUserId, SuccessMessage = response.Message });
                 }
                 else
                 {
                     var response = _friendshipRequestsService.DeclineRequest(user.Id, requestedUserId);
                     if (!response.IsSuccessful)
                     {
-                        return RedirectToAction("Index", "Home", new { ErrorMessage = response.Message });
+                        return RedirectToAction("Details", "User", new { userId = requestedUserId, ErrorMessage = response.Message });
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Details", "User", new { userId = requestedUserId, SuccessMessage = response.Message });
                 }
             }
 

@@ -2,6 +2,7 @@
 using ClickApp.Models;
 using ClickApp.Services.Interfaces;
 using ClickApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,14 +26,25 @@ namespace ClickApp.Controllers
         {
             return View();
         }
-        public IActionResult GetAllWithFilter(string offerTitle, bool isProffesional)
+        public IActionResult GetAllWithFilter(string offerTitle, bool isProffesional, string errorMessage, string successMessage)
         {
+
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
+
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
             var offers = _offersService.GetAllPublicWithFilter(offerTitle, isProffesional);
 
             var viewOffers = offers.Select(x => x.ToOfferViewModel()).ToList();
 
             return View(viewOffers);
         }
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
@@ -40,8 +52,9 @@ namespace ClickApp.Controllers
             offer.ValidUntil = DateTime.Now.AddYears(5).Date;
             return View(offer);
         }
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOfferViewModel createOfferViewModel)
+        public async Task<IActionResult> Create(CreateOfferViewModel createOfferViewModel,string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -53,14 +66,84 @@ namespace ClickApp.Controllers
                 offer.UserId = userFromDb.Id;
                 offer.User = userFromDb;
                 _offersService.Create(offer);
-
-                return RedirectToAction("GetAllWithFilter", new { isProffesional = offer.IsProfessional});
-                //return URL
+                if (returnUrl != null)
+                {
+                    return Redirect(returnUrl);
+                }
+                return RedirectToAction("GetAllWithFilter", new { isProffesional = offer.IsProfessional });
             }
             else
             {
                 return View(createOfferViewModel);
             }
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var offer = _offersService.GetById(id);
+            if (offer == null)
+            {
+                return RedirectToAction("GetAllWithFilter", new { isProffesional = offer.IsProfessional, ErrorMessage = $"There are no active offers with ID {id}." });
+            }
+            var offerForView = offer.ToOfferViewModel();
+
+            return View(offerForView);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(OfferViewModel offerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var offer = offerViewModel.ToModel();
+                var response = _offersService.Update(offer);
+
+                if (response.IsSuccessful)
+                {
+                    return RedirectToAction("Details", new { id = offer.Id, successMessage = $"The carpool offer with ID {offer.Id} has been successfully updated." });
+                }
+                else
+                {
+                    return RedirectToAction("Details", new { id = offer.Id, ErrorMessage = response.Message });
+                }
+            }
+            else
+            {
+                return View(offerViewModel);
+            }
+        }
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var response = _offersService.Delete(id);
+
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("Overview", new { successMessage = response.Message });
+            }
+            return RedirectToAction("Overview", new { errorMessage = response.Message });
+        }
+        public async Task<IActionResult> Details(int id, string successMessage, string errorMessage)
+        {
+            if (successMessage != null)
+            {
+                ViewBag.SuccessMessage = successMessage;
+            }
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
+
+            var offer = _offersService.GetById(id);
+            if (offer == null)
+            {
+                return RedirectToAction("Overview", new { ErrorMessage = $"There are no offers with ID {id}." });
+            }
+            
+            var offerForView = offer.ToOfferViewModel();
+            return View(offerForView);
+        }
+       
     }
 }

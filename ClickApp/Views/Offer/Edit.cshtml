@@ -1,12 +1,25 @@
-﻿@model ClickApp.ViewModels.CreateOfferViewModel
+﻿@model ClickApp.ViewModels.OfferViewModel
 
 @{
-    ViewData["Title"] = "Create offer";
+    ViewData["Title"] = "Edit";
 }
+
+<h1>Edit</h1>
+
+<div>
+    <a class="btn btn-success" asp-action="Details" asp-route-id="@Model.Id">Back to offer</a>
+</div>
+<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post" asp-route-returnUrl="@Context.Request.Query["returnUrl"]">
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" class="form-control" hidden />
+                <input asp-for="DateCreated" class="form-control" hidden />
+                <input asp-for="DateModified" class="form-control" hidden />
+                <input asp-for="UserId" class="form-control" hidden/>
+            </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -34,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ValidUntil" class="control-label"></label>
-                <input type="date" asp-for="ValidUntil" class="form-control" value="@Model.ValidUntil" />
+                <input asp-for="ValidUntil" class="form-control" />
                 <span asp-validation-for="ValidUntil" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -43,15 +56,13 @@
                 <span asp-validation-for="ImportantNote" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Overview">Back to offer options</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

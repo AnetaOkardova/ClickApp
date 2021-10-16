@@ -13,13 +13,33 @@
 
 
 <div>
-    <h4>Carpool Offer with Id @Model.CarpoolOffer.Id</h4>
+    <h4>Carpool Offer with ID @Model.CarpoolOffer.Id</h4>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger m-3" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success m-3" role="alert">
+            @ViewBag.SuccessMessage
+        </div>
+    }
     <div>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.CarpoolOffer.Id }) |
-        <a asp-action="Overview">Back to Carpool offers</a>
+        <a class="btn btn-success" asp-action="Overview">Back to Carpool offers</a>
     </div>
     <hr />
     <div class="card offerCard m-2" style="width: 80%;">
+        <div class="row justify-content-end m-2 p-1">
+            <div class="col-7">
+            </div>
+            <div class="col-5">
+                <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@Model.CarpoolOffer.Id">Edit | </a>
+                <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@Model.CarpoolOffer.Id">Delete</a>
+            </div>
+        </div>
         <div class="row no-gutters align-items-center">
             <div class="col-sm-12">
                 <div class="card-body">

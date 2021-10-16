@@ -21,8 +21,9 @@ namespace ClickApp.Controllers
             _messagesService = messagesService;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Overview(string userId, string messageFriendId, List<string> listOfIds)
+        public async Task<IActionResult> Overview(string userId, string messageFriendId, List<string> listOfIds, bool openMessages)
         {
+
             if(listOfIds.Count != 0)
             {
                 userId = listOfIds[0];
@@ -32,7 +33,7 @@ namespace ClickApp.Controllers
             var allMessagesBySelectedFriend = new List<Message>();
             var newMessage = new CreateMessageViewModel();
 
-            var allMessagesForUser = _messagesService.GetAllMessagesWithFilter(userId, null);
+            var allMessagesForUser = _messagesService.GetAllMessagesWithFriend(userId, null);
 
             if (userId != null || userId != "")
             {
@@ -102,6 +103,16 @@ namespace ClickApp.Controllers
             messagesForView.MessageFriends = messagesFriendsWithStatusList;
             messagesForView.Messages = allMessagesBySelectedFriend;
             messagesForView.NewMessage = newMessage;
+
+            if (openMessages)
+            {
+                var allCheckedMessages = _messagesService.GetAllMessagesWithFriend(userId, messageFriendId);
+                foreach (var message in allCheckedMessages)
+                {
+                    message.SeenStatus = true;
+                    _messagesService.UpdateMessage(message);
+                }
+            }
             return View(messagesForView);
         }
         
