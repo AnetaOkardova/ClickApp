@@ -25,7 +25,7 @@ namespace ClickApp.Controllers
             }
             if (userNameSearch !=null || userNameSearch != "")
             {
-                var users = _userManager.Users.Where(x => x.UserName.Contains(userNameSearch)).ToList();
+                var users = _userManager.Users.Where(x => x.Name.Contains(userNameSearch) || x.LastName.Contains(userNameSearch)).ToList();
                 foreach (var user in users)
                 {
                     if(user.Offers == null)
