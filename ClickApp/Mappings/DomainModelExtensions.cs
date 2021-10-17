@@ -169,7 +169,7 @@ namespace ClickApp.Mappings
                 DateCreated = entity.DateCreated,
                 Content = entity.Content,
                 Theme = entity.Theme,
-                Private = entity.Private,
+                Public = entity.Public,
                 UserId = entity.UserId,
                 Title = entity.Title
             };
@@ -183,6 +183,16 @@ namespace ClickApp.Mappings
                 DateCreated = entity.DateCreated,
                 Content = entity.Content,
                 IsValid = entity.IsValid,
+                UserId = entity.UserId
+            };
+        }
+
+        public static JournalThemeViewModel ToJournalThemeViewModel(this JournalTheme entity)
+        {
+            return new JournalThemeViewModel()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
                 UserId = entity.UserId
             };
         }

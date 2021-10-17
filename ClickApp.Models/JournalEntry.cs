@@ -19,6 +19,6 @@ namespace ClickApp.Models
         [Required]
         public string Theme { get; set; }
         [Required]
-        public bool Private { get; set; }
+        public bool Public { get; set; }
     }
 }

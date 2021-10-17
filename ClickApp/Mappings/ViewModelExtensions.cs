@@ -207,6 +207,17 @@ namespace ClickApp.Mappings
                 Content = entity.Content
             };
         }
+        public static JournalEntry ToModel(this CreateJournalEntryViewModel entity)
+        {
+            return new JournalEntry()
+            {
+                UserId = entity.UserId,
+                Theme = entity.Theme,
+                Title = entity.Title,
+                Content = entity.Content,
+                Public = entity.Public
+            };
+        }
 
 
     }

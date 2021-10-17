@@ -33,6 +33,6 @@ namespace ClickApp.Models
         public List<Friendship>? Friendships { get; set; }
         public List<JournalEntry> JournalEntries { get; set; }
         public List<Note> Notes { get; set; }
-        //public List<string> JournalThemes { get; set; } 
+        public List<JournalTheme> JournalThemes { get; set; }
     }
 }

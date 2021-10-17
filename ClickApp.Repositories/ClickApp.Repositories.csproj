@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210603122914_AddedSkillsFieldsAndInterestsModels.cs" />
     <Compile Remove="Data\Migrations\20210603122914_AddedSkillsFieldsAndInterestsModels.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211017184239_Chab=ngedNameOfPropertyPrivate.cs" />
+    <Compile Remove="Data\Migrations\20211017184239_Chab=ngedNameOfPropertyPrivate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ClickApp.Models
+namespace ClickApp.ViewModels
 {
-    public class JournalTheme
+    public class JournalThemeViewModel
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
         public string Name { get; set; }
     }
 }
