@@ -26,5 +26,7 @@ namespace ClickApp.Data
         public DbSet<CarpoolPassengerAcceptance> CarpoolPassengerAcceptances { get; set; }
         public DbSet<CarpoolPassengerRequest> CarpoolPassengerRequests { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<JournalEntry> JournalEntrys { get; set; }
+        public DbSet<Note> Notes { get; set; }
     }
 }

@@ -60,6 +60,8 @@ namespace ClickApp
             services.AddTransient<ICarpoolPassengerAcceptancesService, CarpoolPassengerAcceptancesService>();
             services.AddTransient<ICarpoolPassengerRequestsService, CarpoolPassengerRequestsService>();
             services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<IJournalEntriesService, JournalEntriesService>();
+            services.AddTransient<INotesService, NotesService>();
 
             services.AddTransient<IOffersRepository, OffersRepository>();
             services.AddTransient<IGeneralFieldsRepository, GeneralFieldsRepository>();
@@ -73,6 +75,8 @@ namespace ClickApp
             services.AddTransient<ICarpoolPassengerRequestsRepository, CarpoolPassengerRequestsRepository>();
             services.AddTransient<ICarpoolPassengerAcceptancesRepository, CarpoolPassengerAcceptancesRepository>();
             services.AddTransient<IMessagesRepository, MessagesRepository>();
+            services.AddTransient<IJournalEntriesRepository, JournalEntriesRepository>();
+            services.AddTransient<INotesRepository, NotesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

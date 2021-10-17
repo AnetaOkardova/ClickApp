@@ -1,230 +1,138 @@
 ﻿@{
-    Layout = null;
+    ViewData["Title"] = "Home page";
 }
-@using ClickApp.Models;
-@using Microsoft.AspNetCore.Identity;
 
-@inject UserManager<ApplicationUser> _userManager;
+<div class="container-fluid">
+    <img class="rounded" style="height:250px" src="https://i.pinimg.com/originals/c6/9d/c1/c69dc1c46ead812bf0d11d19dfe913f4.jpg" />
+    <p class="d-inline-block pl-5 border-bottom" style="font-size:80px; color:#F7F57B">Connect, Share, Support ...</p>
+</div>
+<div class="container-fliuid">
+    <main role="main" class="pb-3">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger m-3" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page - ClickApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-
-</head>
-<body>
-    <header>
-        <nav class=" navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a class="navbar-brand" asp-area="" asp-controller="User" asp-action="Details">My profile</a>
-                }
-                else
-                {
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClickApp</a>
-                }
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Offer" asp-action="Overview">Get Help</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarpoolOffer" asp-action="Overview">Carpool</a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-3 overflow-auto border-right border-left border-bottom" style="height: 280px">
+                    <form asp-action="Index" method="get" class="form-inline mt-1">
+                        <input class="form-control d-inline-block" style="width:250px" type="search" name="userNameSearch" id="userNameSearch" placeholder="Search by name or surname" aria-label="Search by username">
+                        <button class="btn btn-outline-success d-inline-block" type="submit">Search</button>
+                    </form>
+                    <hr />
+                    @if (Model.Count != 0)
+                    {
+                        foreach (var user in Model)
                         {
-                            <li class="nav-item">
-                                @{ var user = await _userManager.FindByNameAsync(User.Identity.Name);}
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="Overview" asp-route-userId="@user.Id">Messages</a>
-                                @*//Add notification sign*@
-                            </li>
-                        }
-                        @*@if (User.IsInRole("ContentCreator") || User.IsInRole("Admin"))
-                            {*@
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Manage
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Skill" asp-action="Overview">Manage Skills</a>
-                                </li>
-
-                                <li>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Interest" asp-action="Overview">Manage Interests</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="GeneralField" asp-action="Overview">Manage General fields</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        @*}*@
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container-fluid">
-        <img class="rounded" style="height:250px" src="https://i.pinimg.com/originals/c6/9d/c1/c69dc1c46ead812bf0d11d19dfe913f4.jpg" />
-        <p class="d-inline-block pl-5 border-bottom" style="font-size:80px; color:#F7F57B">Connect, Share, Support ...</p>
-    </div>    
-    <div class="container-fliuid">
-        <main role="main" class="pb-3">
-            @if (ViewBag.ErrorMessage != null)
-            {
-                <div class="alert alert-danger m-3" role="alert">
-                    @ViewBag.ErrorMessage
-                </div>
-            }
-
-            <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-3 overflow-auto border-right border-left border-bottom" style="height: 280px">
-                        <form asp-action="Index" method="get" class="form-inline mt-1">
-                            <input class="form-control d-inline-block" style="width:250px" type="search" name="userNameSearch" id="userNameSearch" placeholder="Search by name or surname" aria-label="Search by username">
-                            <button class="btn btn-outline-success d-inline-block" type="submit">Search</button>
-                        </form>
-                        <hr />
-                        @if (Model.Count != 0)
-                        {
-                            foreach (var user in Model)
-                            {
-                                <img class="rounded-circle m-1" style="width:50px; height:50px" src="@user.ProfilePhotoURL" />
-                                <a class="m-1" asp-action="Details" asp-controller="User" asp-route-userId="@user.Id">@user.Name @user.LastName</a>
-                                <hr />
-                            }
-                        }
-                    </div>
-                    <div class="col-8 ml-1 border rounded shadow pl-1 pr-1" style="height: 280px">
-                        <h2 class="text-center font-italic">...</h2>
-                        <p class="text-justify font-italic">
-                            This is a free service web application for people in need, whether financial or emotional, and is designed to be fast and easy to use. You won't see much complicated design and heavy graphics here.
-                        </p>
-                        <p class="text-justify font-italic">
-                            Users can donate to others, find a cheaper way to go to work or somewhere else by being part of a carpool group, or find a cheaper or free service by other kind and understanding users.
-                            People can communicate through this application as well, and as we all know, sometimes even just meeting someone new trough similar interests, needs or area can be quite rewarding to our well-being and emotional state. This also is the reason for us to offer an option for our users to keep an online journal as well, which the user can choose whether the journal is to be private or public.
-                            When writing or communicating through this site, please be polite and considerate. Abuse will not be tolerated.
-                        </p>
-                        <p class="text-justify font-italic">
-                            We try to have this site as secure as possible, and if you discover any problems, please contact us.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="container" style="height:150px">
-
-            </div>
-            <div class="container-fluid p-2">
-                <div class="row">
-                    <div class="col-md-9 pt-5">
-                        <img class="rounded shadow ml-3" src="https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half-caption/public/field_blog_entry_images/2020-04/credit-areebarbar-adobestock_232296142.jpg?itok=572ob5LS" />
-                        <h3 class="font-italic d-inline-block" style="margin-left: -100px; margin-top:-200px">Journaling for Mental Health</h3>
-                        <div class="d-inline-block m-5" style="height: 120px">
-                            <p class="border border-success font-weight-bolder rounded-circle text-center shadow p-3 text-center d-inline-flex d-inline-block align-bottom" style="height:80px;width:80px; font-size:13px; margin-bottom: 0px; background-color: #CAF7B8">•Manage anxiety</p>
-                            <p class="border border-warning font-weight-bolder rounded-circle text-center shadow p-3 text-center d-inline-flex d-inline-block align-items-center" style="height:80px;width:80px; font-size:13px; margin-bottom: 45%; background-color: #F7F57B">•Reduce stress</p>
-                            <p class="border border-primary font-weight-bolder rounded-circle text-center shadow p-2 text-center d-inline-flex d-inline-block align-bottom" style="height:80px;width:80px; font-size:13px; margin-bottom: 0px; background-color: #C5E2EE">•Cope with depression</p>
-                        </div>
-                        <p class="rounded-circle shadow p-5 text-center" style="height:250px">One of the ways to deal with any overwhelming emotion is to find a healthy way to express yourself. This makes a journal a helpful tool in managing your mental health. Journaling It's simply writing down your thoughts and feelings to understand them more clearly. If you struggle with stress, depression, or anxiety, keeping a journal can be a great idea. It can help you gain control of your emotions and improve your mental health. Journaling helps control your symptoms and improve your mood by helping you prioritize problems, fears, and concerns; by tracking any symptoms day-to-day so that you can recognize triggers and learn ways to better control them; by providing an opportunity for positive self-talk and identifying negative thoughts and behaviors.</p>
-                    </div>
-                    <div class="col-md-3" style="margin-top: -200px; margin-left: -100px">
-                        <img class="rounded-circle shadow" src="https://caate.net/wp-content/uploads/2017/06/Submit.jpg" />
-                        <div class="border rounded shadow bg-light" style="height:350px; width:80%; margin-left: 100px; margin-top:120px">
-                            <p class="font-weight-bold font-italic text-center text-success">Latest public journal entries:</p>
+                            <img class="rounded-circle m-1" style="width:50px; height:50px" src="@user.ProfilePhotoURL" />
+                            <a class="m-1" asp-action="Details" asp-controller="User" asp-route-userId="@user.Id">@user.Name @user.LastName</a>
                             <hr />
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
-                <div class="container" style="height:150px"></div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <h2 class="text-dark text-center">Carpooling Benefits the Society, Employers and Individuals!!!</h2>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="container">
-                <div class="row p-2">
-                    <div class="col-5 shadow rounded" style="background-color: #C5E2EE">
-                        <h5 class=" align-self-center text-dark text-center" style="height: 5px">CARPOOLING IMPACTS AND MOTIVATORS</h5>
-                    </div>
-                    <div class="col-2">
-
-                    </div>
-                    <div class="col-5 shadow rounded" style="background-color: #EAC58F">
-                        <h5 class="text-dark text-center">INNOVATIONS AND TRENDS IN MOBILITY</h5>
-                    </div>
+                <div class="col-8 ml-1 border rounded shadow pl-1 pr-1" style="height: 280px">
+                    <h2 class="text-center font-italic">...</h2>
+                    <p class="text-justify font-italic">
+                        This is a free service web application for people in need, whether financial or emotional, and is designed to be fast and easy to use. You won't see much complicated design and heavy graphics here.
+                    </p>
+                    <p class="text-justify font-italic">
+                        Users can donate to others, find a cheaper way to go to work or somewhere else by being part of a carpool group, or find a cheaper or free service by other kind and understanding users.
+                        People can communicate through this application as well, and as we all know, sometimes even just meeting someone new trough similar interests, needs or area can be quite rewarding to our well-being and emotional state. This also is the reason for us to offer an option for our users to keep an online journal as well, which the user can choose whether the journal is to be private or public.
+                        When writing or communicating through this site, please be polite and considerate. Abuse will not be tolerated.
+                    </p>
+                    <p class="text-justify font-italic">
+                        We try to have this site as secure as possible, and if you discover any problems, please contact us.
+                    </p>
                 </div>
             </div>
-            <div class="container">
-                <div class="row p-2">
-                    <div class="col-5 shadow rounded" style="height:435px">
-                        <br />
-                        <h5 class="text-dark text-center">SOCIAL BENEFITS</h5>
-                        <p class="text-dark" style="height: 5px">Reductions in energy consumption</p>
-                        <p class="text-dark" style="height: 5px">Reductions in emissions</p>
-                        <p class="text-dark" style="height: 5px">Reductions in traffic</p>
-                        <br />
-                        <h5 class="text-dark text-center">INDIVIDUAL BENEFITS</h5>
-                        <p class="text-dark" style="height: 5px">Shared travel costs</p>
-                        <p class="text-dark" style="height: 5px">Rreduced commute stress</p>
-                        <p class="text-dark" style="height: 5px">Read, listen to music, or relax when you're not driving</p>
-                        <br />
-                        <h5 class="text-dark text-center">EMPLOYER BENEFITS</h5>
-                        <p class="text-dark text-justify" style="height: 5px">Carpooling has been used as a strategy by numerous public agencies and employers as a strategy to address a range of climate, environmental, and congestion mitigation goals, while simultaneously increasing roadway and parking capacity.</p>
-                    </div>
-                    <div class="col-2">
-
-                    </div>
-                    <div class="col-5 shadow rounded">
-                        <p class="text-dark text-justify mt-4" style="height: 100px">In recent years, economic, environmental, and social forces coupled with technological innovations are encouraging shared and pooled services. Shared mobility is changing how people travel and is having a transformative impact on mobility.</p>
-                        <br />
-                        <p class="text-dark" style="height: 80px">The  different  carpooling  solutions  can represent  the  potential  to  make  a  valuable  contribution  to making  urban  mobility  more  sustainable  and  support  a  new culture of car use.</p>
-                        <p class="text-dark" style="height: 55px">It’s clear that carpooling is here to  stay and is  making  an  impact  on  the  transportation  industry.</p>
-                        <p class="text-dark" style="height: 40px">It  is important for entrepreneurs to continue pushing the boundaries in creating new solutions to shape the future of transportation.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fliuid" style="height:150px">
-
-            </div>
-            <div class="container-fliuid" style="background-color: #CAF7B8">
-                <div class="row p-1 m-1 justify-content-center">
-                    <div class="col text-center">
-                        <h2>Donate</h2>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            @*&copy; 2021 - ClickApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-</body>
-</html>
+        <div class="container" style="height:150px">
 
+        </div>
+        <div class="container-fluid p-2">
+            <div class="row">
+                <div class="col-md-9 pt-5">
+                    <img class="rounded shadow ml-3" src="https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half-caption/public/field_blog_entry_images/2020-04/credit-areebarbar-adobestock_232296142.jpg?itok=572ob5LS" />
+                    <h3 class="font-italic d-inline-block" style="margin-left: -100px; margin-top:-200px">Journaling for Mental Health</h3>
+                    <div class="d-inline-block m-5" style="height: 120px">
+                        <p class="border border-success font-weight-bolder rounded-circle text-center shadow p-3 text-center d-inline-flex d-inline-block align-bottom" style="height:80px;width:80px; font-size:13px; margin-bottom: 0px; background-color: #CAF7B8">•Manage anxiety</p>
+                        <p class="border border-warning font-weight-bolder rounded-circle text-center shadow p-3 text-center d-inline-flex d-inline-block align-items-center" style="height:80px;width:80px; font-size:13px; margin-bottom: 45%; background-color: #F7F57B">•Reduce stress</p>
+                        <p class="border border-primary font-weight-bolder rounded-circle text-center shadow p-2 text-center d-inline-flex d-inline-block align-bottom" style="height:80px;width:80px; font-size:13px; margin-bottom: 0px; background-color: #C5E2EE">•Cope with depression</p>
+                    </div>
+                    <p class="rounded-circle shadow p-5 text-center" style="height:250px">One of the ways to deal with any overwhelming emotion is to find a healthy way to express yourself. This makes a journal a helpful tool in managing your mental health. Journaling It's simply writing down your thoughts and feelings to understand them more clearly. If you struggle with stress, depression, or anxiety, keeping a journal can be a great idea. It can help you gain control of your emotions and improve your mental health. Journaling helps control your symptoms and improve your mood by helping you prioritize problems, fears, and concerns; by tracking any symptoms day-to-day so that you can recognize triggers and learn ways to better control them; by providing an opportunity for positive self-talk and identifying negative thoughts and behaviors.</p>
+                </div>
+                <div class="col-md-3" style="margin-top: -200px; margin-left: -100px">
+                    <img class="rounded-circle shadow" src="https://caate.net/wp-content/uploads/2017/06/Submit.jpg" />
+                    <div class="border rounded shadow bg-light" style="height:350px; width:80%; margin-left: 100px; margin-top:120px">
+                        <p class="font-weight-bold font-italic text-center text-success">Latest public journal entries:</p>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="container" style="height:150px"></div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="text-dark text-center">Carpooling Benefits the Society, Employers and Individuals!!!</h2>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+        <div class="container">
+            <div class="row p-2">
+                <div class="col-5 shadow rounded" style="background-color: #C5E2EE">
+                    <h5 class=" align-self-center text-dark text-center" style="height: 5px">CARPOOLING IMPACTS AND MOTIVATORS</h5>
+                </div>
+                <div class="col-2">
+
+                </div>
+                <div class="col-5 shadow rounded" style="background-color: #EAC58F">
+                    <h5 class="text-dark text-center">INNOVATIONS AND TRENDS IN MOBILITY</h5>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row p-2">
+                <div class="col-5 shadow rounded" style="height:435px">
+                    <br />
+                    <h5 class="text-dark text-center">SOCIAL BENEFITS</h5>
+                    <p class="text-dark" style="height: 5px">Reductions in energy consumption</p>
+                    <p class="text-dark" style="height: 5px">Reductions in emissions</p>
+                    <p class="text-dark" style="height: 5px">Reductions in traffic</p>
+                    <br />
+                    <h5 class="text-dark text-center">INDIVIDUAL BENEFITS</h5>
+                    <p class="text-dark" style="height: 5px">Shared travel costs</p>
+                    <p class="text-dark" style="height: 5px">Rreduced commute stress</p>
+                    <p class="text-dark" style="height: 5px">Read, listen to music, or relax when you're not driving</p>
+                    <br />
+                    <h5 class="text-dark text-center">EMPLOYER BENEFITS</h5>
+                    <p class="text-dark text-justify" style="height: 5px">Carpooling has been used as a strategy by numerous public agencies and employers as a strategy to address a range of climate, environmental, and congestion mitigation goals, while simultaneously increasing roadway and parking capacity.</p>
+                </div>
+                <div class="col-2">
+
+                </div>
+                <div class="col-5 shadow rounded">
+                    <p class="text-dark text-justify mt-4" style="height: 100px">In recent years, economic, environmental, and social forces coupled with technological innovations are encouraging shared and pooled services. Shared mobility is changing how people travel and is having a transformative impact on mobility.</p>
+                    <br />
+                    <p class="text-dark" style="height: 80px">The  different  carpooling  solutions  can represent  the  potential  to  make  a  valuable  contribution  to making  urban  mobility  more  sustainable  and  support  a  new culture of car use.</p>
+                    <p class="text-dark" style="height: 55px">It’s clear that carpooling is here to  stay and is  making  an  impact  on  the  transportation  industry.</p>
+                    <p class="text-dark" style="height: 40px">It  is important for entrepreneurs to continue pushing the boundaries in creating new solutions to shape the future of transportation.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fliuid" style="height:150px">
+
+        </div>
+        <div class="container-fliuid" style="background-color: #CAF7B8">
+            <div class="row p-1 m-1 justify-content-center">
+                <div class="col text-center">
+                    <h2>Donate</h2>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

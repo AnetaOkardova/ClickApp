@@ -4,87 +4,89 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container">
+    <h4>Editing Carpool Offer</h4>
+    <hr />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="DateCreated" />
+                <input type="hidden" asp-for="DriverId" />
 
-<h4>CarpoolOffer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="DateCreated" />
-            <input type="hidden" asp-for="DriverId" />
-
-            <div class="form-group">
-                <label asp-for="LeavingFrom" class="control-label"></label>
-                <input asp-for="LeavingFrom" class="form-control" />
-                <span asp-validation-for="LeavingFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArrivingAt" class="control-label"></label>
-                <input asp-for="ArrivingAt" class="form-control" />
-                <span asp-validation-for="ArrivingAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeavingHour" class="control-label"></label>
-                <input asp-for="LeavingHour" class="form-control" />
-                <span asp-validation-for="LeavingHour" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeavingMinutes" class="control-label"></label>
-                <input asp-for="LeavingMinutes" class="form-control" />
-                <span asp-validation-for="LeavingMinutes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SeatsAvailable" class="control-label"></label>
-                <input asp-for="SeatsAvailable" class="form-control" />
-                <span asp-validation-for="SeatsAvailable" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeavingNote" class="control-label"></label>
-                <input asp-for="LeavingNote" class="form-control" />
-                <span asp-validation-for="LeavingNote" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnFrom" class="control-label"></label>
-                <input asp-for="ReturnFrom" class="form-control" />
-                <span asp-validation-for="ReturnFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnAt" class="control-label"></label>
-                <input asp-for="ReturnAt" class="form-control" />
-                <span asp-validation-for="ReturnAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnHour" class="control-label"></label>
-                <input asp-for="ReturnHour" class="form-control" />
-                <span asp-validation-for="ReturnHour" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnMinutes" class="control-label"></label>
-                <input asp-for="ReturnMinutes" class="form-control" />
-                <span asp-validation-for="ReturnMinutes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnSeatsAvailable" class="control-label"></label>
-                <input asp-for="ReturnSeatsAvailable" class="form-control" />
-                <span asp-validation-for="ReturnSeatsAvailable" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnNote" class="control-label"></label>
-                <input asp-for="ReturnNote" class="form-control" />
-                <span asp-validation-for="ReturnNote" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save changes" class="btn btn-success" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="LeavingFrom" class="control-label"></label>
+                    <input asp-for="LeavingFrom" class="form-control" />
+                    <span asp-validation-for="LeavingFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ArrivingAt" class="control-label"></label>
+                    <input asp-for="ArrivingAt" class="form-control" />
+                    <span asp-validation-for="ArrivingAt" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LeavingHour" class="control-label"></label>
+                    <input asp-for="LeavingHour" class="form-control" />
+                    <span asp-validation-for="LeavingHour" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LeavingMinutes" class="control-label"></label>
+                    <input asp-for="LeavingMinutes" class="form-control" />
+                    <span asp-validation-for="LeavingMinutes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SeatsAvailable" class="control-label"></label>
+                    <input asp-for="SeatsAvailable" class="form-control" />
+                    <span asp-validation-for="SeatsAvailable" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LeavingNote" class="control-label"></label>
+                    <input asp-for="LeavingNote" class="form-control" />
+                    <span asp-validation-for="LeavingNote" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnFrom" class="control-label"></label>
+                    <input asp-for="ReturnFrom" class="form-control" />
+                    <span asp-validation-for="ReturnFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnAt" class="control-label"></label>
+                    <input asp-for="ReturnAt" class="form-control" />
+                    <span asp-validation-for="ReturnAt" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnHour" class="control-label"></label>
+                    <input asp-for="ReturnHour" class="form-control" />
+                    <span asp-validation-for="ReturnHour" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnMinutes" class="control-label"></label>
+                    <input asp-for="ReturnMinutes" class="form-control" />
+                    <span asp-validation-for="ReturnMinutes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnSeatsAvailable" class="control-label"></label>
+                    <input asp-for="ReturnSeatsAvailable" class="form-control" />
+                    <span asp-validation-for="ReturnSeatsAvailable" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnNote" class="control-label"></label>
+                    <input asp-for="ReturnNote" class="form-control" />
+                    <span asp-validation-for="ReturnNote" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save changes" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Overview">Back to Carpool offers</a>
+    <a class="btn btn-success" asp-action="Overview">Back to Carpool offers</a>
 </div>
 
 @section Scripts {

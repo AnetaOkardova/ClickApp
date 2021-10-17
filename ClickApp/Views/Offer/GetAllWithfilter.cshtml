@@ -13,113 +13,115 @@
     <link rel="stylesheet" href="~/css/OffersOverview.css" />
 }
 
-@if (ViewBag.SuccessMessage != null)
-{
-    <div class="alert alert-success m-3" role="alert">
-        @ViewBag.SuccessMessage
-    </div>
-}
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger m-3" role="alert">
-        @ViewBag.ErrorMessage
-    </div>
-}
-
-<form asp-action="GetAllWithFilter" method="get" class="form-inline my-2 my-lg-0">
-    @if (User.Identity.IsAuthenticated)
+<div class="container">
+    @if (ViewBag.SuccessMessage != null)
     {
-        <p>
-            <button asp-action="Create" asp-controller="Offer" class="btn btn-success">Create new offer</button>
-        </p>
+        <div class="alert alert-success m-3" role="alert">
+            @ViewBag.SuccessMessage
+        </div>
+    }
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger m-3" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
     }
 
-</form>
-<div class="container-fluid">
     <form asp-action="GetAllWithFilter" method="get" class="form-inline my-2 my-lg-0">
-        @if (Model.Count != 0)
+        @if (User.Identity.IsAuthenticated)
         {
-            @if (Model[0].IsProfessional == true)
-            {
-                <input asp-for="@IsProffesional" name="isProffesional" class="form-control" hidden />
-                <input class="form-control mr-sm-2" type="search" name="offerTitle" id="offerTitle" placeholder="Search by title" aria-label="Search by title">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            }
-            else if (Model[0].IsProfessional != true)
-            {
-                <input asp-for="@IsNotProffesional" name="isProffesional" class="form-control" hidden />
-                <input class="form-control mr-sm-2" type="search" name="offerTitle" id="offerTitle" placeholder="Search by title" aria-label="Search by title">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            }
+            <p>
+                <button asp-action="Create" asp-controller="Offer" class="btn btn-success">Create new offer</button>
+            </p>
         }
-    </form>
-    <div class="row">
-        @if (Model.Count != 0)
-        {
-            @foreach (var offer in @Model.OrderByDescending(x => x.DateCreated))
-            {
 
-                <div class="card offerCard m-2" style="width: 500px;">
-                    <div class="row no-gutters">
-                        @if (offer.ImportantNote != null || offer.ImportantNote != "")
-                        {
-                            <div class="col-sm-12 pl-3">
-                                <span class="bg-warning">@offer.ImportantNote</span>
-                            </div>
-                        }
-                        <div class="col-sm-12">
-                            <div class="row pl-3">
-                                @if (offer.ImageUrl != null || offer.ImageUrl != "")
-                                {
-                                    <div class="col-sm-3 p-1">
-                                        <img class="card offerImg" src="@offer.ImageUrl" alt="Image">
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-sm-3 p-1">
-                                        <img class="card offerImg" src="https://outofschool.club/wp-content/uploads/2015/02/insert-image-here.jpg" alt="Image">
-                                    </div>
-                                }
-                                <div class="col-sm-7">
-                                    <div class="card-body">
-                                        <h4>@offer.Title</h4>
-                                        <h6 class="card-title">
-                                            @if (offer.ValidUntil != null)
-                                            {<h6>Valid until: @offer.ValidUntil</h6>}
-                                        </h6>
-                                        @{var userName = _userManager.FindByIdAsync(offer.UserId).Result.Name + " " + _userManager.FindByIdAsync(offer.UserId).Result.LastName; }
-                                        @if (User.Identity.IsAuthenticated)
-                                        {
-                                            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                                            @if ((user.Name + " " + user.LastName) == userName)
+    </form>
+    <div class="container-fluid">
+        <form asp-action="GetAllWithFilter" method="get" class="form-inline my-2 my-lg-0">
+            @if (Model.Count != 0)
+            {
+                @if (Model[0].IsProfessional == true)
+                {
+                    <input asp-for="@IsProffesional" name="isProffesional" class="form-control" hidden />
+                    <input class="form-control mr-sm-2" type="search" name="offerTitle" id="offerTitle" placeholder="Search by title" aria-label="Search by title">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                }
+                else if (Model[0].IsProfessional != true)
+                {
+                    <input asp-for="@IsNotProffesional" name="isProffesional" class="form-control" hidden />
+                    <input class="form-control mr-sm-2" type="search" name="offerTitle" id="offerTitle" placeholder="Search by title" aria-label="Search by title">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                }
+            }
+        </form>
+        <div class="row">
+            @if (Model.Count != 0)
+            {
+                @foreach (var offer in @Model.OrderByDescending(x => x.DateCreated))
+                {
+
+                    <div class="card offerCard m-2" style="width: 500px;">
+                        <div class="row no-gutters">
+                            @if (offer.ImportantNote != null || offer.ImportantNote != "")
+                            {
+                                <div class="col-sm-12 pl-3">
+                                    <span class="bg-warning">@offer.ImportantNote</span>
+                                </div>
+                            }
+                            <div class="col-sm-12">
+                                <div class="row pl-3">
+                                    @if (offer.ImageUrl != null || offer.ImageUrl != "")
+                                    {
+                                        <div class="col-sm-3 p-1">
+                                            <img class="card offerImg" src="@offer.ImageUrl" alt="Image">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-3 p-1">
+                                            <img class="card offerImg" src="https://outofschool.club/wp-content/uploads/2015/02/insert-image-here.jpg" alt="Image">
+                                        </div>
+                                    }
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+                                            <h4>@offer.Title</h4>
+                                            <h6 class="card-title">
+                                                @if (offer.ValidUntil != null)
+                                                {<h6>Valid until: @offer.ValidUntil</h6>}
+                                            </h6>
+                                            @{var userName = _userManager.FindByIdAsync(offer.UserId).Result.Name + " " + _userManager.FindByIdAsync(offer.UserId).Result.LastName; }
+                                            @if (User.Identity.IsAuthenticated)
                                             {
-                                                <p class="card-text p-1 rounded bg-light text-center"><span style="color: gray; width: 25px">My offer</span></p>
+                                                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                                                @if ((user.Name + " " + user.LastName) == userName)
+                                                {
+                                                    <p class="card-text p-1 rounded bg-light text-center"><span style="color: gray; width: 25px">My offer</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="card-text">@userName</p>
+                                                }
                                             }
                                             else
                                             {
                                                 <p class="card-text">@userName</p>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <p class="card-text">@userName</p>
-                                        }
-                                        <a asp-action="Details" asp-route-id="@offer.Id" class="btn btn-success">See more</a>
+                                            <a asp-action="Details" asp-route-id="@offer.Id" class="btn btn-success">See more</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger m-3" role="alert">
+                    Currently there are no offers to show.
                 </div>
             }
-        }
-        else
-        {
-            <div class="alert alert-danger m-3" role="alert">
-                Currently there are no offers to show.
-            </div>
-        }
+        </div>
     </div>
 </div>
 

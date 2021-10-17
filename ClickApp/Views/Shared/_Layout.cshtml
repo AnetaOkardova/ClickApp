@@ -45,10 +45,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="CarpoolOffer" asp-action="Overview">Carpool</a>
                         </li>
+
                         @if (User.Identity.IsAuthenticated)
                         {
+                            var user = await _userManager.FindByNameAsync(User.Identity.Name);
                             <li class="nav-item">
-                                @{ var user = await _userManager.FindByNameAsync(User.Identity.Name);}
+                                <a class="nav-link text-dark" asp-area="" asp-controller="JournalEntry" asp-action="Overview" asp-route-userId="@user.Id">Journal</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="Overview" asp-route-userId="@user.Id">Messages</a>
                                 @*//Add notification sign*@
                             </li>
@@ -80,7 +84,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -27,7 +27,7 @@
 }
 
 
-<div class="container-fluid p-2">
+<div class="container p-2">
     <div class="row">
         <div class="col-4 border-right border-left border-bottom">
             <form asp-action="Overview" method="get" class="form-inline my-2 my-lg-0">
@@ -64,7 +64,7 @@
 {
     @foreach (var carpoolOffer in Model)
     {
-        <div class="card offerCard m-2 d-inline-block" style="width: 500px;">
+        <div class="card offerCard m-2 d-inline-block" style="width: 450px;">
             <div class="row no-gutters align-items-center">
                 @{var driverName = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Name + " " + _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.LastName; }
                 @{ var driverEmail = _userManager.FindByIdAsync(carpoolOffer.DriverId).Result.Email;}
@@ -77,9 +77,9 @@
                         <div class="col-4">
                             <p class="card-text p-2 rounded bg-light text-center text-success"><a asp-controller="User" asp-action="Details" asp-route-userId="@carpoolOffer.DriverId" style="color: gray; width: 25px">My offer</a></p>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                         </div>
-                        <div class="col-5">
+                        <div class="col-6">
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>

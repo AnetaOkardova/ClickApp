@@ -1,0 +1,58 @@
+﻿@model ClickApp.ViewModels.JournalViewModel
+
+@{
+    ViewData["Title"] = "Journal";
+}
+
+
+<div class="container-fluid">
+    <div class="row align-content-center p-0 m-0">
+        <div class="col-3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyrbXZMaeRMI7Rde6TxLLTezpRVn_PYx1yG0ETmO6gvSjXHAOYlTmQnzYVuJyGAYNYBuc&usqp=CAU"/>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-8 p-4 shadow rounded text-center">
+            <h5 class="text-center font-italic">Keep in mind that journaling is just one aspect of a healthy lifestyle for better managing stress, anxiety, and mental health conditions. To get the most benefits, be sure you also:</h5>
+            <p class="border m-2 border-danger font-weight-bolder rounded text-center shadow p-1 text-center d-inline-flex d-inline-block " style="width:200px; font-size:13px; background-color: #F79696">•Relax and meditate each day</p>
+            <p class="border m-2 border-primary font-weight-bolder rounded text-center shadow p-1 text-center d-inline-flex d-inline-block " style="width:200px; font-size:13px; background-color: #C5E2EE">•Exercise regularly</p>
+            <p class="border m-2 border-warning font-weight-bolder rounded text-center shadow p-1 text-center d-inline-flex d-inline-block " style="width:200px; font-size:13px; background-color: #F7F57B">•Eat a healthy, balanced diet</p>
+            <p class="border m-2 border-success font-weight-bolder rounded text-center shadow p-1 text-center d-inline-flex d-inline-block " style="width:200px; font-size:13px; background-color: #CAF7B8">•Plenty of sleep each night</p>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-2 shadow rounded">
+            @if (Model.AddTheme == true)
+            {
+                <form asp-action="CreateTheme" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="text" asp-for="UserId" value="@Model.UserId" hidden />
+                    <div class="form-group d-inline">
+                        <input class="border-0 bg-light rounded" placeholder="Write your theme name here" style="width: 95%" name="Theme" id="Theme" />
+                        <button type="submit" class="border-0" style="color:lightseagreen; background-color: white"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </form>
+            }
+            else
+            {
+            <a asp-action="Overview" asp-controller="JournalEntry" asp-route-addTheme="true" asp-route-userId="@Model.UserId" class="btn btn-light">Add new journal theme</a>
+            }
+            @if (Model.Themes.Count != 0)
+            {
+                foreach (var theme in Model.Themes)
+                {
+                    <div class="p-1 border rounded m-1">
+                        <a asp-action="Overview" asp-route-theme="@theme" asp-route-userId="@Model.UserId">@theme</a>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-7 shadow rounded m-1"></div>
+        <div class="col-2 shadow rounded"></div>
+    </div>
+</div>
+@*<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+</div>*@

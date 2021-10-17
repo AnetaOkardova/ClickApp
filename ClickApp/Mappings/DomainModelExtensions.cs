@@ -161,5 +161,30 @@ namespace ClickApp.Mappings
             };
         }
 
+        public static JournalEntryViewModel ToJournalEntryViewModel(this JournalEntry entity)
+        {
+            return new JournalEntryViewModel()
+            {
+                Id = entity.Id,
+                DateCreated = entity.DateCreated,
+                Content = entity.Content,
+                Theme = entity.Theme,
+                Private = entity.Private,
+                UserId = entity.UserId,
+                Title = entity.Title
+            };
+        }
+
+        public static NoteViewModel ToNoteViewModel(this Note entity)
+        {
+            return new NoteViewModel()
+            {
+                Id = entity.Id,
+                DateCreated = entity.DateCreated,
+                Content = entity.Content,
+                IsValid = entity.IsValid,
+                UserId = entity.UserId
+            };
+        }
     }
 }
