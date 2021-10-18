@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-5">
                     <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@Model.CarpoolOffer.Id">Edit | </a>
-                    <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@Model.CarpoolOffer.Id">Delete</a>
+                    <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@Model.CarpoolOffer.Id" onclick="return confirm('Are you sure you want to delete this carpool offer from @Model.CarpoolOffer.LeavingFrom?')">Delete</a>
                 </div>
             </div>
             <div class="row no-gutters align-items-center">
@@ -78,7 +78,7 @@
                             <img class="rounded-circle m-1" style="width:50px; height:50px" src="@item.Passenger.ProfilePhotoURL" />
                             <a class="m-1 font-weight-bold" asp-action="Details" asp-controller="User" asp-route-userId="@item.Passenger.Id">@item.Passenger.Name @item.Passenger.LastName</a>
                         </div>
-                        <a asp-controller="CarpoolPassengerAcceptances" asp-action="CancelAcceptance" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
+                        <a asp-controller="CarpoolPassengerAcceptances" onclick="return confirm('Are you sure you want to remove this passenger from the carpool?')" asp-action="CancelAcceptance" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
                             <i class="far fa-trash-alt"></i>
                         </a>
                     }
@@ -106,7 +106,7 @@
                         <a asp-controller="CarpoolPassengerAcceptances" asp-action="CreatePassengerAcceptance" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: forestgreen; background: none">
                             <i class="far fa-check-circle"></i>
                         </a>
-                        <a asp-controller="CarpoolPassengerRequests" asp-action="CancelRequest" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
+                        <a asp-controller="CarpoolPassengerRequests" onclick="return confirm('Are you sure you want to cancel this carpool request?')" asp-action="CancelRequest" asp-route-userId="@user.Id" asp-route-carpoolOfferId="@Model.CarpoolOffer.Id" asp-route-passengerId="@item.Passenger.Id" class="border-0 d-inline pb-2" style="font-size: 20px; color: crimson; background: none">
                             <i class="far fa-trash-alt"></i>
                         </a>
                     }

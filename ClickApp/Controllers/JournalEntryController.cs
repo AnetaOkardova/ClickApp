@@ -133,6 +133,7 @@ namespace ClickApp.Controllers
             }
             return RedirectToAction("Overview", new { AddEntry = true, Theme = createJournalEntryViewModel.Theme, UserId = createJournalEntryViewModel.UserId });
         }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateNote(string userId, string theme, string content)
@@ -174,6 +175,16 @@ namespace ClickApp.Controllers
                 _journalThemesService.Delete(userId, theme);
             }
             return RedirectToAction("Overview", new { Theme = theme, UserId = userId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteEntry(string userId, string theme, int entryId, bool addEntry)
+        {
+            if (userId != null && theme != null && entryId != 0)
+            {
+                var response = _journalEntriesService.DeleteEntry(userId, entryId);
+            }
+            return RedirectToAction("Overview", new { Theme = theme, UserId = userId , AddEntry = addEntry });
         }
     }
 }

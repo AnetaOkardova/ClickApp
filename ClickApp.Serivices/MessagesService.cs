@@ -1,5 +1,6 @@
 ﻿using ClickApp.Models;
 using ClickApp.Repositories.Interfaces;
+using ClickApp.Services.DtoModels;
 using ClickApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -56,5 +57,21 @@ namespace ClickApp.Services
             return exists;
         }
 
+        public StatusModel DeleteMessage(string userId, int messageId)
+        {
+            var response = new StatusModel();
+            var message = _messagesRepository.GetById(messageId);
+            if (message != null && message.UserFromId == userId)
+            {
+                _messagesRepository.Delete(message);
+                response.Message = $"The message with id {messageId} has been successfully deleted.";
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The message with id {messageId} is not yours to delete.";
+            }
+            return response;
+        }
     }
 }

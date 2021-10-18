@@ -24,7 +24,7 @@
                         @if (user.Id == Model.UserId)
                         {
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@Model.Id">Edit | </a>
-                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                            <a class="text-success p-2 rounded bg-light text-center" onclick="return confirm('Are you sure you want to delete your offer: @Model.Title?')" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                         }
                     }
                 </div>

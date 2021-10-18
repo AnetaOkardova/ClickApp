@@ -1,4 +1,5 @@
 ﻿using ClickApp.Models;
+using ClickApp.Services.DtoModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,5 +13,6 @@ namespace ClickApp.Services.Interfaces
         bool CheckIfNotSeenMessage(List<Message> friendMessages);
         void UpdateMessage(Message message);
         List<Message> GetAllByFriendId(List<Message> friendMessages, string friendId);
+        StatusModel DeleteMessage(string userId, int messageId);
     }
 }

@@ -71,7 +71,7 @@ namespace ClickApp.Controllers
             var responseForCreatingAcceptance = _carpoolPassengerAcceptancesService.CreatePassengerAcceptance(passengerAcceptance);
             if (responseForCreatingAcceptance.IsSuccessful)
             {
-                _messagesService.CreateMessage(passengerId, offer.DriverId, "Your carpool request has been accepted.");
+                _messagesService.CreateMessage( offer.DriverId, passengerId, "Your carpool request has been accepted.");
 
                 return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = $"The passanger has been successfully approved." });
             }
@@ -113,7 +113,7 @@ namespace ClickApp.Controllers
             {
                 return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });
             }
-            _messagesService.CreateMessage(passengerId, offer.DriverId, "I am sorry but your carpool request has been declined.");
+            _messagesService.CreateMessage(offer.DriverId, passengerId, "I am sorry but your carpool request has been declined.");
 
             return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = $"The passanger acceptance has been canceled." });
         }

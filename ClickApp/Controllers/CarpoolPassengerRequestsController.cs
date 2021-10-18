@@ -71,6 +71,7 @@ namespace ClickApp.Controllers
             var response = _carpoolPassengerRequestsService.CancelRequest(passengerId, carpoolOfferId);
             if (response.IsSuccessful == true)
             {
+                _messagesService.CreateMessage(userId, passengerId, "Carpool request canceled.");
                 return RedirectToAction("Overview", "CarpoolOffer", new { SuccessMessage = response.Message });
             }
             return RedirectToAction("Overview", "CarpoolOffer", new { ErrorMessage = response.Message });

@@ -25,6 +25,23 @@ namespace ClickApp.Services
             _journalEntriesRepository.Create(journalEntry);
         }
 
+        public StatusModel DeleteEntry(string userId, int entryId)
+        {
+            var response = new StatusModel();
+            var jurnalEntry = _journalEntriesRepository.GetById(entryId);
+            if (jurnalEntry != null && jurnalEntry.UserId == userId)
+            {
+                _journalEntriesRepository.Delete(jurnalEntry);
+                response.Message = $"The journal entry with id {entryId} has been successfully deleted.";
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The journal entry with id {entryId} is not yours to delete.";
+            }
+            return response;
+        }
+
         public JournalEntry GetById(int entryId)
         {
             return _journalEntriesRepository.GetById(entryId);

@@ -2,6 +2,7 @@
 using ClickApp.Models;
 using ClickApp.Services.Interfaces;
 using ClickApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,6 +22,7 @@ namespace ClickApp.Controllers
             _messagesService = messagesService;
             _userManager = userManager;
         }
+        [Authorize]
         public async Task<IActionResult> Overview(string userId, string messageFriendId, List<string> listOfIds, bool openMessages)
         {
 
@@ -115,7 +117,7 @@ namespace ClickApp.Controllers
             }
             return View(messagesForView);
         }
-        
+        [Authorize]
         [HttpPost]
         public IActionResult CreateMessage(string userId, string messageFriendId, string content)
         {
@@ -128,6 +130,15 @@ namespace ClickApp.Controllers
             {
                 return RedirectToAction("Overview", new { userId = userId });
             }
+        }
+        [Authorize]
+        public async Task<IActionResult> DeleteMessage(string userId,int messageId, string messageFriendId, bool openMessages)
+        {
+            if (userId != null && messageFriendId != null)
+            {
+                var response = _messagesService.DeleteMessage(userId, messageId);
+            }
+            return RedirectToAction("Overview", new { MessageFriendId = messageFriendId, UserId = userId, OpenMessages = openMessages });
         }
     }
 }

@@ -87,7 +87,7 @@
                         <div class="col-6">
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
                             <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
-                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
+                            <a class="text-success p-2 rounded bg-light text-center" onclick="return confirm('Are you sure you want to delete your carpool offer from @carpoolOffer.LeavingFrom?')" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
                         </div>
                     }
                     else
