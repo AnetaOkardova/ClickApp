@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 }
 
-<h1 class="text-center">Carpool Offers</h1>
+<h1 class="text-center font-italic font-weight-bolder" style="color:#CAF7B8">CARPOOLING</h1>
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -32,38 +32,36 @@
     </div>
 }
 
-<div class="container p-2">
-    <div class="row">
-        <div class="col-4 border-right border-left border-bottom">
+<div class="container-fluid p-2">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-3">
             <form asp-action="Overview" method="get" class="form-inline my-2 my-lg-0">
-                <input class="form-control m-auto d-inline-block" style="width:250px" type="search" name="leavingLocationSearch" id="leavingLocationSearch" placeholder="Search by leaving location" aria-label="Search by leaving location">
+                <input class="form-control d-inline-block" style="width:250px" type="search" name="leavingLocationSearch" id="leavingLocationSearch" placeholder="Search by leaving location" aria-label="Search by leaving location">
                 <button class="btn btn-outline-success m-auto d-inline-block" type="submit">Search</button>
             </form>
-            <hr />
-        </div>
-        <div class="col-8 ">
             @if (User.Identity.IsAuthenticated)
             {
-                <div class="row justify-content-end">
+                <div class="row justify-content-end ml-5 mt-3">
                     <div class="col">
-                        <a class="btn btn-success align-content-end" asp-action="Create">Create Carpool Offer</a>
-                        <hr />
+                        <a class="btn btn-light align-content-end" style="background-color:#CAF7B8" asp-action="Create">Create Carpool Offer</a>
                     </div>
                 </div>
-
             }
+        </div>
+        <div class="col-5 shadow font-italic p-1 m-1">
+            <h6 class="mt-3 p-3">Carpooling differs from for-hire vehicle services, such as ridesourcing, ridehailing, or transportation network companies (TNCS) in its finantial motivation. When a carpool payment is collected, it partially covers the driver's cost and is not intended to result in a financial gain. Additionally, the driver has a common origin and/or destination with the passengers.</h6>
+        </div>
+        <div class="col-3 rounded shadow mr-1" style="background-color:#F7F57B">
+            <h5>Tips on How to Carpool Effectively</h5>
+            <p class="m-1 p-1" style="font-size:12px">Tip #1: Establish Pick-Up Times Before Starting the Carpool</p>
+            <p class="m-1 p-1" style="font-size:12px">Tip #2: Decide What is Acceptable for a Waiting Time</p>
+            <p class="m-1 p-1" style="font-size:12px">Tip #3: Agree on Payments if Applicable</p>
+            <p class="m-1 p-1" style="font-size:12px">Tip #4: Be Ready in the Morning</p>
+            <p class="m-1 p-1" style="font-size:12px">Tip #5: Don’t Be Afraid to Discontinue the Carpool</p>
         </div>
 
     </div>
 </div>
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger m-3" role="alert">
-        @ViewBag.ErrorMessage
-    </div>
-}
-
 
 @if (Model.Count != 0)
 {
@@ -84,10 +82,10 @@
                         </div>
                         <div class="col-2">
                         </div>
-                        <div class="col-6">
-                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
-                            <a class="text-success p-2 rounded bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
-                            <a class="text-success p-2 rounded bg-light text-center" onclick="return confirm('Are you sure you want to delete your carpool offer from @carpoolOffer.LeavingFrom?')" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
+                        <div class="col-6 rounded">
+                            <a class="text-success p-2 bg-light text-center" asp-action="Edit" asp-route-id="@carpoolOffer.Id">Edit | </a>
+                            <a class="text-success p-2 bg-light text-center" asp-action="Details" asp-route-id="@carpoolOffer.Id">Details | </a>
+                            <a class="text-success p-2 bg-light text-center" onclick="return confirm('Are you sure you want to delete your carpool offer from @carpoolOffer.LeavingFrom?')" asp-action="Delete" asp-route-id="@carpoolOffer.Id">Delete</a>
                         </div>
                     }
                     else

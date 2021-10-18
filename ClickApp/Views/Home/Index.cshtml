@@ -17,12 +17,11 @@
 
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-3 overflow-auto border-right border-left border-bottom" style="height: 280px">
+                <div class="col-3 overflow-auto" style="height: 280px">
                     <form asp-action="Index" method="get" class="form-inline mt-1">
                         <input class="form-control d-inline-block" style="width:250px" type="search" name="userNameSearch" id="userNameSearch" placeholder="Search by name or surname" aria-label="Search by username">
                         <button class="btn btn-outline-success d-inline-block" type="submit">Search</button>
                     </form>
-                    <hr />
                     @if (Model.Count != 0)
                     {
                         foreach (var user in Model)
@@ -124,9 +123,48 @@
                 </div>
             </div>
         </div>
+        <div class="container-fliuid" style="height:100px">
+
+        </div>
+
+        <div class="container shadow" style="background-color: #F7E7DB">
+            <div class="row p-1 m-1 justify-content-center">
+                <div class="col text-center">
+                    <h2 style="color: #E68AA1">Offer your time and services to help others!</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col border d-inline border-success shadow m-2 p-1" style="background-color: #CAF7B8">
+                    <h5 class="text-center">Offer Kindness Proactively</h5>
+                    <p class="text-justify">Pay attention to the people around you and what you can do to make their lives a little easier. An act of kindness, any simple gesture can improve someone's day. Let a car in front of you on the highway. Hold the door or elevator, and call a friend to see how they're doing. Check in on an elderly neighbor or bring dinner to someone who has been facing illness or a tough time. Being friendly and thoughtful can make a huge difference, and maintaining good relationships is actually good for your heart.</p>
+                </div>
+                <div class="col border d-inline border-warning  shadow m-2 p-1" style="background-color:#F7F57B; height:440px">
+                    <h5 class="text-center">Volunteer Your Time</h5>
+                    <p class="text-justify">Community service is one of the best ways to improve the lives of others. Donating your time allows you to connect with your community and make it a better place. Volunteer work is also flexible: You can participate as much as your schedule allows, and you can choose opportunities that fit your interests and hobbies. The possibilities are endless.</p>
+                </div>
+                <div class="col border d-inline border-danger shadow m-2 p-1" style="background-color: #F79696">
+                    <h5 class="text-center">Donate to a Cause</h5>
+                    <p class="text-justify">Few things are as easy or provide as much instant gratification as donating money to people in need. Recent research suggests that giving to charity may actually make the giver happier and healthier. There are many ways to donate money to charities online or in your local community. Another resolution-worthy way to donate? Ask people to support a certain charity in lieu of giving you a birthday or Christmas gift.</p>
+                </div>
+                <div class="col border d-inline border-primary shadow m-2 p-1" style="background-color: #C5E2EE">
+                    <h5 class="text-center">Donate Unused Items</h5>
+                    <p class="text-justify">The new year is a good time to organize and clear out your clutter. Rather than tossing out stuff you no longer need, donate it to someone who does. Free your home of unworn clothes and unused furniture. Your community likely has a Goodwill or Salvation Army that will accept your donations. Homeless shelters and food banks are happy to take unexpired canned goods off your hands, too.</p>
+                </div>
+                <div class="col border d-inline border-secondary shadow m-2 p-1" style="background-color:#D9D9DB">
+                    <h5 class="text-center">Say "Thank You"</h5>
+                    <p class="text-justify">Make an effort to say "thank you" to every person who plays a part in your life, no matter how big or small. Expressing gratitude for another person's actions shows that you notice them. Send a quick note telling someone how much you appreciate them, how proud of them you are, or just to say thank you for something they did. You can also help others feel better about themselves by showing your appreciation publicly. Praising another in front of family or coworkers can have an impact that lasts beyond the moment itself/p>
+                </div>
+            </div>
+        </div>
+
         <div class="container-fliuid" style="height:150px">
 
         </div>
+
+
         <div class="container-fliuid" style="background-color: #CAF7B8">
             <div class="row p-1 m-1 justify-content-center">
                 <div class="col text-center">

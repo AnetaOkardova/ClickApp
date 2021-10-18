@@ -15,7 +15,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="container-fluid">
+<div class="container">
     <h1>Edit about info</h1>
 
     <hr />
@@ -70,8 +70,8 @@
                     <input asp-for="ProfilePhotoURL" class="form-control" />
                     <span asp-validation-for="ProfilePhotoURL" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="row form-group justify-content-center">
+                    <input type="submit" value="Save" class="btn btn-primary" style="background-color: #C5E2EE; color:black"/>
                 </div>
             </form>
         </div>
@@ -79,8 +79,8 @@
 </div>
 
 
-<div>
-    <a class="btn btn-success" asp-action="Details">Back to Profile</a>
+<div class="row justify-content-center m-2">
+    <a class="btn btn-success" asp-action="Details" style="background-color: #CAF7B8; color:black">Back to Profile</a>
 </div>
 
 @section Scripts {

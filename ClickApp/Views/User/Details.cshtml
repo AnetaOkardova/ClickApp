@@ -93,7 +93,7 @@
 </div>
 
 <hr />
-<div class="container" id="tabsContainer">
+<div class="container-fluid" id="tabsContainer">
     <div class="row justify-content-center">
         <div class="profileTabs" onclick="showAboutInfo()">About</div>
         <div class="profileTabs" onclick="showFriendsInfo()">Friends</div>
@@ -104,80 +104,88 @@
         }
     </div>
 </div>
-<div class="container d-none m-5 p-2" id="aboutInfo">
-    <div>
-        <dl class="row">
+<div class="container-fluid d-none m-2 p-2" id="aboutInfo">
+    <div class="row justify-content-center align-content-center">
+        <dl>
             <div class="col">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DateOfBirth)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DateOfBirth)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Address)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Address)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.City)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.City)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Country)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Country)
-                </dd>
-            </div>
-            <div class="col">
-
-                @if (Model.Skills.Count != 0)
+                <p class="text-center d-inline-block rounded shadow bg-light p-3 m-2" style="width:200px">Address: @Model.Address, @Model.City, @Model.Country</p>
+                <p class="text-center d-inline-block rounded shadow bg-light p-3 m-2" style="width:200px">Date of birth: @Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                @if (Model.Description != null && Model.Description != "")
                 {
-                    <div class="col m-1" style="height:300px">
-                        <h4>Skills</h4>
-                        @foreach (var skill in Model.Skills)
-                        {
-                            <p>@skill.Name</p>
-                        }
-                    </div>
+                    <p class="text-center rounded shadow bg-light p-3 m-2">@Model.Description</p>
                 }
-                <div class="col-md">
-                    <a class="text-primary m-2" asp-controller="UserSkills" asp-action="EditUserSkills" asp-route-userId="@Model.Id">Edit skills</a>
-                </div>
-            </div>
 
-            <div class="col">
-                @if (Model.Interests.Count != 0)
-                {
-                    <div class="col m-1" style="height:300px">
-                        <h4>Interests</h4>
-                        @foreach (var interest in Model.Interests)
+                @*<dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.DateOfBirth)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.DateOfBirth)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Address)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Address)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.City)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.City)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Country)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Country)
+                        </dd>
+
+                    </div>*@
+                @*<div class="col">
+
+                        @if (Model.Skills.Count != 0)
                         {
-                            <p>@interest.Name</p>
+                            <div class="col m-1" style="height:300px">
+                                <h4>Skills</h4>
+                                @foreach (var skill in Model.Skills)
+                                {
+                                    <p>@skill.Name</p>
+                                }
+                            </div>
                         }
+                        <div class="col-md">
+                            <a class="text-primary m-2" asp-controller="UserSkills" asp-action="EditUserSkills" asp-route-userId="@Model.Id">Edit skills</a>
+                        </div>
                     </div>
-                    @*<div class="col-md">
-                            <a class="text-primary m-2" asp-controller="UserInterests" asp-action="AddUserInterests" asp-route-userId="@Model.Id">Add interest</a>
-                        </div>*@
-                }
-            </div>
+
+                    <div class="col">
+                        @if (Model.Interests.Count != 0)
+                        {
+                            <div class="col m-1" style="height:300px">
+                                <h4>Interests</h4>
+                                @foreach (var interest in Model.Interests)
+                                {
+                                    <p>@interest.Name</p>
+                                }
+                            </div>
+                            <div class="col-md">
+                                    <a class="text-primary m-2" asp-controller="UserInterests" asp-action="AddUserInterests" asp-route-userId="@Model.Id">Add interest</a>
+                                </div>
+                        }
+                    </div>*@
         </dl>
     </div>
     <div>
-        <div class="row">
+        <div class="row justify-content-end mr-5">
             @if (user.Id == @Model.Id)
             {
-                <div class="profileTabs">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
+                <div class="profileTabs" style="background-color: #CAF7B8; color:black">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</div>
             }
             <div class="profileTabs" onclick="hideAboutInfo()">Close about tab</div>
         </div>
@@ -231,8 +239,7 @@
     </div>
     <hr />
     <div>
-        <div class="row">
-
+        <div class="row justify-content-end mr-5">
             <div class="profileTabs" onclick="hideFriendsInfo()">Close friends tab</div>
         </div>
     </div>
@@ -245,7 +252,7 @@
             @if (Model.Offers.Count != 0)
             {
                 <div class="col-8">
-                    <h4>Offers</h4>
+                    <h4 class="text-center">My offers</h4>
                     @foreach (var offer in Model.Offers.OrderByDescending(x => x.ValidUntil))
                     {
 
@@ -268,8 +275,7 @@
     </div>
     <hr />
     <div>
-        <div class="row">
-
+        <div class="row justify-content-end mr-5">
             <div class="profileTabs" onclick="hideOffersInfo()">Close offers tab</div>
         </div>
     </div>
@@ -282,7 +288,7 @@
             @if (Model.CarpoolOffers.Count != 0)
             {
                 <div class="col-8">
-                    <h4>Carpool Offers</h4>
+                    <h4 class="text-center">My carpool Offers</h4>
                     @foreach (var carpoolOffer in Model.CarpoolOffers.OrderByDescending(x => x.DateCreated))
                     {
 
@@ -303,8 +309,7 @@
     </div>
     <hr />
     <div>
-        <div class="row">
-
+        <div class="row justify-content-end mr-5">
             <div class="profileTabs" onclick="hideOffersInfo()">Close carpool offers tab</div>
         </div>
     </div>

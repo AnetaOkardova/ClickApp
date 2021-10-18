@@ -6,7 +6,9 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        @{ var user = await UserManager.FindByNameAsync(User.Identity.Name);}
+        <img class="d-inline-block" style="width:50px; height:50px; border-radius:50%" src="@user.ProfilePhotoURL" />
+        <a  class="nav-link text-dark d-inline-block" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.Name @user.LastName!</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

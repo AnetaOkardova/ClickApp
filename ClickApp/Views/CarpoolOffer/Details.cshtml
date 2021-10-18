@@ -13,7 +13,7 @@
 
 <div class="container">
     <div>
-        <h4>Carpool Offer with ID @Model.CarpoolOffer.Id</h4>
+        <h4 class="text-center">Carpool Offer leaving from: @Model.CarpoolOffer.LeavingFrom</h4>
         @if (ViewBag.ErrorMessage != null)
         {
             <div class="alert alert-danger m-3" role="alert">
@@ -28,16 +28,16 @@
             </div>
         }
         <div>
-            <a class="btn btn-success" asp-action="Overview">Back to Carpool offers</a>
+            <a class="btn btn-light" asp-action="Overview">Back to Carpool offers</a>
         </div>
         <hr />
         <div class="card offerCard m-2" style="width: 80%;">
             <div class="row justify-content-end m-2 p-1">
                 <div class="col-7">
                 </div>
-                <div class="col-5">
-                    <a class="text-success p-2 rounded bg-light text-center" asp-action="Edit" asp-route-id="@Model.CarpoolOffer.Id">Edit | </a>
-                    <a class="text-success p-2 rounded bg-light text-center" asp-action="Delete" asp-route-id="@Model.CarpoolOffer.Id" onclick="return confirm('Are you sure you want to delete this carpool offer from @Model.CarpoolOffer.LeavingFrom?')">Delete</a>
+                <div class="col-5 rounded">
+                    <a class="text-success p-2 bg-light text-center" asp-action="Edit" asp-route-id="@Model.CarpoolOffer.Id">Edit | </a>
+                    <a class="text-success p-2 bg-light text-center" asp-action="Delete" asp-route-id="@Model.CarpoolOffer.Id" onclick="return confirm('Are you sure you want to delete this carpool offer from @Model.CarpoolOffer.LeavingFrom?')">Delete</a>
                 </div>
             </div>
             <div class="row no-gutters align-items-center">

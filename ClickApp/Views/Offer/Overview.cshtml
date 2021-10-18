@@ -2,22 +2,39 @@
 
 @{
     ViewData["Title"] = "Offers";
-    bool IsProffesional = true;
-    bool IsNotProffesional = false;
 }
 @section Styles{
     <link rel="stylesheet" href="~/css/OffersOverview.css" />
 }
+<h1 class="text-center font-italic">Offer others your hand</h1>
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center">
+        <div class="col border d-inline border-warning  shadow m-5 p-2" style="background-color:#F7F57B; border-radius:20%">
+            <h5 class="text-center">What is a Professional?</h5>
+            <p class="text-justify">The term professional refers to anyone who earns their living from performing an activity that requires a certain level of education, skill, or training. There is typically a required standard of competency, knowledge, or education that must be demonstrated (often in the form of an exam or credential), as well as adhering to codes of conduct and ethical standards.</p>
+        </div>
+        <div class="col border d-inline border-danger shadow m-5 p-2" style="background-color: #F79696; border-radius:20%">
+            <h5 class="text-center">Professional vs. Amateur</h5>
+            <p class="text-justify">A professional performs an activity to earn a living and has demonstrated a certain level of competence or earned a credential, whereas an amateur performs an activity as a hobby, pastime, or without compensation.</p>
+        </div>
+        <div class="col border d-inline border-primary shadow m-5 p-2" style="background-color: #C5E2EE; border-radius:20%;">
+            <h5 class="text-center mt-4">What is an Amateur?</h5>
+            <p class="text-justify pb-4">Amateur is someone who does an activity just for pleasure, not as their job or for money. It is one who engages in a pursuit, study, science, or sport as a pastime rather than a profession. An Amateur is usually lacking in experience and competence.</p>
+        </div>
+    </div>
+</div>
+
 
 <div class="container" id="offerOptionsContainer">
-    <div class="row justify-content-center ">
-        <div class="col-md-5 text-center">
-            <a asp-action="GetAllWithFilter" asp-route-isProffesional="@IsProffesional"><img class="offerOptionImg shadow" src="https://thumbs.dreamstime.com/b/businessman-shows-business-card-message-ask-expert-professional-counseling-support-solution-concept-businessman-212804262.jpg" @*onclick="showProfessionalOffers()"*@ /></a>
-            <h2>Professionals</h2>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-4 text-center border">
+            <a asp-action="GetAllWithFilter" asp-route-isProffesional="True"><p class="p-5 shadow font-weight-bolder font-italic" style="font-size:25px">Make an offer as an Porfessional</p></a>
         </div>
-        <div class="col-md-5 text-center">
-            <a asp-action="GetAllWithFilter" asp-route-isProffesional="@IsNotProffesional"><img class="offerOptionImg shadow" src="https://www.careeraddict.com/uploads/article/59099/illustration-man-suit.jpg" @*onclick="showAmateurOffers()"*@ /></a>
-            <h2>Friends</h2>
+        <div class="col-md-4" style="padding-left:90px">
+            <img class="shadow" style="width: 200px; border-radius:50px" src="http://blog.thecenterforsalesstrategy.com/hubfs/professionals-and-amateurs.jpg" />
+        </div>
+        <div class="col-md-4 text-center border">
+            <a asp-action="GetAllWithFilter" asp-route-isProffesional="False"><p class="p-5 shadow font-weight-bolder font-italic" style="font-size:25px">Make an offer as an Amateur</p></a>
         </div>
     </div>
 </div>
