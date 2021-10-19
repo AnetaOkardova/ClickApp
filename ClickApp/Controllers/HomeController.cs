@@ -17,11 +17,15 @@ namespace ClickApp.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string userNameSearch, string errorMessage)
+        public IActionResult Index(string userNameSearch, string errorMessage, string subscriptionMessage)
         {
             if (errorMessage != null)
             {
                 ViewBag.ErrorMessage = errorMessage;
+            }
+            if (subscriptionMessage != null)
+            {
+                ViewBag.SubscriptionMessage = subscriptionMessage;
             }
             if (userNameSearch !=null || userNameSearch != "")
             {

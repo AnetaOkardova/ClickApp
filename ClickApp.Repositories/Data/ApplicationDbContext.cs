@@ -29,5 +29,6 @@ namespace ClickApp.Data
         public DbSet<JournalEntry> JournalEntrys { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<JournalTheme> JournalThemes { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
     }
 }

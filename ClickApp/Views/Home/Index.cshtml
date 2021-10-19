@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="container" style="height:150px">
-
+            
         </div>
         <div class="container-fluid p-2">
             <div class="row">
@@ -160,17 +160,42 @@
             </div>
         </div>
 
-        <div class="container-fliuid" style="height:150px">
+        <div class="container-fliuid" style="height:100px">
 
         </div>
 
 
-        <div class="container-fliuid" style="background-color: #CAF7B8">
+        @*<div class="container-fliuid" style="background-color: #CAF7B8">
             <div class="row p-1 m-1 justify-content-center">
                 <div class="col text-center">
                     <h2>Donate</h2>
                 </div>
             </div>
-        </div>
+        </div>*@
     </main>
+    
 </div>
+<div class="container-fliuid" style="height:150px">
+
+</div>
+<footer class="border-top footer text-muted">
+    <div class="container m-2">
+        <div class="row d-inline-block">
+            <div class="col align-items-center">
+                <h5>@ViewBag.SubscriptionMessage</h5>
+                <fieldset class="border rounded p-2 m-2">
+                    <legend style="color: rgb(236,128,50)">Subscribe</legend>
+                    <h6 style="color: rgb(65,41,46)">Enter your email if you like to subscribe and receive our latest offers:</h6>
+                    <form class="p-2" asp-controller="Subscription" asp-action="CreateSubscription" asp-route-returnUrl="@Context.Request.Query["returnUrl"]" onsubmit="return validateForm()">
+                        <div class="form-group">
+                            <input type="email" name="SubscriberEmail" id="SubscriberEmail" class="form-control" required placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Subscribe" class="btn btn-success" style="background-color: #CAF7B8; color: black" />
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</footer>
