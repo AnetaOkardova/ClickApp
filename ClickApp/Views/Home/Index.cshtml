@@ -5,6 +5,8 @@
     ViewData["Title"] = "Home page";
 }
 
+
+
 <div class="container-fluid">
     <img class="rounded" style="height:250px" src="https://i.pinimg.com/originals/c6/9d/c1/c69dc1c46ead812bf0d11d19dfe913f4.jpg" />
     <p class="d-inline-block pl-5 border-bottom" style="font-size:80px; color:#D79E3D">Connect, Share, Support ...</p>
@@ -74,7 +76,7 @@
                         @{var allPublicJournalEntries = _journalEntriesService.GetAllPublic();}
                         @if (allPublicJournalEntries.Count != 0)
                         {
-                            foreach (var journalEntry in allPublicJournalEntries.OrderByDescending(x=>x.DateCreated))
+                            foreach (var journalEntry in allPublicJournalEntries.OrderByDescending(x => x.DateCreated))
                             {
                                 var title = "No title entry";
                                 if (journalEntry.Title != null)
@@ -221,6 +223,8 @@
         </div>
     </div>
 </footer>
+
+
 
 @section Scripts{
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
