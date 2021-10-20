@@ -14,5 +14,6 @@ namespace ClickApp.Services.Interfaces
         void UpdateMessage(Message message);
         List<Message> GetAllByFriendId(List<Message> friendMessages, string friendId);
         StatusModel DeleteMessage(string userId, int messageId);
+        List<Message> GetAllReceivedUserMessages(string userId);
     }
 }

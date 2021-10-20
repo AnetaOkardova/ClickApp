@@ -1,4 +1,7 @@
-﻿@{
+﻿@using ClickApp.Services.Interfaces;
+@inject IJournalEntriesService _journalEntriesService;
+
+@{
     ViewData["Title"] = "Home page";
 }
 
@@ -49,7 +52,7 @@
             </div>
         </div>
         <div class="container" style="height:150px">
-            
+
         </div>
         <div class="container-fluid p-2">
             <div class="row">
@@ -65,9 +68,22 @@
                 </div>
                 <div class="col-md-3" style="margin-top: -200px; margin-left: -100px">
                     <img class="rounded-circle shadow" src="https://caate.net/wp-content/uploads/2017/06/Submit.jpg" />
-                    <div class="border rounded shadow bg-light" style="height:350px; width:80%; margin-left: 100px; margin-top:120px">
+                    <div class="border rounded shadow bg-light" style="height:350px; width:80%; margin-left: 100px; margin-top:120px;overflow-y: auto; overflow-x: hidden;">
                         <p class="font-weight-bold font-italic text-center text-success">Latest public journal entries:</p>
                         <hr />
+                        @{var allPublicJournalEntries = _journalEntriesService.GetAllPublic();}
+                        @if (allPublicJournalEntries.Count != 0)
+                        {
+                            foreach (var journalEntry in allPublicJournalEntries.OrderByDescending(x=>x.DateCreated))
+                            {
+                                var title = "No title entry";
+                                if (journalEntry.Title != null)
+                                {
+                                    title = journalEntry.Title;
+                                }
+                                <a asp-controller="JournalEntry" asp-action="JournalEntryDetails" asp-route-returnUrl="@Context.Request.Query["returnUrl"]" asp-route-journalEntryId="@journalEntry.Id" class="p-1 d-block" style="color:saddlebrown"><span style="font-size:11px; color:saddlebrown">@journalEntry.DateCreated.ToString("dd.MM.yyyy")</span> | Entry @title</a>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -166,36 +182,60 @@
 
 
         @*<div class="container-fliuid" style="background-color: #CAF7B8">
-            <div class="row p-1 m-1 justify-content-center">
-                <div class="col text-center">
-                    <h2>Donate</h2>
+                <div class="row p-1 m-1 justify-content-center">
+                    <div class="col text-center">
+                        <h2>Donate</h2>
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
     </main>
-    
+
 </div>
 <div class="container-fliuid" style="height:150px">
 
 </div>
 <footer class="border-top footer text-muted">
-    <div class="container m-2">
-        <div class="row d-inline-block">
-            <div class="col align-items-center">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-6 align-items-center">
                 <h5>@ViewBag.SubscriptionMessage</h5>
                 <fieldset class="border rounded p-2 m-2">
                     <legend style="color: rgb(236,128,50)">Subscribe</legend>
                     <h6 style="color: rgb(65,41,46)">Enter your email if you like to subscribe and receive our latest offers:</h6>
-                    <form class="p-2" asp-controller="Subscription" asp-action="CreateSubscription" asp-route-returnUrl="@Context.Request.Query["returnUrl"]" onsubmit="return validateForm()">
+                    <form class="p-2">
                         <div class="form-group">
                             <input type="email" name="SubscriberEmail" id="SubscriberEmail" class="form-control" required placeholder="Email" />
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Subscribe" class="btn btn-success" style="background-color: #CAF7B8; color: black" />
+                            <input type="submit" onclick="addSubscription(this)" value="Subscribe" class="btn btn-success" style="background-color: #CAF7B8; color: black" />
                         </div>
                     </form>
                 </fieldset>
             </div>
+            @*<div class="col-1">
+
+                </div>*@
+            <div class="col-5 m-2 border rounded shadow" style="height:55px; width:450px">
+                <h5 class="text-center p-1" style="color: rgb(236,128,50)">Contact us via e-mail: contact@clickapp.com</h5>
+            </div>
         </div>
     </div>
 </footer>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function addSubscription(btn) {
+            var subscriberEmail = document.getElementById("SubscriberEmail");
+            var email = subscriberEmail.value;
+            var url = "https://localhost:44339/Subscription/CreateSubscription?subscriberEmail=" + email;
+            axios.get(url)
+                .then(function (response) {
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    </script>
+}

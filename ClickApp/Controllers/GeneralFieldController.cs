@@ -16,44 +16,53 @@ namespace ClickApp.Controllers
     {
         private readonly IGeneralFieldsService _generalFieldsService;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public GeneralFieldController(IGeneralFieldsService generalFieldsService, UserManager<ApplicationUser> userManager)
         {
             _generalFieldsService = generalFieldsService;
             _userManager = userManager;
         }
+        
         public IActionResult Overview(string successMessage, string errorMessage, string nameSearch, GeneralFieldCode codeSearch)
         {
-            if (successMessage != null)
+            try
             {
-                ViewBag.SuccessMessage = successMessage;
-            }
-            if (errorMessage != null)
-            {
-                ViewBag.ErrorMessage = errorMessage;
-            }
-            var generalFields = new List<GeneralField>();
-            if (nameSearch != null && nameSearch != "")
-            {
-                generalFields = _generalFieldsService.GetAllWithFilter(nameSearch, codeSearch);
-            }else if (codeSearch != null && codeSearch != GeneralFieldCode.NONE)
-            {
-                generalFields = _generalFieldsService.GetAllWithFilter(null, codeSearch);
-            }
-            else
-            {
-            generalFields = _generalFieldsService.GetAll();
-            }
+                if (successMessage != null)
+                {
+                    ViewBag.SuccessMessage = successMessage;
+                }
+                if (errorMessage != null)
+                {
+                    ViewBag.ErrorMessage = errorMessage;
+                }
+                var generalFields = new List<GeneralField>();
+                if (nameSearch != null && nameSearch != "")
+                {
+                    generalFields = _generalFieldsService.GetAllWithFilter(nameSearch, codeSearch);
+                }
+                else if (codeSearch != null && codeSearch != GeneralFieldCode.NONE)
+                {
+                    generalFields = _generalFieldsService.GetAllWithFilter(null, codeSearch);
+                }
+                else
+                {
+                    generalFields = _generalFieldsService.GetAll();
+                }
 
-            if(generalFields.Count == 0 || generalFields == null)
-            {
-                ViewBag.ErrorMessage = "There are no General fields in the DB at this point";
-                return View();
-            }
+                if (generalFields.Count == 0 || generalFields == null)
+                {
+                    ViewBag.ErrorMessage = "There are no General fields in the DB at this point";
+                    return View();
+                }
 
-            var generalFieldsForView = generalFields.Select(x => x.ToGeneralFieldViewModel()).ToList();
-            return View(generalFieldsForView);
+                var generalFieldsForView = generalFields.Select(x => x.ToGeneralFieldViewModel()).ToList();
+                return View(generalFieldsForView);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
+       
         [HttpGet]
         [Authorize]
         public IActionResult Create()
@@ -83,6 +92,7 @@ namespace ClickApp.Controllers
                 return View(createGeneralFieldViewModel);
             }
         }
+        
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
@@ -96,6 +106,7 @@ namespace ClickApp.Controllers
                 return RedirectToAction("Overview", new { ErrorMessage = response.Message });
             }
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult Edit(int id)

@@ -12,5 +12,8 @@ namespace ClickApp.Services.Interfaces
         List<JournalEntry> GetByUserId(string id);
         void Create(JournalEntry journalEntry);
         StatusModel DeleteEntry(string userId, int entryId);
+        List<JournalEntry> GetAllPublic();
+        JournalEntry GetPublicJournalEntryById(int journalEntryId);
+        StatusModel Update(JournalEntry journalEntry, int id);
     }
 }

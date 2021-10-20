@@ -5,8 +5,6 @@ using ClickApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,13 +15,13 @@ namespace ClickApp.Controllers
         private readonly ISkillsService _skillsService;
         private readonly IGeneralFieldsService _generalFieldsService;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public SkillController(ISkillsService skillsService, IGeneralFieldsService generalFieldsService, UserManager<ApplicationUser> userManager)
         {
             _skillsService = skillsService;
             _generalFieldsService = generalFieldsService;
             _userManager = userManager;
         }
+        
         public IActionResult Overview(string successMessage, string errorMessage)
         {
             if (successMessage != null)
@@ -49,6 +47,7 @@ namespace ClickApp.Controllers
 
             
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult Create()
@@ -81,6 +80,7 @@ namespace ClickApp.Controllers
                 return View(createSkillViewModel);
             }
         }
+        
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
@@ -94,6 +94,7 @@ namespace ClickApp.Controllers
                 return RedirectToAction("Overview", new { ErrorMessage = response.Message });
             }
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult Edit(int id)

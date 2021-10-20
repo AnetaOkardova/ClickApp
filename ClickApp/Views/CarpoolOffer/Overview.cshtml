@@ -163,3 +163,18 @@ else
         <p class="m-1 font-italic">There are no offers to show</p>
     </div>
 }
+@*@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function cancelRequest(passengerId, carpoolOfferId, userId) {
+
+            var url = "https://localhost:44339/CarpoolPassengerRequests/CancelRequest?passengerId=" + passengerId + "&carpoolOfferId=" + carpoolOfferId + "&userId=" + userId;
+            axios.get(url)
+                .then(function (response) {
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    </script>*@

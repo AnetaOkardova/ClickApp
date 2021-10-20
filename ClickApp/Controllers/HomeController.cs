@@ -3,7 +3,6 @@ using ClickApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace ClickApp.Controllers
@@ -11,7 +10,6 @@ namespace ClickApp.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-
         public HomeController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -19,39 +17,43 @@ namespace ClickApp.Controllers
 
         public IActionResult Index(string userNameSearch, string errorMessage, string subscriptionMessage)
         {
-            if (errorMessage != null)
+            try
             {
-                ViewBag.ErrorMessage = errorMessage;
-            }
-            if (subscriptionMessage != null)
-            {
-                ViewBag.SubscriptionMessage = subscriptionMessage;
-            }
-            if (userNameSearch !=null || userNameSearch != "")
-            {
-                var users = _userManager.Users.Where(x => x.Name.Contains(userNameSearch) || x.LastName.Contains(userNameSearch)).ToList();
-                foreach (var user in users)
+                if (errorMessage != null)
                 {
-                    if(user.Offers == null)
-                    {
-                        user.Offers = new List<Offer>();
-                    }
+                    ViewBag.ErrorMessage = errorMessage;
                 }
-                var usersForView = users.Select(x => x.ToUserViewModel()).ToList();
-                return View(usersForView);
+                if (subscriptionMessage != null)
+                {
+                    ViewBag.SubscriptionMessage = subscriptionMessage;
+                }
+                if (userNameSearch != null || userNameSearch != "")
+                {
+                    var users = _userManager.Users.Where(x => x.Name.Contains(userNameSearch) || x.LastName.Contains(userNameSearch)).ToList();
+                    foreach (var user in users)
+                    {
+                        if (user.Offers == null)
+                        {
+                            user.Offers = new List<Offer>();
+                        }
+                    }
+                    var usersForView = users.Select(x => x.ToUserViewModel()).ToList();
+                    return View(usersForView);
+                }
+                return View();
             }
-            return View();
+            catch (System.Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

@@ -53,5 +53,44 @@ namespace ClickApp.Services
             var allUserEntries = allJournalEntries.Where(x => x.UserId == id).ToList();
             return allUserEntries;
         }
+        public List<JournalEntry> GetAllPublic()
+        {
+            var allJournalEntries = _journalEntriesRepository.GetAll();
+            var allPublicEntries = allJournalEntries.Where(x => x.Public == true).ToList();
+            return allPublicEntries;
+        }
+
+        public JournalEntry GetPublicJournalEntryById(int journalEntryId)
+        {
+            var journalEntry = new JournalEntry();
+            var journalEntryFromDb = _journalEntriesRepository.GetById(journalEntryId);
+            if (journalEntryFromDb.Public)
+            {
+                journalEntry = journalEntryFromDb;
+            }
+            return journalEntryFromDb;
+        }
+
+        public StatusModel Update(JournalEntry journalEntry, int id)
+        {
+            var response = new StatusModel();
+            var journalEntryFromDB = _journalEntriesRepository.GetById(journalEntry.Id);
+            if (journalEntryFromDB == null)
+            {
+                response.IsSuccessful = false;
+                response.Message = $"The journal entry with ID {journalEntry.Id} is not found.";
+            }
+            else
+            {
+                journalEntryFromDB.Title = journalEntry.Title;
+                journalEntryFromDB.Content = journalEntry.Content;
+                journalEntryFromDB.Public = journalEntry.Public;
+                journalEntryFromDB.DateModified = journalEntry.DateModified;
+
+                _journalEntriesRepository.Update(journalEntryFromDB);
+                response.Message = $"The journal entry with ID {journalEntryFromDB.Id} has been successfully updated.";
+            }
+            return response;
+        }
     }
 }

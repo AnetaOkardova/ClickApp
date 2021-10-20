@@ -16,6 +16,7 @@ namespace ClickApp.ViewModels
 
         public bool AddJournalEntry { get; set; } = false;
         public bool AddTheme { get; set; } = false;
+        public bool AddEntry{ get; set; } = false;
         public bool EditEntry { get; set; } = false;
         //public bool DeleteEntry { get; set; } = false;
         //public bool DeleteNote { get; set; } = false;

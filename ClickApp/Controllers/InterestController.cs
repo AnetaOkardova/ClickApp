@@ -17,13 +17,13 @@ namespace ClickApp.Controllers
         private readonly IInterestsService _interestsService;
         private readonly IGeneralFieldsService _generalFieldsService;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public InterestController(IInterestsService interestsService, IGeneralFieldsService generalFieldsService, UserManager<ApplicationUser> userManager)
         {
             _interestsService = interestsService;
             _generalFieldsService = generalFieldsService;
             _userManager = userManager;
         }
+        
         public IActionResult Overview(string successMessage, string errorMessage)
         {
             if (successMessage != null)
@@ -49,6 +49,7 @@ namespace ClickApp.Controllers
 
 
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult Create()
@@ -81,6 +82,7 @@ namespace ClickApp.Controllers
                 return View(createInterestViewModel);
             }
         }
+        
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
@@ -94,6 +96,7 @@ namespace ClickApp.Controllers
                 return RedirectToAction("Overview", new { ErrorMessage = response.Message });
             }
         }
+        
         [HttpGet]
         [Authorize]
         public IActionResult Edit(int id)

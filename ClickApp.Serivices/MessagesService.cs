@@ -73,5 +73,11 @@ namespace ClickApp.Services
             }
             return response;
         }
+
+        public List<Message> GetAllReceivedUserMessages(string userId)
+        {
+            var allUserReceivedMessages = _messagesRepository.GetAll().Where(x=>x.UserToId == userId).ToList();
+            return allUserReceivedMessages;
+        }
     }
 }

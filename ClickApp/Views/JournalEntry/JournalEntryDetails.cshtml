@@ -1,0 +1,86 @@
+﻿@model ClickApp.ViewModels.JournalEntryViewModel
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> _userManager;
+@{
+    ViewData["Title"] = "Journal entry - details";
+}
+
+
+
+<div class="container">
+    <div class="container">
+        @{ var user = await _userManager.FindByIdAsync(Model.UserId);}
+        <div class="row justify-content-center">
+            <h2 class="font-italic" style="color: #008140">Published on @Model.DateCreated.ToString("dd/MM/yyyy") by <a asp-controller="User" asp-action="Details" asp-route-userId="@user.Id" style="color: #008140"> @user.Name @user.LastName .</a></h2>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col overflow-auto border shadow">
+            <img class=" m-2 d-inline-block shadow" src="@user.ProfilePhotoURL" style="width:50px; height:50px; border-radius:50%" />
+            <h3 class=" m-2 d-inline-block">@Model.Title</h3>
+            <hr />
+            <p class="p-1 text-justify">@Model.Content</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col text-center">
+                <a class="btn btn-success m-2" asp-action="Index" asp-controller="Home" style="background-color: #CAF7B8; color:black">Back to home page</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div>
+        <h4>JournalEntryViewModel</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.UserId)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.UserId)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Content)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DateCreated)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Theme)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Theme)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Public)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Public)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>*@

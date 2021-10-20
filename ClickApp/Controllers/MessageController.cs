@@ -1,5 +1,4 @@
-﻿using ClickApp.Mappings;
-using ClickApp.Models;
+﻿using ClickApp.Models;
 using ClickApp.Services.Interfaces;
 using ClickApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -16,129 +15,149 @@ namespace ClickApp.Controllers
     {
         private readonly IMessagesService _messagesService;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public MessageController(IMessagesService messagesService, UserManager<ApplicationUser> userManager)
         {
             _messagesService = messagesService;
             _userManager = userManager;
         }
+        
         [Authorize]
         public async Task<IActionResult> Overview(string userId, string messageFriendId, List<string> listOfIds, bool openMessages)
         {
-
-            if(listOfIds.Count != 0)
+            try
             {
-                userId = listOfIds[0];
-                messageFriendId = listOfIds[1];
-            }
-            var messagesFriendsWithStatusList = new List<MessageFriendsViewModel>();
-            var allMessagesBySelectedFriend = new List<Message>();
-            var newMessage = new CreateMessageViewModel();
-
-            var allMessagesForUser = _messagesService.GetAllMessagesWithFriend(userId, null);
-
-            if (userId != null || userId != "")
-            {
-                var messageFriendsList = new List<ApplicationUser>();
-
-                foreach (var message in allMessagesForUser.OrderByDescending(x => x.DateCreated))
+                if (listOfIds.Count != 0)
                 {
-                    if (message.UserFromId == userId)
+                    userId = listOfIds[0];
+                    messageFriendId = listOfIds[1];
+                }
+                var messagesFriendsWithStatusList = new List<MessageFriendsViewModel>();
+                var allMessagesBySelectedFriend = new List<Message>();
+                var newMessage = new CreateMessageViewModel();
+
+                var allMessagesForUser = _messagesService.GetAllMessagesWithFriend(userId, null);
+
+                if (userId != null || userId != "")
+                {
+                    var messageFriendsList = new List<ApplicationUser>();
+
+                    foreach (var message in allMessagesForUser.OrderByDescending(x => x.DateCreated))
                     {
-                        var friend = await _userManager.FindByIdAsync(message.UserToId);
-                        var messageSeenStatus = true;
-
-                        var exists = messageFriendsList.Any(x => x.Id == message.UserToId);
-                        if (!exists)
+                        if (message.UserFromId == userId)
                         {
-                            messageFriendsList.Add(friend);
+                            var friend = await _userManager.FindByIdAsync(message.UserToId);
+                            var messageSeenStatus = true;
 
-                            var messageFriendForView = new MessageFriendsViewModel();
-                            messageFriendForView.MessagesFriend = friend;
-                            messageFriendForView.LastSeenStatus = messageSeenStatus;
-                            messagesFriendsWithStatusList.Add(messageFriendForView);
+                            var exists = messageFriendsList.Any(x => x.Id == message.UserToId);
+                            if (!exists)
+                            {
+                                messageFriendsList.Add(friend);
+
+                                var messageFriendForView = new MessageFriendsViewModel();
+                                messageFriendForView.MessagesFriend = friend;
+                                messageFriendForView.LastSeenStatus = messageSeenStatus;
+                                messagesFriendsWithStatusList.Add(messageFriendForView);
+                            }
+                        }
+                        else if (message.UserToId == userId)
+                        {
+                            var friend = await _userManager.FindByIdAsync(message.UserFromId);
+                            var messageSeenStatus = message.SeenStatus;
+
+                            var exists = messageFriendsList.Any(x => x.Id == message.UserFromId);
+                            if (!exists)
+                            {
+                                messageFriendsList.Add(friend);
+
+                                var messageFriendForView = new MessageFriendsViewModel();
+                                messageFriendForView.MessagesFriend = friend;
+                                messageFriendForView.LastSeenStatus = messageSeenStatus;
+                                messagesFriendsWithStatusList.Add(messageFriendForView);
+                            }
                         }
                     }
-                    else if (message.UserToId == userId)
+                }
+
+                if (messageFriendId != null && messageFriendId != "")
+                {
+                    newMessage.UserFromId = userId;
+                    newMessage.UserToId = messageFriendId;
+                    newMessage.Content = null;
+
+                    var allMessagesBySelectedFriendSearch = allMessagesForUser.Where(x => x.UserFromId == messageFriendId || x.UserToId == messageFriendId).ToList();
+                    if (allMessagesBySelectedFriendSearch.Count != 0 && allMessagesBySelectedFriendSearch != null)
                     {
-                        var friend = await _userManager.FindByIdAsync(message.UserFromId);
-                        var messageSeenStatus = message.SeenStatus;
-
-                        var exists = messageFriendsList.Any(x => x.Id == message.UserFromId);
-                        if (!exists)
-                        {
-                            messageFriendsList.Add(friend);
-
-                            var messageFriendForView = new MessageFriendsViewModel();
-                            messageFriendForView.MessagesFriend = friend;
-                            messageFriendForView.LastSeenStatus = messageSeenStatus;
-                            messagesFriendsWithStatusList.Add(messageFriendForView);
-                        }
+                        allMessagesBySelectedFriend = allMessagesBySelectedFriendSearch;
+                    }
+                    else
+                    {
+                        var message = new Message();
+                        message.UserFromId = userId;
+                        message.UserToId = messageFriendId;
+                        message.Content = null;
+                        message.SeenStatus = false;
+                        message.DateCreated = DateTime.Now;
+                        allMessagesBySelectedFriend.Add(message);
                     }
                 }
-            }
 
-            if (messageFriendId != null && messageFriendId != "")
+                var messagesForView = new MessagesViewModel();
+                messagesForView.MessageFriends = messagesFriendsWithStatusList;
+                messagesForView.Messages = allMessagesBySelectedFriend;
+                messagesForView.NewMessage = newMessage;
+
+                if (openMessages)
+                {
+                    var allCheckedMessages = _messagesService.GetAllMessagesWithFriend(userId, messageFriendId);
+                    foreach (var message in allCheckedMessages)
+                    {
+                        message.SeenStatus = true;
+                        _messagesService.UpdateMessage(message);
+                    }
+                }
+                return View(messagesForView);
+            }
+            catch (Exception)
             {
-                newMessage.UserFromId = userId;
-                newMessage.UserToId = messageFriendId;
-                newMessage.Content = null;
-
-                var allMessagesBySelectedFriendSearch = allMessagesForUser.Where(x => x.UserFromId == messageFriendId || x.UserToId == messageFriendId).ToList();
-                if (allMessagesBySelectedFriendSearch.Count != 0 && allMessagesBySelectedFriendSearch != null)
-                {
-                    allMessagesBySelectedFriend = allMessagesBySelectedFriendSearch;
-                }
-                else
-                {
-                    var message = new Message();
-                    message.UserFromId = userId;
-                    message.UserToId = messageFriendId;
-                    message.Content = null;
-                    message.SeenStatus = false;
-                    message.DateCreated = DateTime.Now;
-                    allMessagesBySelectedFriend.Add(message);
-                }
+                return RedirectToAction("Error", "Home");
             }
-
-            var messagesForView = new MessagesViewModel();
-            messagesForView.MessageFriends = messagesFriendsWithStatusList;
-            messagesForView.Messages = allMessagesBySelectedFriend;
-            messagesForView.NewMessage = newMessage;
-
-            if (openMessages)
-            {
-                var allCheckedMessages = _messagesService.GetAllMessagesWithFriend(userId, messageFriendId);
-                foreach (var message in allCheckedMessages)
-                {
-                    message.SeenStatus = true;
-                    _messagesService.UpdateMessage(message);
-                }
-            }
-            return View(messagesForView);
         }
         [Authorize]
         [HttpPost]
         public IActionResult CreateMessage(string userId, string messageFriendId, string content)
         {
-            if (userId != null && messageFriendId != null && content != null)
+            try
             {
-                _messagesService.CreateMessage(userId, messageFriendId, content);
-                return RedirectToAction("Overview", "Message", new { userId, messageFriendId });
+                if (userId != null && messageFriendId != null && content != null)
+                {
+                    _messagesService.CreateMessage(userId, messageFriendId, content);
+                    return RedirectToAction("Overview", "Message", new { userId, messageFriendId });
+                }
+                else
+                {
+                    return RedirectToAction("Overview", new { userId = userId });
+                }
             }
-            else
+            catch (Exception)
             {
-                return RedirectToAction("Overview", new { userId = userId });
+                return RedirectToAction("Error", "Home");
             }
         }
         [Authorize]
         public async Task<IActionResult> DeleteMessage(string userId,int messageId, string messageFriendId, bool openMessages)
         {
-            if (userId != null && messageFriendId != null)
+            try
             {
-                var response = _messagesService.DeleteMessage(userId, messageId);
+                if (userId != null && messageFriendId != null)
+                {
+                    var response = _messagesService.DeleteMessage(userId, messageId);
+                }
+                return RedirectToAction("Overview", new { MessageFriendId = messageFriendId, UserId = userId, OpenMessages = openMessages });
             }
-            return RedirectToAction("Overview", new { MessageFriendId = messageFriendId, UserId = userId, OpenMessages = openMessages });
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ using ClickApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +16,13 @@ namespace ClickApp.Controllers
         private readonly IUserSkillsService _userSkillsService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ISkillsService _skillsService;
-
         public UserSkillsController(IUserSkillsService userSkillsService, UserManager<ApplicationUser> userManager, ISkillsService skillsService)
         {
             _userSkillsService = userSkillsService;
             _userManager = userManager;
             _skillsService = skillsService;
         }
+        
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditUserSkills(string userId)
@@ -60,7 +59,6 @@ namespace ClickApp.Controllers
             return View(userDetails);
             //return RedirectToAction("Details", "User", new { userId = userId });
         }
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(EditUserViewModel user)
